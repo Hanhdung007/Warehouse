@@ -28,19 +28,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <thead class="text-capitalize">
                                         <tr>
                                            <th>Code</th>
-                                            <th>Warehouse's Name</th>
+                                            <th>Name</th>
+                                            <th>Color</th>
+                                            <th>Type</th>
                                             <th>Active</th>
-                                            <th>Action</th>
+                                            <th>Image</th>
+<!--                                            <th>Action</th>-->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="warehouse:${list}">
-                                            <td th:text="${warehouse.code}"></td>
-                                            <td th:text="${warehouse.name}"></td>
-                                            <td th:text="${warehouse.active}"></td>
+                                        <tr th:each="items:${list}">
+                                            <td th:text="${items.code}"></td>
+                                            <td th:text="${items.name}"></td>
+                                            <td th:text="${items.color}"></td>
+                                            <td th:text="${items.type}"></td>
+                                            <td th:text="${items.active}"></td>
                                             <td>
-                                                <a th:href="'/warehouse/update/'+${warehouse.code}">Edit</a>
+                                                <img th:src="'/' + ${items.image}" width="150" height="150" alt="sai nha"/>
                                             </td>
+<!--                                            <td>
+                                                <a th:href="'/warehouse/update/'+${warehouse.code}">Edit</a>
+                                            </td>-->
                                         </tr>
                                     </tbody>
                                 </table>

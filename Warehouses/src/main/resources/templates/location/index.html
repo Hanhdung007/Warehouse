@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
@@ -24,22 +24,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         <div class="card-body">
                             <h4 class="header-title">Data Table Dark</h4>
                             <div class="data-tables datatable-dark">
-                                <table id="warehousetable" class="text-center">
+                                <table id="locationtable" class="text-center">
                                     <thead class="text-capitalize">
                                         <tr>
-                                           <th>Code</th>
-                                            <th>Warehouse's Name</th>
+                                            <th>Code</th>
+                                            <th>Location's Name</th>
+                                            <th>Capacity</th>
+                                            <th>Warehouse's</th>
                                             <th>Active</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="warehouse:${list}">
-                                            <td th:text="${warehouse.code}"></td>
-                                            <td th:text="${warehouse.name}"></td>
-                                            <td th:text="${warehouse.active}"></td>
+                                        <tr th:each="location:${list}">
+                                            <td th:text="${location.code}"></td>
+                                            <td th:text="${location.name}"></td>
+                                            <td th:text="${location.capacity}"></td>
+                                            <td th:text="${location.warehouseName}"></td>
+                                            <td th:text="${location.active}"></td>
                                             <td>
-                                                <a th:href="'/warehouse/update/'+${warehouse.code}">Edit</a>
+                                                <a th:href="'/location/update/'+${location.code}">Edit</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -60,7 +64,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
             <script>
                 $(document).ready(function () {
-                    $('#warehousetable').DataTable();
+                    $('#locationtable').DataTable();
                 });
             </script>
         </div>

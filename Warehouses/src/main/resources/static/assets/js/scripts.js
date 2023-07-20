@@ -106,8 +106,8 @@
             responsive: true
         });
     }
-    if ($('#dataTable3').length) {
-        $('#dataTable3').DataTable({
+    if ($('#warehousetable').length) {
+        $('#warehousetable').DataTable({
             responsive: true
         });
     }
