@@ -47,9 +47,9 @@ public class Itemmasters implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-     @JoinColumn(name = "location_code", referencedColumnName = "code")
-    @ManyToOne
-    private Locations locationCode;
+    @Size(max = 255)
+    @Column(name = "location_code")
+    private String locationCode;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "quantity")
     private Double quantity;
@@ -73,6 +73,9 @@ public class Itemmasters implements Serializable {
     @JoinColumn(name = "code_itemdata", referencedColumnName = "code")
     @ManyToOne
     private Itemdatas codeItemdata;
+    @JoinColumn(name = "sup_code", referencedColumnName = "sup_code")
+    @ManyToOne
+    private Supplier supCode;
 
     public Itemmasters() {
     }
@@ -89,11 +92,11 @@ public class Itemmasters implements Serializable {
         this.id = id;
     }
 
-    public Locations getLocationCode() {
+    public String getLocationCode() {
         return locationCode;
     }
 
-    public void setLocationCode(Locations locationCode) {
+    public void setLocationCode(String locationCode) {
         this.locationCode = locationCode;
     }
 
@@ -160,4 +163,38 @@ public class Itemmasters implements Serializable {
     public void setCodeItemdata(Itemdatas codeItemdata) {
         this.codeItemdata = codeItemdata;
     }
+
+    public Supplier getSupCode() {
+        return supCode;
+    }
+
+    public void setSupCode(Supplier supCode) {
+        this.supCode = supCode;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Itemmasters)) {
+            return false;
+        }
+        Itemmasters other = (Itemmasters) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
+    }
+    
 }

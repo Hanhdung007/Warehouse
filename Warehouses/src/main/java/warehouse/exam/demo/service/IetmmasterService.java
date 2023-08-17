@@ -40,7 +40,7 @@ public class IetmmasterService {
             imtDao.setId(im.getId());
             imtDao.setIdImport(im.getIdImport());
             imtDao.setItemName(im.getCodeItemdata().getName());
-            imtDao.setLocationName(im.getLocationCode().getName());
+            imtDao.setLocationName(im.getLocationCode());
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());

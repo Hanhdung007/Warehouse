@@ -5,7 +5,6 @@
 package warehouse.exam.demo.model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -53,8 +51,6 @@ public class Locations implements Serializable {
     @JoinColumn(name = "warehouse_code", referencedColumnName = "code")
     @ManyToOne
     private Warehouses warehouseCode;
-    @OneToMany(mappedBy = "locationCode")
-    private List<Itemmasters> itemList;
 
     public Locations() {
     }
@@ -103,11 +99,29 @@ public class Locations implements Serializable {
         this.warehouseCode = warehouseCode;
     }
 
-    public List<Itemmasters> getItemList() {
-        return itemList;
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (code != null ? code.hashCode() : 0);
+        return hash;
     }
 
-    public void setItemList(List<Itemmasters> itemList) {
-        this.itemList = itemList;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Locations)) {
+            return false;
+        }
+        Locations other = (Locations) object;
+        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
+            return false;
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        return "warehouse.exam.demo.model.Locations[ code=" + code + " ]";
+    }
+    
 }
