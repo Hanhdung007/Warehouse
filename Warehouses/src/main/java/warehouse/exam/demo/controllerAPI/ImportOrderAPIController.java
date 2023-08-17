@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
  */
-package warehouse.exam.demo.controller;
+package warehouse.exam.demo.controllerAPI;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,42 +15,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import warehouse.exam.demo.DAL.warehouseDAO;
-import warehouse.exam.demo.model.Warehouses;
-import warehouse.exam.demo.service.warehouseService;
+import warehouse.exam.demo.DAL.importDAO;
+import warehouse.exam.demo.model.Importorders;
+import warehouse.exam.demo.service.ImportService;
 
 /**
  *
  * @author DUNG
  */
 @RestController
-@RequestMapping("/api/warehouse")
-public class WarehouseAPIController {
-
-    @Autowired
-    warehouseService service;
-
-    @GetMapping()
+@RequestMapping("/api/importOrder")
+public class ImportOrderAPIController {
+    @Autowired 
+    ImportService impService;
+    
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<warehouseDAO> findAll() {
-        return service.getAll();
+    public List<importDAO> findAll(){
+        return impService.getAll();
     }
-
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Importorders findOne(@PathVariable(value = "id") int id){
+        Importorders imp = impService.findOne(id);
+        return imp;
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Warehouses Create(@RequestBody warehouseDAO warehouse) {
-        return service.saveWarehouse(warehouse);
+    public Importorders create(@RequestBody importDAO impDAO){
+        return impService.saveImportOrder(impDAO);
     }
-
-    @GetMapping("/{code}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Warehouses getWarehouse(@PathVariable(value = "code") String code) {
-        Warehouses warehouse = service.findbycode(code);
-        return warehouse;
-    }
-    @PutMapping("/{code}")
-    @ResponseStatus(HttpStatus.OK)
-    public Warehouses updateWarehouse(@PathVariable(value = "code") String code, @RequestBody warehouseDAO warehouses) {
-        return service.updateWarehouse(code, warehouses);
+    public Importorders update(@PathVariable(value = "id") int id, @RequestBody importDAO impDAO){
+        return impService.updateImpOrder(impDAO, id);
     }
 }

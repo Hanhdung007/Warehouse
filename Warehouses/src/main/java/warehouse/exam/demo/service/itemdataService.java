@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.itemdataDAO;
-import warehouse.exam.demo.model.Itemdata;
+import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.reponsitory.itemdataReponsitory;
 
 /**
@@ -24,8 +24,8 @@ public class itemdataService {
 
     public List<itemdataDAO> getAll() {
         List<itemdataDAO> itemdatalist = new ArrayList<>();
-        List<Itemdata> list = itemreponsitory.findAll();
-        for (Itemdata item : list) {
+        List<Itemdatas> list = itemreponsitory.findAll();
+        for (Itemdatas item : list) {
             itemdataDAO items = new itemdataDAO();
             items.setCode(item.getCode());
             items.setName(item.getName());
@@ -38,24 +38,33 @@ public class itemdataService {
         return itemdatalist;
     }
 
-    public Itemdata saveItemData(itemdataDAO itemDAO) {
-        Itemdata items = new Itemdata();
+    public Itemdatas saveItemData(itemdataDAO itemDAO) {
+        Itemdatas items = new Itemdatas();
         items.setCode(itemDAO.getCode());
         items.setName(itemDAO.getName());
         items.setColor(itemDAO.getColor());
         items.setType(itemDAO.getType());
         items.setActive(itemDAO.getActive());
-        items.setImage(itemDAO.getImage());
+        if (itemDAO.getImage() != null) {
+            items.setImage("img/" + itemDAO.getImage());
+        }
+        return itemreponsitory.save(items);
+    }
+    
+     public Itemdatas updateItemData(itemdataDAO itemDAO, String code) {
+         // tìm thằng cũ qua code
+        Itemdatas items = itemreponsitory.findById(code).get();
+        items.setName(itemDAO.getName());
+        items.setColor(itemDAO.getColor());
+        items.setType(itemDAO.getType());
+        items.setActive(itemDAO.getActive());
+        if (itemDAO.getImage() != null) {
+            items.setImage("img/" + itemDAO.getImage());
+        }
         return itemreponsitory.save(items);
     }
 
-    public Itemdata updateItemData(String code, itemdataDAO itemdataDAO) {
-        Itemdata itemdata = itemreponsitory.findById(code).get();
-        itemdata.setName(itemdataDAO.getName());
-        itemdata.setColor(itemdataDAO.getColor());
-        itemdata.setType(itemdataDAO.getType());
-        itemdata.setActive(itemdataDAO.getActive());
-        itemdata.setImage(itemdataDAO.getImage());
-        return itemreponsitory.save(itemdata);
+    public Itemdatas findOne(String code) {
+        return itemreponsitory.findById(code).get();
     }
 }

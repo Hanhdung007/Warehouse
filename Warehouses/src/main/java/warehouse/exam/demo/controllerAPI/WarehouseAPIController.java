@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/springframework/RestController.java to edit this template
  */
-package warehouse.exam.demo.controller;
+package warehouse.exam.demo.controllerAPI;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,39 +15,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import warehouse.exam.demo.DAL.locationDAO;
-import warehouse.exam.demo.model.Locations;
-import warehouse.exam.demo.service.locationService;
+import warehouse.exam.demo.DAL.warehouseDAO;
+import warehouse.exam.demo.model.Warehouses;
+import warehouse.exam.demo.service.warehouseService;
 
 /**
  *
  * @author DUNG
  */
 @RestController
-@RequestMapping("/api/location")
-public class locationAPIController {
+@RequestMapping("/api/warehouse")
+public class WarehouseAPIController {
+
     @Autowired
-    locationService locService;
-    
+    warehouseService service;
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<locationDAO> get(){
-        return locService.getAll();
+    public List<warehouseDAO> findAll() {
+        return service.getAll();
     }
-    @PostMapping()
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Locations create(@RequestBody locationDAO newLocations) {
-        return locService.saveLocation(newLocations);
+    public Warehouses Create(@RequestBody warehouseDAO warehouse) {
+        return service.saveWarehouse(warehouse);
     }
-//    @GetMapping("/{code}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Locations getWarehouse(@PathVariable(value = "code") String code) {
-//        Locations warehouse = locService.findOne(code);
-//        return warehouse;
-//    }
-//    @PostMapping("/update")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Locations updateWarehouse(@RequestBody locationDAO warehouses) {
-//        return locService.updateLocation(warehouses.getCode(), warehouses);
-//    }
+
+    @GetMapping("/{code}")
+    @ResponseStatus(HttpStatus.OK)
+    public Warehouses getWarehouse(@PathVariable(value = "code") String code) {
+        Warehouses warehouse = service.findbycode(code);
+        return warehouse;
+    }
+    @PutMapping("/{code}")
+    @ResponseStatus(HttpStatus.OK)
+    public Warehouses updateWarehouse(@PathVariable(value = "code") String code, @RequestBody warehouseDAO warehouses) {
+        return service.updateWarehouse(code, warehouses);
+    }
 }
