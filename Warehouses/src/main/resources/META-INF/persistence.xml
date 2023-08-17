@@ -4,7 +4,9 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>warehouse.exam.demo.model.Warehouses</class>
     <class>warehouse.exam.demo.model.Locations</class>
-    <class>warehouse.exam.demo.model.Itemdata</class>
+    <class>warehouse.exam.demo.model.Importorders</class>
+    <class>warehouse.exam.demo.model.Itemmasters</class>
+    <class>warehouse.exam.demo.model.Itemdatas</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=Warehouse;encrypt=true;trustServerCertificate=true"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

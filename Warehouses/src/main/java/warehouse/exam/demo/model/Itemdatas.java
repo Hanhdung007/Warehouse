@@ -5,16 +5,19 @@
 package warehouse.exam.demo.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,14 +27,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "itemdatas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Itemdata.findAll", query = "SELECT i FROM Itemdata i"),
-    @NamedQuery(name = "Itemdata.findByCode", query = "SELECT i FROM Itemdata i WHERE i.code = :code"),
-    @NamedQuery(name = "Itemdata.findByName", query = "SELECT i FROM Itemdata i WHERE i.name = :name"),
-    @NamedQuery(name = "Itemdata.findByColor", query = "SELECT i FROM Itemdata i WHERE i.color = :color"),
-    @NamedQuery(name = "Itemdata.findByType", query = "SELECT i FROM Itemdata i WHERE i.type = :type"),
-    @NamedQuery(name = "Itemdata.findByActive", query = "SELECT i FROM Itemdata i WHERE i.active = :active"),
-    @NamedQuery(name = "Itemdata.findByImage", query = "SELECT i FROM Itemdata i WHERE i.image = :image")})
-public class Itemdata implements Serializable {
+    @NamedQuery(name = "Itemdatas.findAll", query = "SELECT i FROM Itemdatas i"),
+    @NamedQuery(name = "Itemdatas.findByCode", query = "SELECT i FROM Itemdatas i WHERE i.code = :code"),
+    @NamedQuery(name = "Itemdatas.findByName", query = "SELECT i FROM Itemdatas i WHERE i.name = :name"),
+    @NamedQuery(name = "Itemdatas.findByColor", query = "SELECT i FROM Itemdatas i WHERE i.color = :color"),
+    @NamedQuery(name = "Itemdatas.findByType", query = "SELECT i FROM Itemdatas i WHERE i.type = :type"),
+    @NamedQuery(name = "Itemdatas.findByActive", query = "SELECT i FROM Itemdatas i WHERE i.active = :active"),
+    @NamedQuery(name = "Itemdatas.findByImage", query = "SELECT i FROM Itemdatas i WHERE i.image = :image")})
+public class Itemdatas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,11 +57,13 @@ public class Itemdata implements Serializable {
     @Size(max = 255)
     @Column(name = "image")
     private String image;
+    @OneToMany(mappedBy = "codeItemdata")
+    private List<Itemmasters> itemmastersList;
 
-    public Itemdata() {
+    public Itemdatas() {
     }
 
-    public Itemdata(String code) {
+    public Itemdatas(String code) {
         this.code = code;
     }
 
@@ -110,4 +115,38 @@ public class Itemdata implements Serializable {
         this.image = image;
     }
 
+    @XmlTransient
+    public List<Itemmasters> getItemmastersList() {
+        return itemmastersList;
+    }
+
+    public void setItemmastersList(List<Itemmasters> itemmastersList) {
+        this.itemmastersList = itemmastersList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (code != null ? code.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Itemdatas)) {
+            return false;
+        }
+        Itemdatas other = (Itemdatas) object;
+        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "warehouse.exam.demo.model.Itemdatas[ code=" + code + " ]";
+    }
+    
 }
