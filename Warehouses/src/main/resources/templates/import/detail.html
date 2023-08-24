@@ -22,7 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-lg-12 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <a href=""><button type="button" class="btn btn-outline-primary mb-3">Add new Order</button></a>
+                            <a th:href="'/import/createItem/' + ${import.id}"><button type="button" class="btn btn-outline-primary mb-3">Add new item</button></a>
                             <h4 class="header-title">Thead secondary</h4>
                             <div class="single-table">
                                 <div class="table-responsive">
@@ -42,10 +42,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         </thead>
                                         <tbody>
                                             <tr>
-                                            <tr th:each="item:${list}">
-                                                <td th:text="${item.itemName}"></td>
+                                            <tr th:each="item:${import.getItemmastersList()}">
+                                                <td th:text="${item.codeItemdata.name}"></td>
                                                 <td th:text="${item.quantity}"></td>
-                                                <td th:text="${item.locationName}"></td>
+                                                <td th:text="${item.locationCode}"></td>
                                                 <td th:text="${item.recieveNo}"></td>
                                                 <td th:text="${item.dateImport}"></td>
                                                 <td th:text="${item.qcBy}"></td>

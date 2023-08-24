@@ -9,8 +9,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.importDAO;
+import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.model.Importorders;
+import warehouse.exam.demo.model.Supplier;
 import warehouse.exam.demo.reponsitory.ImportRepository;
+import warehouse.exam.demo.reponsitory.supplierRepository;
 
 /**
  *
@@ -21,6 +24,8 @@ public class ImportService {
 
     @Autowired
     ImportRepository importReponsitory;
+    @Autowired
+    supplierRepository supReponsity;
 
     public List<importDAO> getAll() {
         List<importDAO> dao = new ArrayList<>();
@@ -30,7 +35,7 @@ public class ImportService {
             imp.setId(list.getId());
             imp.setDriver(list.getDriver());
             imp.setDriversPhone(list.getDriversPhone());
-            imp.setFactory(list.getFactory());
+            imp.setSupplierName(list.getSupId().getSupName());
             imp.setDateImport(list.getDateImport());
             imp.setNote(list.getNote());
             imp.setStatus(list.getStatus());
@@ -45,23 +50,23 @@ public class ImportService {
         impOrder.setDriver(importDAO.getDriver());
         impOrder.setDateImport(importDAO.getDateImport());
         impOrder.setDriversPhone(importDAO.getDriversPhone());
-        impOrder.setFactory(importDAO.getFactory());
+        impOrder.setSupId(supReponsity.findBySupName(importDAO.getSupplierName()));
         impOrder.setNote(importDAO.getNote());
         impOrder.setStatus(importDAO.getStatus());
         return importReponsitory.save(impOrder);
     }
 
     public Importorders findOne(int id) {
-        return importReponsitory.findById(id).get();
+        return importReponsitory.findById(id);
     }
 
     public Importorders updateImpOrder(importDAO importDAO, int id) {
-        Importorders impOrder = importReponsitory.findById(id).get();
+        Importorders impOrder = importReponsitory.findById(id);
         impOrder.setId(impOrder.getId());
         impOrder.setDriver(importDAO.getDriver());
         impOrder.setDateImport(importDAO.getDateImport());
         impOrder.setDriversPhone(importDAO.getDriversPhone());
-        impOrder.setFactory(importDAO.getFactory());
+        impOrder.setSupId(supReponsity.findBySupName(importDAO.getSupplierName()));
         impOrder.setNote(importDAO.getNote());
         impOrder.setStatus(importDAO.getStatus());
         return importReponsitory.save(impOrder);

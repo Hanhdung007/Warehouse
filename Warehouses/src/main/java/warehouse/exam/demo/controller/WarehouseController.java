@@ -26,15 +26,14 @@ import warehouse.exam.demo.service.warehouseService;
 @RequestMapping("/warehouse")
 public class WarehouseController {
 
-//    @Autowired
-//    warehouseService service;
-        private String url = "http://localhost:9999/api/warehouse/";
-        private RestTemplate rest = new RestTemplate();
+    @Autowired
+    warehouseService service;
+//        private String url = "http://localhost:9999/api/warehouse/";
+//        private RestTemplate rest = new RestTemplate();
 
     @GetMapping("/index")
     public String page(Model model) {
-        List<Warehouses> result = rest.getForObject(url, List.class);
-        model.addAttribute("list", result);
+        model.addAttribute("list", service.getAll());
         return "warehouse/index";
     }
 
@@ -43,22 +42,22 @@ public class WarehouseController {
         model.addAttribute("warehouse", new Warehouses());
         return "warehouse/create";
     }
-//    @PostMapping()
-//    public String create(Model model, @ModelAttribute warehouseDAO warehouse) {
-//        service.saveWarehouse(warehouse);
-//        return "redirect:/index";
-//    }
-//    @GetMapping("/update/{code}")
-//    public String update(Model model,@PathVariable("code") String code) {
-//        Warehouses warehouse = service.findbycode(code);
-//        model.addAttribute("warehouse", warehouse);
-//        return "warehouse/edit";
-//    }
-//
-//    @PostMapping("/update")
-//    public String update(Model model,@ModelAttribute warehouseDAO warehouses) {
-//         Warehouses warehouse = service.findbycode(warehouses.getCode());
-//        service.saveWarehouse(warehouses);
-//        return "redirect:warehouse/index";
-//    }
+    @PostMapping("/create")
+    public String create(Model model, @ModelAttribute warehouseDAO warehouse) {
+        service.saveWarehouse(warehouse);
+        return "redirect:/warehouse/index";
+    }
+    @GetMapping("/update/{code}")
+    public String update(Model model,@PathVariable("code") String code) {
+        Warehouses warehouse = service.findbycode(code);
+        model.addAttribute("warehouse", warehouse);
+        return "warehouse/edit";
+    }
+
+    @PostMapping("/update")
+    public String update(Model model,@ModelAttribute warehouseDAO warehouses) {
+         Warehouses warehouse = service.findbycode(warehouses.getCode());
+        service.saveWarehouse(warehouses);
+        return "redirect:warehouse/index";
+    }
 }

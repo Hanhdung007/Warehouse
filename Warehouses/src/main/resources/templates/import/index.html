@@ -43,14 +43,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <tr th:each="import:${list}">
                                                 <td th:text="${import.driver}"></td>
                                                 <td th:text="${import.driversPhone}"></td>
-                                                <td th:text="${import.factory}"></td>
+                                                <td th:text="${import.supplierName}"></td>
                                                 <td th:text="${import.dateImport}"></td>
                                                 <td th:text="${import.note}"></td>
                                                 <td th:text="${import.status}"></td>
                                                 <td>
-                                                    <div class="fw-icons col-lg-3 col-sm-6"><a th:href="'/import/update' + ${import.id}"><i
-                                                                class="fa fa-angle-double-right"></i>
-                                                        </a></div>
+                                                    <a th:href="'/import/details/' + ${import.id}">Details</a>
                                                 </td>
                                             </tr>
                                         </tbody>

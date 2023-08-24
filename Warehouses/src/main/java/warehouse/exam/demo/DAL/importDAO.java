@@ -4,6 +4,8 @@
  */
 package warehouse.exam.demo.DAL;
 
+import warehouse.exam.demo.model.Supplier;
+
 /**
  *
  * @author DUNG
@@ -13,22 +15,12 @@ public class importDAO {
     private Integer id;
     private String driver;
     private String driversPhone;
-    private String factory;
     private String dateImport;
     private String note;
     private Boolean status;
+    private String supplierName;
 
     public importDAO() {
-    }
-
-    public importDAO(Integer id, String driver, String driversPhone, String factory, String dateImport, String note, Boolean status) {
-        this.id = id;
-        this.driver = driver;
-        this.driversPhone = driversPhone;
-        this.factory = factory;
-        this.dateImport = dateImport;
-        this.note = note;
-        this.status = status;
     }
 
     public Integer getId() {
@@ -55,14 +47,6 @@ public class importDAO {
         this.driversPhone = driversPhone;
     }
 
-    public String getFactory() {
-        return factory;
-    }
-
-    public void setFactory(String factory) {
-        this.factory = factory;
-    }
-
     public String getDateImport() {
         return dateImport;
     }
@@ -86,5 +70,13 @@ public class importDAO {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-    
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
 }
