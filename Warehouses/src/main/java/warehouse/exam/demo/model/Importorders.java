@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -32,7 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Importorders.findById", query = "SELECT i FROM Importorders i WHERE i.id = :id"),
     @NamedQuery(name = "Importorders.findByDriver", query = "SELECT i FROM Importorders i WHERE i.driver = :driver"),
     @NamedQuery(name = "Importorders.findByDriversPhone", query = "SELECT i FROM Importorders i WHERE i.driversPhone = :driversPhone"),
-    @NamedQuery(name = "Importorders.findByFactory", query = "SELECT i FROM Importorders i WHERE i.factory = :factory"),
     @NamedQuery(name = "Importorders.findByDateImport", query = "SELECT i FROM Importorders i WHERE i.dateImport = :dateImport"),
     @NamedQuery(name = "Importorders.findByNote", query = "SELECT i FROM Importorders i WHERE i.note = :note"),
     @NamedQuery(name = "Importorders.findByStatus", query = "SELECT i FROM Importorders i WHERE i.status = :status")})
@@ -51,9 +52,6 @@ public class Importorders implements Serializable {
     @Column(name = "drivers_phone")
     private String driversPhone;
     @Size(max = 255)
-    @Column(name = "factory")
-    private String factory;
-    @Size(max = 255)
     @Column(name = "date_import")
     private String dateImport;
     @Size(max = 255)
@@ -63,6 +61,9 @@ public class Importorders implements Serializable {
     private Boolean status;
     @OneToMany(mappedBy = "idImport")
     private List<Itemmasters> itemmastersList;
+    @JoinColumn(name = "sup_id", referencedColumnName = "sup_id")
+    @ManyToOne
+    private Supplier supId;
 
     public Importorders() {
     }
@@ -93,14 +94,6 @@ public class Importorders implements Serializable {
 
     public void setDriversPhone(String driversPhone) {
         this.driversPhone = driversPhone;
-    }
-
-    public String getFactory() {
-        return factory;
-    }
-
-    public void setFactory(String factory) {
-        this.factory = factory;
     }
 
     public String getDateImport() {
@@ -134,6 +127,14 @@ public class Importorders implements Serializable {
 
     public void setItemmastersList(List<Itemmasters> itemmastersList) {
         this.itemmastersList = itemmastersList;
+    }
+
+    public Supplier getSupId() {
+        return supId;
+    }
+
+    public void setSupId(Supplier supId) {
+        this.supId = supId;
     }
 
     @Override

@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Supplier.findAll", query = "SELECT s FROM Supplier s"),
-    @NamedQuery(name = "Supplier.findBySupCode", query = "SELECT s FROM Supplier s WHERE s.supCode = :supCode"),
+    @NamedQuery(name = "Supplier.findBySupId", query = "SELECT s FROM Supplier s WHERE s.supId = :supId"),
     @NamedQuery(name = "Supplier.findBySupName", query = "SELECT s FROM Supplier s WHERE s.supName = :supName"),
     @NamedQuery(name = "Supplier.findBySupAddress", query = "SELECT s FROM Supplier s WHERE s.supAddress = :supAddress"),
     @NamedQuery(name = "Supplier.findBySupEmail", query = "SELECT s FROM Supplier s WHERE s.supEmail = :supEmail"),
     @NamedQuery(name = "Supplier.findByCity", query = "SELECT s FROM Supplier s WHERE s.city = :city"),
     @NamedQuery(name = "Supplier.findByTaxCode", query = "SELECT s FROM Supplier s WHERE s.taxCode = :taxCode"),
-    @NamedQuery(name = "Supplier.findByBit", query = "SELECT s FROM Supplier s WHERE s.bit = :bit")})
+    @NamedQuery(name = "Supplier.findByActive", query = "SELECT s FROM Supplier s WHERE s.active = :active")})
 public class Supplier implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +42,8 @@ public class Supplier implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "sup_code")
-    private String supCode;
+    @Column(name = "sup_id")
+    private String supId;
     @Size(max = 2147483647)
     @Column(name = "sup_name")
     private String supName;
@@ -59,24 +59,26 @@ public class Supplier implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "tax_code")
     private String taxCode;
-    @Column(name = "bit")
-    private Boolean bit;
-    @OneToMany(mappedBy = "supCode")
+    @Column(name = "active")
+    private Boolean active;
+    @OneToMany(mappedBy = "supId")
     private List<Itemmasters> itemmastersList;
+    @OneToMany(mappedBy = "supId")
+    private List<Importorders> importordersList;
 
     public Supplier() {
     }
 
-    public Supplier(String supCode) {
-        this.supCode = supCode;
+    public Supplier(String supId) {
+        this.supId = supId;
     }
 
-    public String getSupCode() {
-        return supCode;
+    public String getSupId() {
+        return supId;
     }
 
-    public void setSupCode(String supCode) {
-        this.supCode = supCode;
+    public void setSupId(String supId) {
+        this.supId = supId;
     }
 
     public String getSupName() {
@@ -119,12 +121,12 @@ public class Supplier implements Serializable {
         this.taxCode = taxCode;
     }
 
-    public Boolean getBit() {
-        return bit;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setBit(Boolean bit) {
-        this.bit = bit;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @XmlTransient
@@ -136,10 +138,19 @@ public class Supplier implements Serializable {
         this.itemmastersList = itemmastersList;
     }
 
+    @XmlTransient
+    public List<Importorders> getImportordersList() {
+        return importordersList;
+    }
+
+    public void setImportordersList(List<Importorders> importordersList) {
+        this.importordersList = importordersList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (supCode != null ? supCode.hashCode() : 0);
+        hash += (supId != null ? supId.hashCode() : 0);
         return hash;
     }
 
@@ -150,7 +161,7 @@ public class Supplier implements Serializable {
             return false;
         }
         Supplier other = (Supplier) object;
-        if ((this.supCode == null && other.supCode != null) || (this.supCode != null && !this.supCode.equals(other.supCode))) {
+        if ((this.supId == null && other.supId != null) || (this.supId != null && !this.supId.equals(other.supId))) {
             return false;
         }
         return true;
@@ -158,7 +169,7 @@ public class Supplier implements Serializable {
 
     @Override
     public String toString() {
-        return "warehouse.exam.demo.model.Supplier[ supCode=" + supCode + " ]";
+        return "warehouse.exam.demo.model.Supplier[ supId=" + supId + " ]";
     }
     
 }

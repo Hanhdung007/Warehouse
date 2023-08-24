@@ -23,8 +23,26 @@ public class itemmasterDAO {
     private String note;
     private Double qcAcceptQuantity;
     private String qcBy;
-    private Importorders idImport;
+    private int idImport;
     private String itemName;
+    private String supplierName;
+//    private int importID;
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+//    public int getImportID() {
+//        return importID;
+//    }
+//
+//    public void setImportID(int importID) {
+//        this.importID = importID;
+//    }
 
     public Integer getId() {
         return id;
@@ -90,11 +108,11 @@ public class itemmasterDAO {
         this.qcBy = qcBy;
     }
 
-    public Importorders getIdImport() {
+    public int getIdImport() {
         return idImport;
     }
 
-    public void setIdImport(Importorders idImport) {
+    public void setIdImport(int idImport) {
         this.idImport = idImport;
     }
 

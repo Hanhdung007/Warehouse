@@ -73,9 +73,9 @@ public class Itemmasters implements Serializable {
     @JoinColumn(name = "code_itemdata", referencedColumnName = "code")
     @ManyToOne
     private Itemdatas codeItemdata;
-    @JoinColumn(name = "sup_code", referencedColumnName = "sup_code")
+    @JoinColumn(name = "sup_id", referencedColumnName = "sup_id")
     @ManyToOne
-    private Supplier supCode;
+    private Supplier supId;
 
     public Itemmasters() {
     }
@@ -164,12 +164,12 @@ public class Itemmasters implements Serializable {
         this.codeItemdata = codeItemdata;
     }
 
-    public Supplier getSupCode() {
-        return supCode;
+    public Supplier getSupId() {
+        return supId;
     }
 
-    public void setSupCode(Supplier supCode) {
-        this.supCode = supCode;
+    public void setSupId(Supplier supId) {
+        this.supId = supId;
     }
 
     @Override

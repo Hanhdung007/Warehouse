@@ -1,6 +1,12 @@
-CREATE DATABASE Warehouse
+ --use master;
+ --IF EXISTS (SELECT name FROM sys.databases WHERE name = 'Warehouse') 
+ --THEN 
+ --DROP DATABASE Warehouse
+--END IF; 
+DROP DATABASE Warehouse
 go 
 USE Warehouse
+GO
 
 CREATE TABLE [itemdatas] (
   [code] varchar(50) PRIMARY KEY,
@@ -22,7 +28,8 @@ CREATE TABLE [itemmasters] (
   [qc_accept_quantity] float,
   [qc_by] nvarchar(255),
   [id_import] int, 
-  [code_itemdata] varchar(50)
+  [code_itemdata] varchar(50),
+  sup_id varchar(20)
 )
 GO
 
@@ -30,7 +37,7 @@ CREATE TABLE [importorders] (
   [id] int PRIMARY KEY,
   [driver] nvarchar(255),
   [drivers_phone] nvarchar(255),
-  [factory] nvarchar(255),
+  sup_id varchar(20),
   [date_import] nvarchar(255),
   [note] nvarchar(255),
   [status] bit
@@ -50,6 +57,7 @@ CREATE TABLE [locations] (
   [warehouse_code] nvarchar(50),
   [capacity] float,
   [active] bit
+  remain float 
 )
 GO
 
@@ -71,6 +79,16 @@ CREATE TABLE [issue_order_details] (
   [quantityActualexport] int
 )
 GO
+CREATE TABLE supplier (
+	sup_id varchar(20) primary key,
+	sup_name varchar(max),
+	sup_address varchar(max),
+	sup_email varchar(max),
+	city varchar(50),
+	tax_code varchar(max),
+	active bit
+)
+go
 
 ALTER TABLE [issue_order_details] ADD FOREIGN KEY ([idissue_order]) REFERENCES [issue_orders] ([id])
 GO
@@ -101,4 +119,8 @@ GO
 ALTER TABLE [accounts_roles] ADD FOREIGN KEY ([role_id]) REFERENCES  [roles] ([id])
 GO
 ALTER TABLE [accounts_roles] ADD FOREIGN KEY ([account_code]) REFERENCES  [Accounts] ([code])
+GO
+ALTER TABLE [importorders] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
+GO
+ALTER TABLE [itemmasters] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
 GO

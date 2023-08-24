@@ -6,16 +6,15 @@ package warehouse.exam.demo.reponsitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import warehouse.exam.demo.model.Importorders;
-import warehouse.exam.demo.model.Itemmasters;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.web.bind.annotation.PathVariable;
+import warehouse.exam.demo.model.Supplier;
 
 /**
  *
  * @author DUNG
  */
-public interface ImportRepository extends JpaRepository<Importorders, Integer> {
-
-    Importorders findById(int id);
-//    @Query
-//    List<Itemmasters> findBy
+public interface supplierRepository extends JpaRepository<Supplier, String> {
+//    @Query("SELECT s FROM Supplier s WHERE s.supName = :supName")
+    Supplier findBySupName(String supName);
 }
