@@ -16,6 +16,4 @@ import warehouse.exam.demo.model.Itemmasters;
 public interface ImportRepository extends JpaRepository<Importorders, Integer> {
 
     Importorders findById(int id);
-//    @Query
-//    List<Itemmasters> findBy
 }
