@@ -44,11 +44,32 @@ public class JwtTokenUtil implements Serializable {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return Jwts.builder().setClaims(claims).setSubject(userDetails.getUsername()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000)).signWith(key).compact();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(key)
+                .compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public String refreshToken(String expiredToken) {
+        final Claims claims = getAllClaimsFromToken(expiredToken);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(key)
+                .compact();
+    }
+    public String validateAndRefreshToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        if (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) {
+            return token;
+        } else if (username.equals(userDetails.getUsername()) && isTokenExpired(token)) {
+            return refreshToken(token);
+        } else {
+            return null;
+        }
     }
 }

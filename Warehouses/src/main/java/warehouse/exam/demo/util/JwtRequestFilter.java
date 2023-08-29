@@ -33,20 +33,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
-        List<String> whiteList = List.of("/auth/login", "api/login");
-        String path = request.getServletPath();
-        if(whiteList.contains(path)){
-            chain.doFilter(request, response);
-            return;
-        }
         final String requestTokenHeader = request.getHeader("Authorization");
-        logger.info("Authorization header value: " + requestTokenHeader);
+//        logger.info("Authorization header value: " + requestTokenHeader);
         if (StringUtils.isNotEmpty(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
             String jwtToken = requestTokenHeader.substring(7);
             try {
                 UserDetails userDetails = accountService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(jwtToken));
-                if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+
+                // Validate and possibly refresh token
+                String validatedToken = jwtTokenUtil.validateAndRefreshToken(jwtToken, userDetails);
+                if (validatedToken != null) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                             new UsernamePasswordAuthenticationToken(
                                     userDetails, null, userDetails.getAuthorities());
@@ -64,11 +60,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
-            redirectToLoginPage(response);
-            return;
         }
+//        else {
+//            logger.warn("JWT Token does not begin with Bearer String");
+//            redirectToLoginPage(response);
+//            return;
+//        }
         chain.doFilter(request, response);
     }
 
@@ -79,6 +76,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     // Hàm để redirect về trang đăng nhập với thông báo lỗi
     private void redirectToLoginPageWithMessage(HttpServletResponse response) throws IOException {
         // Gửi thông báo lỗi dưới dạng parameter trong URL hoặc làm cách khác
-        response.sendRedirect("/auth/login?error=" + URLEncoder.encode("Your Token Has Expired. Please Login gain!", StandardCharsets.UTF_8));
+        response.sendRedirect("/auth/login?error=" + URLEncoder.encode("Your Token Has Expired. Please Login again!", StandardCharsets.UTF_8));
     }
 }

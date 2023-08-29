@@ -1,3 +1,5 @@
+// localStorageUtils.js
+
 // Lưu token vào Local Storage
 function saveToken(token) {
     localStorage.setItem('token', token);
@@ -13,7 +15,7 @@ function fetchWithToken(url, method, data) {
     const token = getToken();
     const headers = {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json' // Tuỳ theo loại dữ liệu bạn gửi đi
+        'Content-Type': 'application/json'
     };
 
     const requestOptions = {
@@ -32,8 +34,10 @@ function fetchWithToken(url, method, data) {
         .catch(error => {
             console.error('API request error:', error);
         });
-
-    function logout() {
-        localStorage.removeItem('token');
-    }
 }
+
+// Xóa token khỏi Local Storage khi đăng xuất
+function logout() {
+    localStorage.removeItem('token');
+}
+

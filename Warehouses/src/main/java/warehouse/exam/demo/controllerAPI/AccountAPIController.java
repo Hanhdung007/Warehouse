@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 import warehouse.exam.demo.service.AccountService;
 import warehouse.exam.demo.util.JwtTokenUtil;
@@ -36,9 +37,10 @@ public class AccountAPIController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> loginUser(@RequestParam("email") String email,
-                                       @RequestParam("password") String password) {
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody AccountDAO accountDAO) {
         Map<String, Object> responseMap = new HashMap<>();
+        String email = accountDAO.getEmail();
+        String password = accountDAO.getPassword();
         try {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email
                     , password));

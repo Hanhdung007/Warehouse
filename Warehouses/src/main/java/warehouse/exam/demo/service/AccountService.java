@@ -18,7 +18,7 @@ public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountsRepository;
 
-    @Autowired // Sử dụng Autowired để Spring tự động tiêm đối tượng accountRepository vào constructor
+    @Autowired
     public AccountService(AccountRepository accountRepository) {
         this.accountsRepository = accountRepository;
     }
