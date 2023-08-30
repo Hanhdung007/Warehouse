@@ -12,8 +12,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
     <head>
         <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            .text-red {
+                color: red;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
 
+            .text-green {
+                color: green;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        </style>
     </head>
 
     <body>
@@ -39,18 +51,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                            <tr th:each="import:${list}">
-                                                <td th:text="${import.driver}"></td>
-                                                <td th:text="${import.driversPhone}"></td>
-                                                <td th:text="${import.supplierName}"></td>
-                                                <td th:text="${import.dateImport}"></td>
-                                                <td th:text="${import.note}"></td>
-                                                <td th:text="${import.status}"></td>
-                                                <td>
-                                                    <a th:href="'/import/details/' + ${import.id}">Details</a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                        <tr th:each="import:${list}">
+                                            <td th:text="${import.driver}"></td>
+                                            <td th:text="${import.driversPhone}"></td>
+                                            <td th:text="${import.supplierName}"></td>
+                                            <td th:text="${import.dateImport}"></td>
+                                            <td th:text="${import.note}"></td>
+                                            <td th:text="${import.status}"
+                                                th:class="${import.status == true ? 'text-red' : 'text-green'}">
+                                            </td>
+                                            <td>
+                                                <a th:href="'/import/details/' + ${import.id}">Details</a>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>

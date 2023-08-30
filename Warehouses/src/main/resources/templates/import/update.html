@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<!--
+    xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+-->
+
+<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+<div class="main-content-inner" layout:fragment="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mt-5">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="header-title">Update Location</h4>
+            <form th:action="@{create}" th:object="${import}" method="post">
+              <div class="form-group">
+                <label for="exampleInputPassword1">Driver's name</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name.....">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Driver's phone</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driversPhone}" placeholder="Enter name.....">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">From</label>
+                <select th:field="*{supplierName}" class="form-control">
+                  <option th:each="sup:${supplier}" th:value="${sup.supName}" th:text="${sup.supName}"></option>
+                </select>
+                <!--<input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supplierName}">-->
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Date Import</label>
+                <input type="date" class="form-control" id="exampleInputPassword1" th:field="*{dateImport}" placeholder="Enter name.....">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Note</label>
+                <textarea  th:field="*{note}" class="form-control"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

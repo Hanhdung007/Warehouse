@@ -60,15 +60,8 @@ public class IetmmasterService {
     public Itemmasters saveItemMaster(itemmasterDAO itemmasterDAO, int id) {
         Itemmasters item = new Itemmasters();
         Importorders imp = impRepository.findById(id);
+
         item.setId(itemmasterDAO.getId());
-//        item.setQuantity(itemmasterDAO.getQuantity());
-//        item.setRecieveNo(itemmasterDAO.getRecieveNo());
-//        item.setDateImport(itemmasterDAO.getDateImport());
-//        item.setNote(itemmasterDAO.getNote());
-//        item.setQcBy(itemmasterDAO.getQcBy());
-//        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
-//        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
-//        item.setIdImport(imp);
           item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
           item.setDateImport(itemmasterDAO.getDateImport());
           item.setIdImport(imp);
