@@ -50,10 +50,14 @@ public class ImportOrderController {
     }
     
     @GetMapping("/create")
-    public String create(Model model) {
-        model.addAttribute("import", new importDAO());
+    public String create(Model model, @PathVariable int id) {
+        itemmasterDAO itemDAO = new itemmasterDAO();
+        Importorders importorders = service.findOne(id);
+//        itemDAO.setIdImport(importorders);
+        model.addAttribute("itemmasterDAO", itemDAO);
         model.addAttribute("supplier", supService.getAll());
-        return "import/create";
+        model.addAttribute("itemdata", itemdataService.getAll());
+        return null;
     }
     
     @PostMapping("/create")

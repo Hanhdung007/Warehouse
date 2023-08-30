@@ -27,9 +27,9 @@ public class ItemmasterController {
         return "itemaster/index";
     }
 
-    @GetMapping("/create/{idImport}")
-    public String create(@PathVariable int idImport, Model model){
-        model.addAttribute("idImport", idImport);
+    @GetMapping("/create/{id}")
+    public String create(@PathVariable int id, Model model){
+        model.addAttribute("idImport", id);
         model.addAttribute("item", new itemmasterDAO());
         return "import/createItem";
     }
