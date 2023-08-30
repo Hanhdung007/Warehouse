@@ -26,7 +26,7 @@ import warehouse.exam.demo.service.ImportService;
 @RestController
 @RequestMapping("/api/importOrder")
 public class ImportOrderAPIController {
-    @Autowired 
+    @Autowired
     ImportService impService;
     
     @GetMapping
