@@ -45,7 +45,7 @@ public class SupplierController {
     public String create(Model model, @ModelAttribute supplierDAO dao) {
         dao.setActive(false);
         service.saveSupplier(dao);
-        return "redirect:/supplier/supIndex ";
+        return "redirect:/supplier/index";
     }
 
 //    @GetMapping("/{id}")

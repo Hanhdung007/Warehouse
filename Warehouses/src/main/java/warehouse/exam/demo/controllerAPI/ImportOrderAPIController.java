@@ -66,8 +66,8 @@ public class ImportOrderAPIController {
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Itemmasters create(@RequestBody itemmasterDAO ItemmasterDAO, @PathVariable(value = "id") int id) {
-        return itemmasterService.saveItemMaster(ItemmasterDAO, id);
+    public Itemmasters create(@RequestBody itemmasterDAO ItemmasterDAO, @PathVariable(value = "id") int id, @RequestBody Itemmasters item) {
+        return itemmasterService.saveItemMaster(ItemmasterDAO, id, item);
     }
 
 //    @PutMapping("/{id}")

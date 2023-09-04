@@ -4,7 +4,11 @@
  */
 package warehouse.exam.demo.DAL;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.model.Locations;
@@ -19,7 +23,8 @@ public class itemmasterDAO {
     private String locationName;
     private Double quantity;
     private String recieveNo;
-    private Date dateImport;
+
+    private String dateImport;
     private String note;
     private Double qcAcceptQuantity;
     private String qcBy;
@@ -76,11 +81,11 @@ public class itemmasterDAO {
         this.recieveNo = recieveNo;
     }
 
-    public Date getDateImport() {
+    public String getDateImport() {
         return dateImport;
     }
 
-    public void setDateImport(Date dateImport) {
+    public void setDateImport(String dateImport){
         this.dateImport = dateImport;
     }
 

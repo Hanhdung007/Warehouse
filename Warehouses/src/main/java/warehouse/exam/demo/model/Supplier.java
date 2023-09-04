@@ -44,7 +44,7 @@ public class Supplier implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "sup_id")
     private String supId;
-    @Size(max = 2147483647)
+//    @Size(max = 2147483647)
     @Column(name = "sup_name")
     private String supName;
     @Size(max = 2147483647)

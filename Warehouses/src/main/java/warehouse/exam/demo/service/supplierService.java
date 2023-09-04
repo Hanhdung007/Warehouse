@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Supplier;
+import warehouse.exam.demo.reponsitory.ImportRepository;
 import warehouse.exam.demo.reponsitory.supplierRepository;
 
 /**
@@ -21,6 +22,8 @@ public class supplierService {
 
     @Autowired
     supplierRepository supRepository;
+    @Autowired
+    ImportRepository importRepository;
 
     public List<supplierDAO> getAll() {
         List<supplierDAO> dao = new ArrayList<>();

@@ -4,7 +4,10 @@
  */
 package warehouse.exam.demo.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,7 @@ public class IetmmasterService {
     @Autowired
     supplierRepository supReponsitory;
 
-    public List<itemmasterDAO> getAll() {
+    public List<itemmasterDAO> getAll() throws ParseException {
         List<itemmasterDAO> dao = new ArrayList<>();
         List<Itemmasters> list = imMasterRepositoty.findAll();
         for (Itemmasters im : list) {
@@ -45,7 +48,7 @@ public class IetmmasterService {
             imtDao.setIdImport(im.getIdImport().getId());
             imtDao.setItemName(im.getCodeItemdata().getName());
             //query location name 
-            imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+//            imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());
@@ -57,28 +60,20 @@ public class IetmmasterService {
         return dao;
     }
 
-    public Itemmasters saveItemMaster(itemmasterDAO itemmasterDAO, int id) {
-        Itemmasters item = new Itemmasters();
+    public Itemmasters saveItemMaster(itemmasterDAO itemDAO, int id, Itemmasters item) {
         Importorders imp = impRepository.findById(id);
-        item.setId(itemmasterDAO.getId());
-//        item.setQuantity(itemmasterDAO.getQuantity());
-//        item.setRecieveNo(itemmasterDAO.getRecieveNo());
-//        item.setDateImport(itemmasterDAO.getDateImport());
-//        item.setNote(itemmasterDAO.getNote());
-//        item.setQcBy(itemmasterDAO.getQcBy());
-//        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
-//        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
-//        item.setIdImport(imp);
-          item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
-          item.setDateImport(itemmasterDAO.getDateImport());
+
+          item.setId(itemDAO.getId());
+          item.setCodeItemdata(imDataRepository.findByName(itemDAO.getItemName()));
+          item.setDateImport(itemDAO.getDateImport());
           item.setIdImport(imp);
 //          item.setLocationCode(itemmasterDAO.);
-          item.setNote(itemmasterDAO.getNote());
-          item.setQcAcceptQuantity(itemmasterDAO.getQcAcceptQuantity());
-          item.setQcBy(itemmasterDAO.getQcBy());
-          item.setRecieveNo(itemmasterDAO.getRecieveNo());
-          item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
-          item.setQuantity(itemmasterDAO.getQuantity());
+          item.setNote(itemDAO.getNote());
+          item.setQcAcceptQuantity(itemDAO.getQcAcceptQuantity());
+          item.setQcBy(itemDAO.getQcBy());
+          item.setRecieveNo(itemDAO.getRecieveNo());
+          item.setSupId(supReponsitory.findBySupName(itemDAO.getSupplierName()));
+          item.setQuantity(itemDAO.getQuantity());
         return imMasterRepositoty.save(item);
     }
 
@@ -93,7 +88,6 @@ public class IetmmasterService {
         item.setDateImport(updateItem.getDateImport());
         item.setNote(updateItem.getNote());
         item.setQcBy(updateItem.getQcBy());
-//        item.setIdImport(updateItem.getIdImport());
         item.setCodeItemdata(imDataRepository.findByName(updateItem.getItemName()));
         return imMasterRepositoty.save(item);
     }
