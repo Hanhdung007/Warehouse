@@ -12,6 +12,8 @@ import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.service.IetmmasterService;
 
+import java.text.ParseException;
+
 /**
  *
  * @author DUNG
@@ -22,21 +24,21 @@ public class ItemmasterController {
     @Autowired
     IetmmasterService service;
     @GetMapping("/index")
-    public String index(Model model) {
+    public String index(Model model) throws ParseException {
         model.addAttribute("list", service.getAll());
         return "itemaster/index";
     }
 
-    @GetMapping("/create/{id}")
-    public String create(@PathVariable int id, Model model){
-        model.addAttribute("idImport", id);
-        model.addAttribute("item", new itemmasterDAO());
-        return "import/createItem";
-    }
-
-    @PostMapping("/create")
-    public String create(@ModelAttribute itemmasterDAO item, Model model){
-        service.saveItemMaster(item, item.getIdImport());
-        return "redirect:/import/index";
-    }
+//    @GetMapping("/create/{id}")
+//    public String create(@PathVariable int id, Model model){
+//        model.addAttribute("idImport", id);
+//        model.addAttribute("item", new itemmasterDAO());
+//        return "import/createItem";
+//    }
+//
+//    @PostMapping("/create")
+//    public String create(@ModelAttribute itemmasterDAO item, Model model){
+//        service.saveItemMaster(item, item.getIdImport());
+//        return "redirect:/import/index";
+//    }
 }

@@ -25,6 +25,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <h4 class="header-title">Add new Location</h4>
                                 <form th:action="@{create}" th:object="${import}" method="post">
                                     <div class="form-group">
+                                        <label for="exampleInputPassword1">Driver's No</label>
+                                        <input type="text" class="form-control" th:field="*{id}" placeholder="Enter no.....">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="exampleInputPassword1">Driver's name</label>
                                         <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name.....">
                                     </div>
