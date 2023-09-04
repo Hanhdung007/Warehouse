@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <!--
+        xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+    -->
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    </head>
+
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="row">
+                <div class="col-lg-12 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <!--                            <a th:href="'/import/createItem/' + ${import.id}"><button type="button" class="btn btn-outline-primary mb-3">Pick list</button></a>-->
+                            <h4 class="header-title">Thead secondary</h4>
+                            <div class="single-table">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-uppercase bg-secondary">
+                                            <tr class="text-white">
+                                                <th scope="col">Name Item</th>
+                                                <th scope="col">Location's name</th>
+                                                <th scope="col">quantity</th>
+                                                <th scope="col">createdDate</th>
+                                                <th scope="col">#</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>                                                                                         
+                                            <tr th:each="allocate:${list}">
+                                                <td th:text="${allocate.itemName}"></td>
+                                                <td th:text="${allocate.locationName}"></td>
+                                                <td th:text="${allocate.quantity}"></td>
+                                                <td th:text="${allocate.createdDate}"></td>
+                                                <td><button class="btn btn-success" th:onclick="confirm([[${allocate.id}]])" >Confirm</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                function confirm(id) {
+                    Swal.fire({
+                        title: 'Do you want to save the changes?',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Save',
+                        denyButtonText: `Don't save`,
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/allocate/confirmAllocate/" + id,
+                                success: function (res) {
+                                    if (res === 200) {
+                                        Swal.fire(
+                                                'Good job!',
+                                                'Save change success',
+                                                'success'
+                                                ).then(function () {
+                                            window.location.reload();
+                                        });
+                                    }
+                                }
+                            });
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info')
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </body>
+
+</html>
+

@@ -15,6 +15,11 @@ import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemmasters;
+import warehouse.exam.demo.service.ItemmasterService;
+import warehouse.exam.demo.service.ImportService;
+import warehouse.exam.demo.service.itemdataService;
+import warehouse.exam.demo.service.locationService;
+import warehouse.exam.demo.service.supplierService;
 import warehouse.exam.demo.model.Supplier;
 import warehouse.exam.demo.service.*;
 
@@ -37,9 +42,9 @@ public class ImportOrderController {
     @Autowired
     itemdataService itemdataService;
     @Autowired
-    IetmmasterService itemmasterService;
-
-    @GetMapping("/index")
+    ItemmasterService itemmasterService;
+    
+    @RequestMapping("/index")
     public String index(Model model) {
         List<importDAO> searchList = (List<importDAO>) model.asMap().get("searchResults");
         if (searchList != null) {

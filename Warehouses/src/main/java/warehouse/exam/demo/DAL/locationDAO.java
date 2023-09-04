@@ -13,6 +13,7 @@ public class locationDAO {
     private String name;
     private String warehouseName;
     private double capacity;
+    private double remain;
     private boolean active;
     private String warehouseCode;
 
@@ -22,6 +23,14 @@ public class locationDAO {
 
     public void setWarehouseCode(String warehouseCode) {
         this.warehouseCode = warehouseCode;
+    }
+
+    public double getRemain() {
+        return remain;
+    }
+
+    public void setRemain(double remain) {
+        this.remain = remain;
     }
 
     public String getCode() {

@@ -25,7 +25,7 @@ import warehouse.exam.demo.reponsitory.supplierRepository;
  * @author DUNG
  */
 @Service
-public class IetmmasterService {
+public class ItemmasterService {
 
     @Autowired
     ItemmasterRepository imMasterRepositoty;
@@ -48,7 +48,14 @@ public class IetmmasterService {
             imtDao.setIdImport(im.getIdImport().getId());
             imtDao.setItemName(im.getCodeItemdata().getName());
             //query location name 
-//            imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            //check itemmaster location code (allocated)
+            if (!im.getLocationCode().isEmpty() && im.getLocationCode() != null) {
+                imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            } else {
+                //unallocate
+                imtDao.setLocationName("");
+            }
+
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());
@@ -60,9 +67,39 @@ public class IetmmasterService {
         return dao;
     }
 
-    public Itemmasters saveItemMaster(itemmasterDAO itemDAO, int id, Itemmasters item) {
-        Importorders imp = impRepository.findById(id);
+    public List<itemmasterDAO> unallocate() {
+        List<itemmasterDAO> dao = new ArrayList<>();
+        List<Itemmasters> list = imMasterRepositoty.GetUnAllocated();
+        for (Itemmasters im : list) {
+            itemmasterDAO imtDao = new itemmasterDAO();
+            imtDao.setDateImport(im.getDateImport());
+            imtDao.setId(im.getId());
+            imtDao.setIdImport(im.getIdImport().getId());
+            imtDao.setItemName(im.getCodeItemdata().getName());
+            //query location name 
+            //check itemmaster location code (allocated)
+            if (!im.getLocationCode().isEmpty() && im.getLocationCode() != null) {
+                imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            } else {
+                //unallocate
+                imtDao.setLocationName("");
+            }
 
+            imtDao.setNote(im.getNote());
+            imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
+            imtDao.setQcBy(im.getQcBy());
+            imtDao.setQuantity(im.getQuantity());
+            imtDao.setRecieveNo(im.getRecieveNo());
+            imtDao.setSupplierName(im.getSupId().getSupName());
+             imtDao.setImage(im.getCodeItemdata().getImage());
+            dao.add(imtDao);
+        }
+        return dao;
+    }
+
+   
+     public Itemmasters saveItemMaster(itemmasterDAO itemDAO, int id, Itemmasters item) {
+          Importorders imp = impRepository.findById(id);
           item.setId(itemDAO.getId());
           item.setCodeItemdata(imDataRepository.findByName(itemDAO.getItemName()));
           item.setDateImport(itemDAO.getDateImport());
@@ -74,11 +111,11 @@ public class IetmmasterService {
           item.setRecieveNo(itemDAO.getRecieveNo());
           item.setSupId(supReponsitory.findBySupName(itemDAO.getSupplierName()));
           item.setQuantity(itemDAO.getQuantity());
-        return imMasterRepositoty.save(item);
+          return imMasterRepositoty.save(item);
     }
 
     public Itemmasters findOne(int code) {
-       return imMasterRepositoty.findById(code).get();
+        return imMasterRepositoty.findById(code).get();
     }
 
     public Itemmasters update(int id, itemmasterDAO updateItem) {
