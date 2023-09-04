@@ -18,7 +18,7 @@ import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.model.Itemmasters;
-import warehouse.exam.demo.service.IetmmasterService;
+import warehouse.exam.demo.service.ItemmasterService;
 import warehouse.exam.demo.service.ImportService;
 import warehouse.exam.demo.service.itemdataService;
 import warehouse.exam.demo.service.locationService;
@@ -41,7 +41,7 @@ public class ImportOrderController {
     @Autowired
     itemdataService itemdataService;
     @Autowired
-    IetmmasterService itemmasterService;
+    ItemmasterService itemmasterService;
     
     @RequestMapping("/index")
     public String index(Model model) {

@@ -22,7 +22,7 @@ import warehouse.exam.demo.reponsitory.supplierRepository;
  * @author DUNG
  */
 @Service
-public class IetmmasterService {
+public class ItemmasterService {
 
     @Autowired
     ItemmasterRepository imMasterRepositoty;
@@ -45,13 +45,50 @@ public class IetmmasterService {
             imtDao.setIdImport(im.getIdImport().getId());
             imtDao.setItemName(im.getCodeItemdata().getName());
             //query location name 
-            imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            //check itemmaster location code (allocated)
+            if (!im.getLocationCode().isEmpty() && im.getLocationCode() != null) {
+                imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            } else {
+                //unallocate
+                imtDao.setLocationName("");
+            }
+
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());
             imtDao.setQuantity(im.getQuantity());
             imtDao.setRecieveNo(im.getRecieveNo());
             imtDao.setSupplierName(im.getSupId().getSupName());
+            dao.add(imtDao);
+        }
+        return dao;
+    }
+
+    public List<itemmasterDAO> unallocate() {
+        List<itemmasterDAO> dao = new ArrayList<>();
+        List<Itemmasters> list = imMasterRepositoty.GetUnAllocated();
+        for (Itemmasters im : list) {
+            itemmasterDAO imtDao = new itemmasterDAO();
+            imtDao.setDateImport(im.getDateImport());
+            imtDao.setId(im.getId());
+            imtDao.setIdImport(im.getIdImport().getId());
+            imtDao.setItemName(im.getCodeItemdata().getName());
+            //query location name 
+            //check itemmaster location code (allocated)
+            if (!im.getLocationCode().isEmpty() && im.getLocationCode() != null) {
+                imtDao.setLocationName(locRepository.findByCode(im.getLocationCode()).getName());
+            } else {
+                //unallocate
+                imtDao.setLocationName("");
+            }
+
+            imtDao.setNote(im.getNote());
+            imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
+            imtDao.setQcBy(im.getQcBy());
+            imtDao.setQuantity(im.getQuantity());
+            imtDao.setRecieveNo(im.getRecieveNo());
+            imtDao.setSupplierName(im.getSupId().getSupName());
+             imtDao.setImage(im.getCodeItemdata().getImage());
             dao.add(imtDao);
         }
         return dao;
@@ -69,21 +106,21 @@ public class IetmmasterService {
 //        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
 //        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
 //        item.setIdImport(imp);
-          item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
-          item.setDateImport(itemmasterDAO.getDateImport());
-          item.setIdImport(imp);
+        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
+        item.setDateImport(itemmasterDAO.getDateImport());
+        item.setIdImport(imp);
 //          item.setLocationCode(itemmasterDAO.);
-          item.setNote(itemmasterDAO.getNote());
-          item.setQcAcceptQuantity(itemmasterDAO.getQcAcceptQuantity());
-          item.setQcBy(itemmasterDAO.getQcBy());
-          item.setRecieveNo(itemmasterDAO.getRecieveNo());
-          item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
-          item.setQuantity(itemmasterDAO.getQuantity());
+        item.setNote(itemmasterDAO.getNote());
+        item.setQcAcceptQuantity(itemmasterDAO.getQcAcceptQuantity());
+        item.setQcBy(itemmasterDAO.getQcBy());
+        item.setRecieveNo(itemmasterDAO.getRecieveNo());
+        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
+        item.setQuantity(itemmasterDAO.getQuantity());
         return imMasterRepositoty.save(item);
     }
 
     public Itemmasters findOne(int code) {
-       return imMasterRepositoty.findById(code).get();
+        return imMasterRepositoty.findById(code).get();
     }
 
     public Itemmasters update(int id, itemmasterDAO updateItem) {

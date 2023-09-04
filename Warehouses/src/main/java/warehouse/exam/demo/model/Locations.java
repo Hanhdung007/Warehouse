@@ -46,6 +46,8 @@ public class Locations implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "capacity")
     private Double capacity;
+    @Column(name = "remain")
+    private Double remain;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "warehouse_code", referencedColumnName = "code")
@@ -53,6 +55,14 @@ public class Locations implements Serializable {
     private Warehouses warehouseCode;
 
     public Locations() {
+    }
+
+    public Double getRemain() {
+        return remain;
+    }
+
+    public void setRemain(Double remain) {
+        this.remain = remain;
     }
 
     public Locations(String code) {
@@ -123,5 +133,5 @@ public class Locations implements Serializable {
     public String toString() {
         return "warehouse.exam.demo.model.Locations[ code=" + code + " ]";
     }
-    
+
 }

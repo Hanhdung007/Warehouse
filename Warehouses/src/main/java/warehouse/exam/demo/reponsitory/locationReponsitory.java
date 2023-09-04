@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.reponsitory;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import warehouse.exam.demo.model.Locations;
@@ -15,4 +16,6 @@ import warehouse.exam.demo.model.Locations;
 public interface locationReponsitory extends JpaRepository<Locations, String> {
     Locations findByCode(String code);
     Locations findByName (String name);
+    @Query("SELECT l FROM Locations l WHERE l.remain > 0")
+    List<Locations> getRemainLocation();
 }

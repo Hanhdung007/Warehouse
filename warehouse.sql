@@ -29,10 +29,19 @@ CREATE TABLE [itemmasters] (
   [qc_by] nvarchar(255),
   [id_import] int, 
   [code_itemdata] varchar(50),
-  sup_id varchar(20)
+  sup_id varchar(20),
+  bookQty float
 )
 GO
-
+CREATE TABLE allocate_order (
+  [id] int PRIMARY KEY,
+  [location_code] nvarchar(255),
+  ItemMasterId int,
+  quantity float, 
+  created_date datetime, 
+  confirm bit
+)
+GO
 CREATE TABLE [importorders] (
   [id] int PRIMARY KEY,
   [driver] nvarchar(255),

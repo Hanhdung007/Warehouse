@@ -8,6 +8,9 @@
     <class>warehouse.exam.demo.model.Supplier</class>
     <class>warehouse.exam.demo.model.Warehouses</class>
     <class>warehouse.exam.demo.model.Itemmasters</class>
+    <class>warehouse.exam.demo.model.AllocateOrder</class>
+    <class>warehouse.exam.demo.model.IssueOrders</class>
+    <class>warehouse.exam.demo.model.IssueOrderDetails</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=Warehouse;encrypt=true;trustServerCertificate=true"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

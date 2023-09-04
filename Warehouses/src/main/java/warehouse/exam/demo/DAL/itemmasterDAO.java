@@ -26,7 +26,7 @@ public class itemmasterDAO {
     private int idImport;
     private String itemName;
     private String supplierName;
-//    private int importID;
+    private String image;
 
     public String getSupplierName() {
         return supplierName;
@@ -36,13 +36,13 @@ public class itemmasterDAO {
         this.supplierName = supplierName;
     }
 
-//    public int getImportID() {
-//        return importID;
-//    }
-//
-//    public void setImportID(int importID) {
-//        this.importID = importID;
-//    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public Integer getId() {
         return id;

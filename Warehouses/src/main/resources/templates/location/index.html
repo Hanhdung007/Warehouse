@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
@@ -29,7 +29,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         <tr>
                                             <th>Code</th>
                                             <th>Location's Name</th>
-                                            <th>Capacity</th>
+                                            <th>Capacity</th>                                          
+                                            <th>Used</th>
                                             <th>Warehouse's</th>
                                             <th>Active</th>
                                             <th>Action</th>
@@ -40,8 +41,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <td th:text="${location.code}"></td>
                                             <td th:text="${location.name}"></td>
                                             <td th:text="${location.capacity}"></td>
+                                            <td>                                                                        
+                                                <div class="progress">
+                                                    <div th:if="${((location.capacity - location.remain) / location.capacity) * 100 < 40}" class="progress-bar bg-success progress-bar-striped" th:style="'width:' + ${((location.capacity - location.remain) / location.capacity * 100)} + '%'"></div>
+                                                    <div  th:if="${(((location.capacity - location.remain) / location.capacity) * 100 < 70) and (((location.capacity - location.remain) / location.capacity) * 100 >= 40)}" class="progress-bar bg-warning progress-bar-striped" th:style="'width:' + ${((location.capacity - location.remain) / location.capacity * 100)} + '%'"></div>
+                                                    <div  th:if="${(((location.capacity - location.remain) / location.capacity) * 100 < 100) and (((location.capacity - location.remain) / location.capacity) * 100 >= 70)}" class="progress-bar bg-danger progress-bar-striped" th:style="'width:' + ${((location.capacity - location.remain) / location.capacity * 100)} + '%'"></div>
+                                                </div>
+                                            </td>
                                             <td th:text="${location.warehouseName}"></td>
-                                            <td th:text="${location.active}"></td>
+                                            <td>
+                                                <span th:if="${location.active}" class="badge badge-pill badge-success">Active</span>
+                                                <span th:unless="${location.active}" class="badge badge-pill badge-danger">Inactive</span>
+                                            </td>
                                             <td>
                                                 <a th:href="'/location/update/'+${location.code}">Edit</a>
                                             </td>
