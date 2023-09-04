@@ -28,7 +28,7 @@ public class AccountAPIController {
     final AccountService accountService;
     final JwtTokenUtil jwtTokenUtil;
 
-    public AccountAPIController(AccountRepository accountRepository, AuthenticationManager authenticationManager,
+    public AccountAPIController(AuthenticationManager authenticationManager,
                                 AccountService accountService, JwtTokenUtil jwtTokenUtil) {
         this.authenticationManager = authenticationManager;
         this.accountService = accountService;
@@ -73,27 +73,4 @@ public class AccountAPIController {
             return ResponseEntity.status(500).body(responseMap);
         }
     }
-
-//    @PostMapping("/register")
-//    public ResponseEntity<?> saveUser(@RequestParam("name") String name,
-//                                      @RequestParam("last_name") String lastName,
-//                                      @RequestParam("user_name") String userName, @RequestParam("email") String email
-//            , @RequestParam("password") String password) {
-//        Map<String, Object> responseMap = new HashMap<>();
-//        User user = new User();
-//        user.setFirstName(firstName);
-//        user.setLastName(lastName);
-//        user.setEmail(email);
-//        user.setPassword(new BCryptPasswordEncoder().encode(password));
-//        user.setRole("USER");
-//        user.setUserName(userName);
-//        UserDetails userDetails = accountService.loadUserByUsername(userName);
-//        String token = jwtTokenUtil.generateToken(userDetails);
-//        userRepository.save(user);
-//        responseMap.put("error", false);
-//        responseMap.put("username", userName);
-//        responseMap.put("message", "Account created successfully");
-//        responseMap.put("token", token);
-//        return ResponseEntity.ok(responseMap);
-//    }
 }
