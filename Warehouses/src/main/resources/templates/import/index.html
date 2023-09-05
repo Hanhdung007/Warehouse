@@ -5,52 +5,96 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 -->
 <html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
-    <!--
-        xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}"
-    -->
 
-    <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--
+    xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+-->
 
-    </head>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .text-red {
+            color: red;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-    <body>
-        <div class="main-content-inner" layout:fragment="content">
-            <div class="row">
-                <div class="col-lg-12 mt-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <a th:href="@{/import/create}"><button type="button" class="btn btn-outline-primary mb-3">Add new Order</button></a>
-                            <h4 class="header-title">Thead secondary</h4>
+        .text-green {
+            color: green;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+<div class="main-content-inner" layout:fragment="content">
+    <div class="row">
+        <div class="col mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <a th:href="@{/import/create}">
+                        <button type="button" class="btn btn-outline-success mb-3">Add new Order</button>
+                    </a>
+                    <br>
+                    <h4 class="header-title">Thead secondary</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <form th:action="@{/import/search}" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" name="keyword" placeholder="Search..."
+                                               class="form-control"/>
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn waves-effect blue-grey darken-3"
+                                                    value="Search">Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="container">
                             <div class="single-table">
                                 <div class="table-responsive">
                                     <table class="table text-center">
                                         <thead class="text-uppercase bg-secondary">
-                                            <tr class="text-white">
-                                                <th scope="col">Driver's Name</th>
-                                                <th scope="col">Driver's Phone</th>
-                                                <th scope="col">From</th>
-                                                <th scope="col">Date Import</th>
-                                                <th scope="col">Note</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
+                                        <tr class="text-white">
+                                            <th scope="col">Driver's Name</th>
+                                            <th scope="col">Driver's Phone</th>
+                                            <th scope="col">From</th>
+                                            <th scope="col">Date Import</th>
+                                            <th scope="col">Note</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                            <tr th:each="import:${list}">
-                                                <td th:text="${import.driver}"></td>
-                                                <td th:text="${import.driversPhone}"></td>
-                                                <td th:text="${import.supplierName}"></td>
-                                                <td th:text="${import.dateImport}"></td>
-                                                <td th:text="${import.note}"></td>
-                                                <td th:text="${import.status}"></td>
-                                                <td>
-                                                    <a th:href="'/import/details/' + ${import.id}">Details</a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                        <tr th:each="import:${list}">
+                                            <td th:text="${import.driver}"></td>
+                                            <td th:text="${import.driversPhone}"></td>
+                                            <td th:text="${import.supplierName}"></td>
+                                            <td th:text="${import.dateImport}"></td>
+                                            <td th:text="${import.note}"></td>
+                                            <td th:text="${import.status}"
+                                                th:class="${import.status == true ? 'text-green' : 'text-red'}">
+                                            </td>
+                                            <td>
+                                                <a th:href="'/import/details/' + ${import.id}"
+                                                   class="btn btn-outline-warning mb-3">
+                                                    Details
+                                                </a>
+                                                <a th:href="'/import/edit/' + ${import.id}"
+                                                   class="btn btn-outline-primary mb-3">
+                                                    Update
+                                                </a>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -60,6 +104,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 
 </html>

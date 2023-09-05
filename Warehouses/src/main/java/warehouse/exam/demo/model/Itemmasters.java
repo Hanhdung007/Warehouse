@@ -4,21 +4,19 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -43,7 +41,7 @@ public class Itemmasters implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
@@ -57,13 +55,15 @@ public class Itemmasters implements Serializable {
     @Column(name = "recieve_no")
     private String recieveNo;
     @Column(name = "date_import")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateImport;
+//    @Temporal(TemporalType.TIMESTAMP)
+    private String dateImport;
     @Size(max = 255)
     @Column(name = "note")
     private String note;
     @Column(name = "qc_accept_quantity")
     private Double qcAcceptQuantity;
+    @Column(name = "book_qty")
+    private Double bookQty;
     @Size(max = 255)
     @Column(name = "qc_by")
     private String qcBy;
@@ -108,6 +108,14 @@ public class Itemmasters implements Serializable {
         this.quantity = quantity;
     }
 
+    public Double getBookQty() {
+        return bookQty;
+    }
+
+    public void setBookQty(Double bookQty) {
+        this.bookQty = bookQty;
+    }
+
     public String getRecieveNo() {
         return recieveNo;
     }
@@ -116,11 +124,10 @@ public class Itemmasters implements Serializable {
         this.recieveNo = recieveNo;
     }
 
-    public Date getDateImport() {
+    public String getDateImport() {
         return dateImport;
     }
-
-    public void setDateImport(Date dateImport) {
+    public void setDateImport(String dateImport) {
         this.dateImport = dateImport;
     }
 
@@ -196,5 +203,5 @@ public class Itemmasters implements Serializable {
     public String toString() {
         return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
     }
-    
+
 }

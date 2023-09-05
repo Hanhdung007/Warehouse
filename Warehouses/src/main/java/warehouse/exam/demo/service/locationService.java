@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.DAL.locationDAO;
 import warehouse.exam.demo.model.Locations;
+import warehouse.exam.demo.reponsitory.ItemmasterRepository;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
 import warehouse.exam.demo.reponsitory.warehouseRepository;
 
@@ -24,6 +26,8 @@ public class locationService {
     locationReponsitory locReponsitory;
     @Autowired
     warehouseRepository whReponsitory;
+    @Autowired
+    ItemmasterRepository itemmasterRepository;
 
     public List<locationDAO> getAll() {
         List<locationDAO> dao = new ArrayList<>();
@@ -33,6 +37,22 @@ public class locationService {
             locdao.setCode(loc.getCode());
             locdao.setName(loc.getName());
             locdao.setCapacity(loc.getCapacity());
+            locdao.setRemain(loc.getRemain());
+            locdao.setWarehouseName(loc.getWarehouseCode().getName());
+            locdao.setActive(loc.getActive());
+            dao.add(locdao);
+        }
+        return dao;
+    }
+    public List<locationDAO> pickListLocation() {
+        List<locationDAO> dao = new ArrayList<>();
+        List<Locations> location = locReponsitory.getRemainLocation();
+        for (Locations loc : location) {
+            locationDAO locdao = new locationDAO();
+            locdao.setCode(loc.getCode());
+            locdao.setName(loc.getName());
+            locdao.setCapacity(loc.getCapacity());
+            locdao.setRemain(loc.getRemain());
             locdao.setWarehouseName(loc.getWarehouseCode().getName());
             locdao.setActive(loc.getActive());
             dao.add(locdao);
@@ -46,12 +66,15 @@ public class locationService {
         location.setName(newLocations.getName());
         location.setActive(newLocations.isActive());
         location.setCapacity(newLocations.getCapacity());
+        location.setRemain(newLocations.getCapacity());
         location.setWarehouseCode(whReponsitory.findByCode(newLocations.getWarehouseCode()));
         return locReponsitory.save(location);
     }
-    public Locations findOne(String code){
+
+    public Locations findOne(String code) {
         return locReponsitory.findByCode(code);
     }
+
     public Locations updateLocation(String code, locationDAO newLocations) {
         Locations location = locReponsitory.findByCode(code);
         location.setName(newLocations.getName());
@@ -60,4 +83,9 @@ public class locationService {
         location.setWarehouseCode(whReponsitory.findByCode(newLocations.getWarehouseCode()));
         return locReponsitory.save(location);
     }
+//    public List<itemmasterDAO> getItem(){
+//        List<locationDAO> dao = new ArrayList<>();
+//        List<Locations> location = locReponsitory.findAll();
+//        
+//    }
 }

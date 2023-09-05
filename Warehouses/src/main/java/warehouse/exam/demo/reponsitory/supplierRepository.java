@@ -5,10 +5,10 @@
 package warehouse.exam.demo.reponsitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.web.bind.annotation.PathVariable;
+import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Supplier;
+
+import java.util.Optional;
 
 /**
  *

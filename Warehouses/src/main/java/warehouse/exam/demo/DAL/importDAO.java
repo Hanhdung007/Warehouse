@@ -1,15 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package warehouse.exam.demo.DAL;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Supplier;
 
 /**
  *
  * @author DUNG
  */
+
+@NonNull
+@AllArgsConstructor
 public class importDAO {
 
     private Integer id;
@@ -19,8 +22,20 @@ public class importDAO {
     private String note;
     private Boolean status;
     private String supplierName;
+    private String supId;
+
+    public importDAO(Importorders importOrder) {
+        this.id = importOrder.getId();
+        this.driver = importOrder.getDriver();
+        this.driversPhone = importOrder.getDriversPhone();
+        this.dateImport = importOrder.getDateImport();
+        this.note = importOrder.getNote();
+        this.status = importOrder.getStatus();
+        this.supplierName = importOrder.getSupId().getSupName();
+    }
 
     public importDAO() {
+
     }
 
     public Integer getId() {
@@ -79,4 +94,11 @@ public class importDAO {
         this.supplierName = supplierName;
     }
 
+    public String getSupId() {
+        return supId;
+    }
+
+    public void setSupId(String supId) {
+        this.supId = supId;
+    }
 }
