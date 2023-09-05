@@ -1,0 +1,226 @@
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            .select-custom-size {
+                height: auto !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="row">
+                <div class="col-12 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-success" role="alert" id="successMessage" style="display: none;">
+                                Successfully added new customer! Customer data has been added to the list.
+                            </div>
+                            <div class="datatable-header">
+                                <h4 class="header-title">Add New Order</h4>
+                            </div>
+                            <form th:action="@{new-order}" method="post">
+                                <div class="form-group row">
+                                    <label for="orderCode" class="col-sm-2 col-form-label">Order Code</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="orderCode" name="orderCode" th:value="${order.orderCode}" readonly="readonly" class="form-control">
+                                    </div>
+
+                                    <label for="customerID" class="col-sm-2 col-form-label">Customer Name</label>
+                                    <div class="col-sm-4 input-group">
+                                        <select id="customerID" name="customerID" class="form-control select-custom-size">
+                                            <option value="">-- Select a customer --</option>
+                                            <option th:each="customer : ${customers}" th:value="${customer.customerID}" th:text="${customer.name}" th:unless="${customer.disable}">
+                                            <span th:text="${customer.name}"></span>
+                                            </option>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <a class="btn btn-success" id="openDialogButton" title="New Customer">
+                                                <i class="fas fa-user-plus text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="name" class="col-sm-2 col-form-label">Goods Name</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="name" name="name" th:value="${order.name}" class="form-control">
+                                    </div>
+
+                                    <label for="groupID" class="col-sm-2 col-form-label">Group</label>
+                                    <div class="col-sm-4">
+                                        <select id="groupID" name="groupID" class="form-control select-custom-size">
+                                            <option value="">-- Select a group --</option>
+                                            <option th:each="group : ${groups}" th:value="${group.groupID}">
+                                            <span th:text="${group.name}"></span>
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="unitID" class="col-sm-2 col-form-label">Unit</label>
+                                    <div class="col-sm-4">
+                                        <select id="unitID" name="unitID" class="form-control select-custom-size">
+                                            <option value="">-- Select a unit --</option>
+                                            <option th:each="unit : ${units}" th:value="${unit.unitID}">
+                                            <span th:text="${unit.name}"></span>
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" id="amount" name="amount" th:value="${order.amount}" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea id="description" name="description" class="form-control" rows="4" th:text="${order.description}"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <a th:href="@{/orders/list}" class="btn btn-secondary">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="customerModalLabel">Customer's Information</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="customerForm">
+                                <div class="form-group">
+                                    <label for="customerName">Customer Name</label>
+                                    <input type="text" class="form-control" id="customerName" name="customerName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fax">Fax</label>
+                                    <input type="text" class="form-control" id="fax" name="fax">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address">
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="disableCustomer" name="disableCustomer">
+                                        <label class="form-check-label" for="disableCustomer">Disable Customer</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveCustomerButton">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+
+            <script>
+                $('#openDialogButton').click(function () {
+                    $('#customerModal').modal('show');
+                });
+
+                $('#saveCustomerButton').click(function () {
+                    // Lấy thông tin khách hàng từ modal
+                    var customerName = $('#customerName').val();
+                    var email = $('#email').val();
+                    var phone = $('#phone').val();
+                    var fax = $('#fax').val();
+                    var address = $('#address').val();
+                    var disableCustomer = $('#disableCustomer').prop('checked');
+
+                    var newCustomer = {
+                        name: customerName,
+                        email: email,
+                        phone: phone,
+                        fax: fax,
+                        address: address,
+                        disable: disableCustomer
+                    };
+
+                    $.ajax({
+                        url: '/api/customers',
+                        type: 'POST',
+                        data: JSON.stringify(newCustomer),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            console.log('Thêm khách hàng thành công:', data);
+
+                            // Hiển thị thông báo thành công
+                            $('#successMessage').show();
+
+                            setTimeout(function () {
+                                $('#successMessage').hide();
+                            }, 3000);
+
+                            // Đóng dialog
+                            $('#customerModal').modal('hide');
+
+                            // Xóa dữ liệu đã nhập trong modal
+                            $('#customerName').val('');
+                            $('#email').val('');
+                            $('#phone').val('');
+                            $('#fax').val('');
+                            $('#address').val('');
+                            $('#disableCustomer').prop('checked', false);
+
+                            // Cập nhật danh sách khách hàng trong phần tử <select>
+                            var customerSelect = $('#customerID');
+                            var newOption = $('<option>', {
+                                value: data.customerID,
+                                text: data.name
+                            });
+
+                            // Kiểm tra thuộc tính 'disable' của khách hàng mới
+                            if (!data.disable) {
+                                // Nếu 'disable' không là true, thì mới thêm phần tử <option> mới vào danh sách
+                                customerSelect.append(newOption);
+                            }
+
+                            // Cập nhật danh sách <option> trong phần tử <select>
+                            customerSelect.trigger('change'); // Kích hoạt sự kiện change để cập nhật phần tử <select>
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Lỗi khi thêm khách hàng:', error);
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </body>
+
+</html>

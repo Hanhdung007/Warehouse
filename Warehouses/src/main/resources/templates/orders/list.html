@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            .datatable-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .add-button {
+                display: flex;
+                align-items: center;
+            }
+
+            .add-button a {
+                margin-right: 10px;
+                margin-bottom: 5px;
+
+            }
+
+            .dataTables_wrapper tr.disabled td {
+                opacity: 0.5;
+            }
+
+            .details-link i:hover,
+            .edit-link i:hover,
+            .share-link i:hover,
+            .cancelled-link i:hover,
+            .check-link i:hover {
+                color: blue;
+                cursor: pointer;
+            }
+
+            .order-detail-row {
+                margin-bottom: 10px;
+            }
+
+            .column {
+                display: inline-block;
+                box-sizing: border-box;
+                margin-right: 50px;
+            }
+
+            .order-detail-row strong.st1 {
+                width: 50px;
+            }
+
+            .order-detail-row strong.st2 {
+                width: 75px;
+            }
+
+            .order-detail-row strong {
+                display: inline-block;
+                width: 160px;
+                font-weight: bold;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="row">
+                <div class="col-12 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="cancel-success" class="alert alert-success" style="display: none;">
+                                Order has been successfully cancelled.
+                            </div>
+                            <div id="confirm-success" class="alert alert-success" style="display: none;">
+                                Order has been successfully confirmed.
+                            </div>
+                            <div id="complete-success" class="alert alert-success" style="display: none;">
+                                The order has been completed successfully.
+                            </div>
+                            <div class="datatable-header">
+                                <h4 class="header-title">Order List</h4>
+                                <div class="add-button">
+                                    <a class="btn btn-success text-white" th:href="@{/orders/new-order}">New Order</a>
+                                </div>
+                            </div>
+                            <div class="data-tables datatable-dark">
+                                <table id="orderstable" class="text-center table-hover">
+                                    <thead class="text-capitalize">
+                                        <tr>
+                                            <th>Order Code</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Phone</th>
+                                            <th>Order Creation Date</th> 
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="order : ${orders}" th:data-status="${order.status}">
+                                            <td th:text="${order.orderCode}"></td>
+                                            <td th:text="${order.customerID.name}"></td>
+                                            <td th:text="${order.customerID.phone}"></td>
+                                            <td th:text="${#dates.format(order.createdDate, 'dd-MM-yyyy HH:mm')}"></td>  
+                                            <td>
+                                                <div class="progress">
+                                                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                                         role="progressbar"
+                                                         th:style="'width: ' + (${order.status == 'New Order'} ? '35%' : (${order.status == 'Pending'} ? '70%' : '100%'))"
+                                                         aria-valuenow="${(order.status == 'New Order') ? '35' : ((order.status == 'Pending') ? '70' : '100')}"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100"
+                                                         data-toggle="popover"
+                                                         data-trigger="hover"
+                                                         data-placement="top"
+                                                         th:data-content="${order.status}"
+                                                         th:class="${(order.status == 'New Order') ? 'progress-bar progress-bar-striped progress-bar-animated' : ((order.status == 'Pending') ? 'progress-bar progress-bar-striped bg-warning progress-bar-animated' : ((order.status == 'Complete') ? 'progress-bar progress-bar-striped bg-success progress-bar-animated' : 'progress-bar progress-bar-striped bg-danger progress-bar-animated'))}">
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                            <td> 
+                                                <a class="details-link" th:data-id="${order.orderCode}" title="Details Order">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+
+                                                <a class="edit-link" th:data-id="${order.orderCode}" title="Edit Order" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+
+                                                <a class="share-link" th:data-id="${order.orderCode}" title="Order Confirmation" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
+                                                    <i class="fa fa-share-square-o"></i>
+                                                </a>
+
+                                                <a class="check-link" th:data-id="${order.orderCode}" title="Complete The Order" th:if="${order.status != 'New Order' && order.status != 'Cancelled Order' && order.status != 'Complete'}">
+                                                    <i class="fa fa-check check-icon"></i>
+                                                </a>
+
+                                                <a class="cancelled-link" th:data-id="${order.orderCode}" title="Cancelled Order" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="orderDetailDialog" tabindex="-1" role="dialog" aria-labelledby="orderDetailLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderDetailLabel">Order Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="orderDetailContent">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+            <script>
+                function showNotification(notificationId, delay) {
+                    var notification = $('#' + notificationId);
+                    notification.fadeIn();
+
+                    setTimeout(function () {
+                        notification.fadeOut();
+                    }, delay);
+                }
+
+                $(document).ready(function () {
+                    var dataTable = $('#orderstable').DataTable();
+
+                    var showCancelSuccess = localStorage.getItem("showCancelSuccess");
+                    var showConfirmSuccess = localStorage.getItem("showConfirmSuccess");
+                    var showCompleteSuccess = localStorage.getItem("showCompleteSuccess");
+
+                    if (showConfirmSuccess === "true") {
+                        showNotification('confirm-success', 3000);
+                        localStorage.removeItem("showConfirmSuccess");
+                    }
+
+                    if (showCompleteSuccess === "true") {
+                        showNotification('complete-success', 3000);
+                        localStorage.removeItem("showCompleteSuccess");
+                    }
+
+                    if (showCancelSuccess === "true") {
+                        showNotification('cancel-success', 3000);
+                        localStorage.removeItem("showCancelSuccess");
+                    }
+
+
+                    // Sự kiện khi nhấp vào biểu tượng mắt
+                    $('#orderstable tbody').on('click', '.details-link', function () {
+                        var orderCode = $(this).data('id');
+
+                        $.ajax({
+                            url: '/api/orders/details/' + orderCode,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                // Cập nhật nội dung chi tiết hóa đơn trong dialog
+                                var orderDetailContent = `
+                                    <div class="order-details">
+                                        <div class="order-detail-row">
+                                            <strong>Customer:</strong> ${data.customerID.name}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Customer Phone:</strong> ${data.customerID.phone}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Order Code:</strong> ${data.orderCode}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Goods Name:</strong> ${data.name}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <div class="column">
+                                                <strong>Group:</strong> ${data.groupID.name}
+                                            </div>
+                                            <div class="column">
+                                                <strong class="st1">Unit:</strong> ${data.unitID.name}
+                                            </div>
+                                            <div class="column">
+                                                <strong class="st2">Amount:</strong> ${data.amount}
+                                            </div>
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Description:</strong> ${data.description}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Order Creation Date:</strong> ${formatDate(data.createdDate)}
+                                        </div>
+                                        <div class="order-detail-row">
+                                            <strong>Status:</strong> ${data.status}
+                                        </div>
+                                    </div>
+                                `;
+
+                                // Hàm formatDate để định dạng ngày tháng năm giờ-phút-giây
+                                function formatDate(dateString) {
+                                    var date = new Date(dateString);
+                                    var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+                                    return date.toLocaleDateString('en-US', options);
+                                }
+
+                                // Cập nhật nội dung chi tiết hóa đơn trong dialog
+                                $('#orderDetailContent').html(orderDetailContent);
+
+                                // Hiển thị dialog
+                                $('#orderDetailDialog').modal('show');
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi lấy chi tiết hóa đơn:', error);
+                            }
+                        });
+                    });
+
+                    // Sự kiện khi nhấp vào biểu tượng "share"
+                    $('#orderstable tbody').on('click', '.share-link', function () {
+                        var orderCode = $(this).data('id');
+                        // Hiển thị hộp thoại confirm
+                        if (confirm("Would you like to send a confirmation for this order?")) {
+                            // Nếu người dùng đồng ý, tiến hành hủy đơn hàng
+                            confirmOrder(orderCode);
+                        }
+                    });
+
+                    function confirmOrder(orderCode) {
+                        $.ajax({
+                            url: '/api/orders/process/' + orderCode,
+                            type: 'POST',
+                            dataType: 'json',
+
+                            success: function (data) {
+                                localStorage.setItem("showConfirmSuccess", "true");
+
+                                location.reload();
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi xác nhận đơn hàng:', error);
+                            }
+                        });
+                    }
+
+                    // Sự kiện khi nhấp vào biểu tượng "check"
+                    $('#orderstable tbody').on('click', '.check-link', function () {
+                        var orderCode = $(this).data('id');
+                        // Hiển thị hộp thoại confirm
+                        if (confirm("Are you sure you want to complete this order?")) {
+                            // Nếu người dùng đồng ý, tiến hành hủy đơn hàng
+                            completeOrder(orderCode);
+                        }
+                    });
+
+                    function completeOrder(orderCode) {
+                        $.ajax({
+                            url: '/api/orders/complete/' + orderCode,
+                            type: 'POST',
+                            dataType: 'json',
+
+                            success: function (data) {
+                                localStorage.setItem("showCompleteSuccess", "true");
+
+                                location.reload();
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi hoàn thành đơn hàng:', error);
+                            }
+                        });
+                    }
+
+                    // Sự kiện khi nhấp vào biểu tượng "trash"
+                    $('#orderstable tbody').on('click', '.cancelled-link', function () {
+                        var orderCode = $(this).data('id');
+                        // Hiển thị hộp thoại confirm
+                        if (confirm("Are you sure to cancel this order?")) {
+                            // Nếu người dùng đồng ý, tiến hành hủy đơn hàng
+                            cancelOrder(orderCode);
+                        }
+                    });
+
+                    function cancelOrder(orderCode) {
+                        $.ajax({
+                            url: '/api/orders/cancel/' + orderCode,
+                            type: 'POST',
+                            dataType: 'json',
+
+                            success: function (data) {
+                                localStorage.setItem("showCancelSuccess", "true");
+
+                                location.reload();
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi hủy đơn hàng:', error);
+                            }
+                        });
+                    }
+                });
+            </script>
+        </div>
+    </body>
+</html>

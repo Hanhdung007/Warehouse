@@ -8,6 +8,13 @@
     <class>warehouse.exam.demo.model.Supplier</class>
     <class>warehouse.exam.demo.model.Warehouses</class>
     <class>warehouse.exam.demo.model.Itemmasters</class>
+    <class>warehouse.exam.demo.model.TbSYSSEQUENCE</class>
+    <class>warehouse.exam.demo.model.Customers_1</class>
+    <class>warehouse.exam.demo.model.Unit_1</class>
+    <class>warehouse.exam.demo.model.Unit</class>
+    <class>warehouse.exam.demo.model.Groups</class>
+    <class>warehouse.exam.demo.model.Customers</class>
+    <class>warehouse.exam.demo.model.Orders</class>
     <class>warehouse.exam.demo.model.AllocateOrder</class>
     <class>warehouse.exam.demo.model.IssueOrders</class>
     <class>warehouse.exam.demo.model.IssueOrderDetails</class>

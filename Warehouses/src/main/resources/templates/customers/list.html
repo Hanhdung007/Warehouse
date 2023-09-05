@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            .datatable-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .add-button {
+                display: flex;
+                align-items: center;
+            }
+
+            .add-button a {
+                margin-right: 10px;
+                margin-bottom: 5px;
+
+            }
+
+            .dataTables_wrapper tr.disabled td {
+                opacity: 0.5;
+            }
+
+            .edit-link i:hover {
+                color: blue;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="row">
+                <div class="col-12 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-success" role="alert" id="successMessage" style="display: none;">
+                                Successfully added new customer! Customer data has been added to the list.
+                            </div>
+                            <div class="alert alert-success" role="alert" id="successEditMessage" style="display: none;">
+                                Customer information edited successfully! The changes have been applied.
+                            </div>
+                            <div class="datatable-header">
+                                <h4 class="header-title">Customers List</h4>
+                                <div class="add-button">
+                                    <a class="btn btn-success text-white" id="openDialogButton">New Customer</a>
+                                </div>
+                            </div>
+                            <div class="data-tables datatable-dark">
+                                <table id="customerstable" class="text-center table-hover">
+                                    <thead class="text-capitalize">
+                                        <tr>
+                                            <th>Customer Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Fax</th>
+                                            <th>Address</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="customer : ${customers}"  th:class="${customer.disable} ? 'disabled'">
+                                            <td th:text="${customer.name}"></td>
+                                            <td th:text="${customer.email}"></td>
+                                            <td th:text="${customer.phone}"></td>
+                                            <td th:text="${customer.fax}"></td>
+                                            <td th:text="${customer.address}"></td>
+                                            <td> 
+                                                <a class="edit-link" th:data-id="${customer.customerID}" title="Edit Customer">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered " role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="customerModalLabel">Customer's Information</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="customerForm">
+                                <div class="form-group">
+                                    <label for="customerName">Customer Name</label>
+                                    <input type="text" class="form-control" id="customerName" name="customerName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fax">Fax</label>
+                                    <input type="text" class="form-control" id="fax" name="fax">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address">
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="disableCustomer" name="disableCustomer">
+                                        <label class="form-check-label" for="disableCustomer">Disable Customer</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveCustomerButton">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Edit Customer -->
+            <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCustomerModalLabel">Edit Customer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editCustomerForm">
+                                <div class="form-group">
+                                    <label for="editCustomerName">Customer Name</label>
+                                    <input type="text" class="form-control" id="editCustomerName" name="editCustomerName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmail">Email</label>
+                                    <input type="email" class="form-control" id="editEmail" name="editEmail">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editPhone">Phone</label>
+                                    <input type="text" class="form-control" id="editPhone" name="editPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editFax">Fax</label>
+                                    <input type="text" class="form-control" id="editFax" name="editFax">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editAddress">Address</label>
+                                    <input type="text" class="form-control" id="editAddress" name="editAddress">
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="editDisableCustomer" name="editDisableCustomer">
+                                        <label class="form-check-label" for="editDisableCustomer">Disable Customer</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveEditCustomerButton">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    var dataTable = $('#customerstable').DataTable();
+
+                    // Thêm lớp CSS 'disabled' vào các hàng tương ứng
+                    $('#customerstable tbody tr').each(function () {
+                        var rowData = dataTable.row(this).data();
+                        if (rowData && rowData.disable) {
+                            $(this).addClass('disabled');
+                        }
+                    });
+
+                    // Gọi hàm showAndHideMessage khi tải trang
+                    showAndHideMessage();
+                });
+
+                $('#openDialogButton').click(function () {
+                    $('#customerModal').modal('show');
+                });
+
+                $('#saveCustomerButton').click(function () {
+                    var customerName = $('#customerName').val();
+                    var email = $('#email').val();
+                    var phone = $('#phone').val();
+                    var fax = $('#fax').val();
+                    var address = $('#address').val();
+                    var disableCustomer = $('#disableCustomer').prop('checked');
+
+                    var newCustomer = {
+                        name: customerName,
+                        email: email,
+                        phone: phone,
+                        fax: fax,
+                        address: address,
+                        disable: disableCustomer
+                    };
+
+                    $.ajax({
+                        url: '/api/customers',
+                        type: 'POST',
+                        data: JSON.stringify(newCustomer),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            console.log('Thêm khách hàng thành công:', data);
+                            $('#customerModal').modal('hide'); // Đóng dialog
+                            localStorage.setItem('showSuccessMessage', 'true'); // Lưu thông báo đã được hiển thị
+
+                            // Tải lại trang
+                            location.reload();
+                        },
+
+                        error: function (xhr, status, error) {
+                            console.error('Lỗi khi thêm khách hàng:', error);
+                        }
+                    });
+                });
+
+                // Xử lý sự kiện nhấn vào nút "Edit"
+                $('.edit-link').click(function () {
+                    var customerID = $(this).data('id');
+
+                    $.ajax({
+                        url: '/api/customers/' + customerID,
+                        type: 'GET',
+                        success: function (customerData) {
+                            $('#editCustomerName').val(customerData.name);
+                            $('#editEmail').val(customerData.email);
+                            $('#editPhone').val(customerData.phone);
+                            $('#editFax').val(customerData.fax);
+                            $('#editAddress').val(customerData.address);
+                            $('#editDisableCustomer').prop('checked', customerData.disable);
+
+                            $('#editCustomerModal').modal('show');
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Lỗi khi lấy dữ liệu khách hàng:', error);
+                        }
+                    });
+
+                    // Xử lý sự kiện nhấn nút "Save Changes" trong hộp thoại chỉnh sửa
+                    $('#saveEditCustomerButton').click(function () {
+                        var editedCustomer = {
+                            name: $('#editCustomerName').val(),
+                            email: $('#editEmail').val(),
+                            phone: $('#editPhone').val(),
+                            fax: $('#editFax').val(),
+                            address: $('#editAddress').val(),
+                            disable: $('#editDisableCustomer').prop('checked')
+                        };
+
+                        $.ajax({
+                            url: '/api/customers/' + customerID,
+                            type: 'PUT',
+                            data: JSON.stringify(editedCustomer),
+                            contentType: 'application/json',
+                            success: function (data) {
+                                console.log('Successfully edited customer information:', data);
+                                $('#editCustomerModal').modal('hide');
+
+                                localStorage.setItem('showSuccessEditMessage', 'true'); // Lưu thông báo đã được hiển thị
+
+                                // Tải lại trang
+                                location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Lỗi khi chỉnh sửa khách hàng:', error);
+                            }
+                        });
+                    });
+                });
+
+                // Đoạn mã JavaScript để hiển thị thông báo và sau đó ẩn nó sau một khoảng thời gian
+                function showAndHideMessage() {
+                    var showSuccessMessage = localStorage.getItem('showSuccessMessage');
+                    var showSuccessEditMessage = localStorage.getItem('showSuccessEditMessage');
+
+                    if (showSuccessMessage === 'true' || showSuccessEditMessage === 'true') {
+                        var message = showSuccessMessage === 'true' ? $('#successMessage') : $('#successEditMessage');
+
+                        message.fadeIn(); // Hiển thị thông báo
+
+                        // Đặt thời gian mili giây mà sau đó thông báo sẽ tự động biến mất
+                        var autoHideDelay = 3000;
+
+                        setTimeout(function () {
+                            message.fadeOut(); // Ẩn thông báo
+                            if (showSuccessMessage === 'true') {
+                                localStorage.removeItem('showSuccessMessage'); // Xóa thông báo đã hiển thị
+                            }
+                            if (showSuccessEditMessage === 'true') {
+                                localStorage.removeItem('showSuccessEditMessage'); // Xóa thông báo đã hiển thị
+                            }
+                        }, autoHideDelay);
+                    }
+                }
+            </script>
+        </div>
+    </body>
+</html>
