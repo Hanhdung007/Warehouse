@@ -7,6 +7,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
@@ -72,4 +74,15 @@ public class JwtTokenUtil implements Serializable {
             return null;
         }
     }
+
+    public class CookieUtil {
+        public static void clearToken(HttpServletResponse response) {
+            Cookie cookie = new Cookie("token", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0); // Đặt thời gian sống của cookie thành 0 để xóa nó
+            response.addCookie(cookie);
+        }
+    }
+
+
 }

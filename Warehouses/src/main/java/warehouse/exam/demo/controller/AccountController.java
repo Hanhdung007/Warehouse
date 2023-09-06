@@ -20,8 +20,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/auth")
 public class AccountController {
+    private final RestTemplate restTemplate;
     @Autowired
-    private RestTemplate restTemplate;
+    AccountController(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
     @Autowired
     private HttpSession httpSession;
 
@@ -64,6 +67,19 @@ public class AccountController {
                 model.addAttribute("errorMessage", "Server Error!");
                 return "login/login";
             }
+        }
+        return null;
+    }
+
+    @GetMapping("/logout")
+    public String logout() {
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "http://localhost:9999/api/logout",
+                null,
+                String.class
+        );
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return "redirect:/auth/login";
         }
         return null;
     }

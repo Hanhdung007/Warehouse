@@ -34,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
-//        logger.info("Authorization header value: " + requestTokenHeader);
+        logger.info("Authorization header value: " + requestTokenHeader);
         if (StringUtils.isNotEmpty(requestTokenHeader) && requestTokenHeader.startsWith("Bearer ")) {
             String jwtToken = requestTokenHeader.substring(7);
             try {
@@ -56,21 +56,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 logger.error("JWT Token is expired");
                 redirectToLoginPageWithMessage(response);
-                return;
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
-//        else {
-//            logger.warn("JWT Token does not begin with Bearer String");
-//            redirectToLoginPage(response);
-//            return;
-//        }
         chain.doFilter(request, response);
-    }
-
-    private void redirectToLoginPage(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/auth/login"); // Thay đổi URL tùy theo đường dẫn của trang đăng nhập
     }
 
     // Hàm để redirect về trang đăng nhập với thông báo lỗi
