@@ -32,6 +32,7 @@ public class itemmasterDAO {
     private String itemName;
     private String supplierName;
     private String image;
+    private Boolean disable;
 
     public String getSupplierName() {
         return supplierName;
@@ -129,4 +130,11 @@ public class itemmasterDAO {
         this.itemName = itemName;
     }
 
+    public Boolean getDisable(){
+        return disable;
+    }
+
+    public void setDisable(Boolean disable){
+        this.disable = disable;
+    }
 }

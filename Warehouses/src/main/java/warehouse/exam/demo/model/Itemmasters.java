@@ -67,6 +67,8 @@ public class Itemmasters implements Serializable {
     @Size(max = 255)
     @Column(name = "qc_by")
     private String qcBy;
+    @Column(name = "disable")
+    private Boolean disable;
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;
@@ -177,6 +179,13 @@ public class Itemmasters implements Serializable {
 
     public void setSupId(Supplier supId) {
         this.supId = supId;
+    }
+
+    public Boolean getDisable(){
+        return disable;
+    }
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
     }
 
     @Override

@@ -103,6 +103,9 @@ public class ImportService {
             if (impDAO.getNote() != null) {
                 imp.setNote(impDAO.getNote());
             }
+            if(impDAO.getStatus() != null) {
+                imp.setStatus(impDAO.getStatus());
+            }
             return importReponsitory.save(imp);
         } else {
             throw new RuntimeException("Không tìm thấy Import với ID = " + impDAO.getId());

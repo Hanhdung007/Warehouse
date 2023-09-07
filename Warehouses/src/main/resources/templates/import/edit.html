@@ -11,10 +11,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 -->
 
 <head>
-  <title></title>
+  <title>Update Import Order</title>
+  <link rel="stylesheet" type="text/css" href="/css/checkboxEditImp.css">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-
 <body>
 <div class="main-content-inner" layout:fragment="content">
   <div class="container">
@@ -46,6 +46,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
               <div class="form-group">
                 <label for="exampleInputPassword1">Note</label>
                 <textarea  th:field="*{note}" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword2">Status</label>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="customCheck" th:field="*{status}">
+                  <label class="custom-control-label" for="customCheck"></label>
+                </div>
               </div>
               <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
             </form>

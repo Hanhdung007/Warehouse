@@ -111,6 +111,7 @@ public class ItemmasterService {
           item.setRecieveNo(itemDAO.getRecieveNo());
           item.setSupId(supReponsitory.findBySupName(itemDAO.getSupplierName()));
           item.setQuantity(itemDAO.getQuantity());
+          item.setDisable(itemDAO.getDisable());
           return imMasterRepositoty.save(item);
     }
 
@@ -126,6 +127,7 @@ public class ItemmasterService {
         item.setNote(updateItem.getNote());
         item.setQcBy(updateItem.getQcBy());
         item.setCodeItemdata(imDataRepository.findByName(updateItem.getItemName()));
+        item.setDisable(updateItem.getDisable());
         return imMasterRepositoty.save(item);
     }
 }
