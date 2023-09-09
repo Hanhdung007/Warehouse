@@ -1,13 +1,10 @@
 package warehouse.exam.demo.DAL;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import warehouse.exam.demo.model.Importorders;
-import warehouse.exam.demo.model.Supplier;
 
 /**
- *
  * @author DUNG
  */
 
@@ -35,7 +32,6 @@ public class importDAO {
     }
 
     public importDAO() {
-
     }
 
     public Integer getId() {

@@ -83,6 +83,13 @@ public class ImportOrderController {
         return "import/detail";
     }
 
+    @PostMapping("/details/{idImport}")
+    public String updateDisable(@PathVariable int idImport, @RequestParam int id){
+        Boolean newDisable = true;
+        itemmasterService.updateDisable(id, newDisable);
+        return "redirect:/import/details/" + idImport;
+    }
+
     @GetMapping("edit/{id}")
     public String update(Model model, @PathVariable("id") int id) {
         model.addAttribute("import", service.findOne(id));
@@ -104,8 +111,6 @@ public class ImportOrderController {
     @GetMapping("/createItem/{id}")
     public String createItem(Model model, @PathVariable("id") int id) {
         itemmasterDAO itemDAO = new itemmasterDAO();
-//        Importorders idImport = service.findOne(id);
-//        itemDAO.setIdImport(importorders);
         model.addAttribute("itemmasterDAO", itemDAO);
         model.addAttribute("idImport", service.findOne(id));
         model.addAttribute("supplier", supService.getAll());
@@ -117,6 +122,7 @@ public class ImportOrderController {
     public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemMaster, @ModelAttribute Itemmasters item) {
         model.addAttribute("idImport", itemmasterService.findOne(idImp));
         itemMaster.setDisable(false);
+        itemMaster.setPass(false);
         itemmasterService.saveItemMaster(itemMaster, idImp, item);
         return "redirect:/import/index";
     }

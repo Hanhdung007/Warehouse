@@ -1,3 +1,4 @@
-.dataTables_wrapper tr.disabled td {
+.disabled-field {
     opacity: 0.5;
+    pointer-events: none;
 }

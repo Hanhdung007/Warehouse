@@ -64,18 +64,6 @@ public class ImportService {
         return importReponsitory.findById(id);
     }
 
-//    public void updateImpOrder(importDAO importDAO) {
-//        Importorders impOrder = importReponsitory.findById(importDAO.getId());
-//        impOrder.setId(impOrder.getId());
-//        impOrder.setDriver(importDAO.getDriver());
-//        impOrder.setDateImport(importDAO.getDateImport());
-//        impOrder.setDriversPhone(importDAO.getDriversPhone());
-//        impOrder.setSupId(supReponsity.findBySupName(importDAO.getSupplierName()));
-//        impOrder.setNote(importDAO.getNote());
-//        impOrder.setStatus(importDAO.getStatus());
-//        importReponsitory.save(impOrder);
-//    }
-
     public Importorders updateImpOrder(importDAO impDAO) {
         Optional<Importorders> optionalImp = importReponsitory.findById(impDAO.getId());
         Optional<Supplier> IdSup = supReponsity.findById(impDAO.getSupId());
