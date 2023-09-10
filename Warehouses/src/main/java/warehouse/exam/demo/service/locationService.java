@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.DAL.locationDAO;
+import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.model.Locations;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
+import warehouse.exam.demo.reponsitory.itemdataReponsitory;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
 import warehouse.exam.demo.reponsitory.warehouseRepository;
 
@@ -28,6 +30,47 @@ public class locationService {
     warehouseRepository whReponsitory;
     @Autowired
     ItemmasterRepository itemmasterRepository;
+    @Autowired
+    itemdataReponsitory itemdataRepository;
+
+    public locationDAO findByLocationCode(String code) {
+        Locations loc = locReponsitory.findByCode(code);
+        locationDAO locdao = new locationDAO();
+        locdao.setCode(loc.getCode());
+        locdao.setName(loc.getName());
+        locdao.setCapacity(loc.getCapacity());
+        locdao.setRemain(loc.getRemain());
+        locdao.setWarehouseName(loc.getWarehouseCode().getName());
+        locdao.setActive(loc.getActive());
+        List<itemmasterDAO> dao = new ArrayList<>();
+        List<Itemmasters> itemMasters = itemmasterRepository.findItemsByLocationsCode(code);
+        for(Itemmasters im: itemMasters){
+             itemmasterDAO imtDao = new itemmasterDAO();
+            imtDao.setDateImport(im.getDateImport());
+            imtDao.setId(im.getId());
+            imtDao.setIdImport(im.getIdImport().getId());
+            imtDao.setItemName(im.getCodeItemdata().getName());
+            //query location name 
+            //check itemmaster location code (allocated)
+            if (!im.getLocationCode().isEmpty() && im.getLocationCode() != null) {
+                imtDao.setLocationName(locReponsitory.findByCode(im.getLocationCode()).getName());
+            } else {
+                //unallocate
+                imtDao.setLocationName("");
+            }
+
+            imtDao.setNote(im.getNote());
+            imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
+            imtDao.setQcBy(im.getQcBy());
+            imtDao.setQuantity(im.getQuantity());
+            imtDao.setRecieveNo(im.getRecieveNo());
+            imtDao.setSupplierName(im.getSupId().getSupName());
+             imtDao.setImage(im.getCodeItemdata().getImage());
+            dao.add(imtDao);
+        }
+        locdao.setItems(dao);
+        return locdao;
+    }
 
     public List<locationDAO> getAll() {
         List<locationDAO> dao = new ArrayList<>();
@@ -44,6 +87,7 @@ public class locationService {
         }
         return dao;
     }
+
     public List<locationDAO> pickListLocation() {
         List<locationDAO> dao = new ArrayList<>();
         List<Locations> location = locReponsitory.getRemainLocation();

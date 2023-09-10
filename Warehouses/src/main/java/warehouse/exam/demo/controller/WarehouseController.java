@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import warehouse.exam.demo.DAL.warehouseDAO;
 import warehouse.exam.demo.model.Warehouses;
+import warehouse.exam.demo.reponsitory.warehouseRepository;
 import warehouse.exam.demo.service.warehouseService;
 
 /**
@@ -28,6 +29,8 @@ public class WarehouseController {
 
     @Autowired
     warehouseService service;
+    @Autowired
+     warehouseRepository whReponsitory;
 //        private String url = "http://localhost:9999/api/warehouse/";
 //        private RestTemplate rest = new RestTemplate();
 
@@ -35,6 +38,12 @@ public class WarehouseController {
     public String page(Model model) {
         model.addAttribute("list", service.getAll());
         return "warehouse/index";
+    }
+    
+     @GetMapping("/details/{id}")
+    public String details(Model model,@PathVariable("id") String id) {
+        model.addAttribute("model", service.findbycode(id));
+        return "warehouse/details";
     }
 
     @GetMapping("/create")
@@ -49,14 +58,14 @@ public class WarehouseController {
     }
     @GetMapping("/update/{code}")
     public String update(Model model,@PathVariable("code") String code) {
-        Warehouses warehouse = service.findbycode(code);
+        Warehouses warehouse = whReponsitory.findByCode(code);
         model.addAttribute("warehouse", warehouse);
         return "warehouse/edit";
     }
 
     @PostMapping("/update")
     public String update(Model model,@ModelAttribute warehouseDAO warehouses) {
-         Warehouses warehouse = service.findbycode(warehouses.getCode());
+         warehouseDAO warehouse = service.findbycode(warehouses.getCode());
         service.saveWarehouse(warehouses);
         return "redirect:warehouse/index";
     }

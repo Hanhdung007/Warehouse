@@ -36,13 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Itemdatas.findByImage", query = "SELECT i FROM Itemdatas i WHERE i.image = :image")})
 public class Itemdatas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "code")
-    private String code;
     @Size(max = 255)
     @Column(name = "name")
     private String name;
@@ -52,11 +45,19 @@ public class Itemdatas implements Serializable {
     @Size(max = 255)
     @Column(name = "type")
     private String type;
-    @Column(name = "active")
-    private Boolean active;
     @Size(max = 255)
     @Column(name = "image")
     private String image;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "code")
+    private String code;
+    @Column(name = "active")
+    private Boolean active;
     @OneToMany(mappedBy = "codeItemdata")
     private List<Itemmasters> itemmastersList;
 
@@ -75,29 +76,6 @@ public class Itemdatas implements Serializable {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Boolean getActive() {
         return active;
@@ -107,13 +85,6 @@ public class Itemdatas implements Serializable {
         this.active = active;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     @XmlTransient
     public List<Itemmasters> getItemmastersList() {
@@ -147,6 +118,38 @@ public class Itemdatas implements Serializable {
     @Override
     public String toString() {
         return "warehouse.exam.demo.model.Itemdatas[ code=" + code + " ]";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
 }
