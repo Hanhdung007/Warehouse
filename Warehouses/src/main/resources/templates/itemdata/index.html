@@ -73,7 +73,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                 <form th:action="@{create}" th:object="${itemdata}" method="post" enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         <label>Item's code: </label>
-                                                        <input type="text" class="form-control" th:field="*{code}"/>
+                                                        <input type="text" hidden="hidden" class="form-control" th:field="*{code}"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Item's name: </label>
