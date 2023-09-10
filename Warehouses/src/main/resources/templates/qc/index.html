@@ -30,11 +30,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             <div class="col-md-6 mx-auto">
                                 <form th:action="@{/qc/search}" method="GET">
                                     <div class="input-group">
-                                        <input type="text" name="keyword" placeholder="Search..."
-                                               class="form-control"/>
+                                        <input type="text" name="keyword" class="form-control" placeholder="Search...">
                                         <div class="input-group-append">
-                                            <button type="submit" class="btn waves-effect blue-grey darken-3"
-                                                    value="Search">Search
+                                            <button type="submit" class="btn btn-blue-grey darken-3" value="Search">
+                                                Search
                                             </button>
                                         </div>
                                     </div>
@@ -83,41 +82,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                     <div class="modal-content">
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Item Quality Control Section</h5>
+                                                            <h5 class="modal-title" style="display: block;font-size: 1.5em;
+                                                             color: black"
+                                                            >Item Quality Control Section</h5>
                                                             <button type="button" class="close" data-dismiss="modal">
                                                                 &times;
                                                             </button>
                                                         </div>
                                                         <!-- Modal body -->
                                                         <div class="modal-body">
-                                                            <form th:action="@{/qc/index/{id}(id=${item.getId()})}"
+                                                            <form th:action="@{/qc/accept/{id}(id=${item.getId()})}"
                                                                   method="post" th:id="@{|form-${item.getId()}|}">
                                                                 <input name="id" th:value="${item.getId()}"
                                                                        type="hidden"/>
+                                                                <label style="display: block; color: black">Current
+                                                                    Quantity:
+                                                                    <span class="itemQuantity" th:text="${item.quantity}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <p class="modal-title" style="display: block;
+                                                            font-size: 1.0em;color: black">
+                                                                    Enter Item Quantity For QC
+                                                                </p>
+                                                                <div class="ef">
+                                                                    <input class="effect-21 item4QC" type="number" name="quantityInput" placeholder="Enter Item Quantity..." required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                </div>
+                                                                <div class="quantityCheck checkQuantity"></div>
+                                                                <br>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button class="btn btn-outline-success acceptButton" th:attr="onclick=${'checkQC('+item.getId()+')'}" name="accept">
+                                                                        Accept
+                                                                    </button>
+                                                                    <button class="btn btn-outline-danger ml-2 injectButton" th:attr="onclick=${'checkQC('+item.getId()+')'}" name="inject">
+                                                                        Inject
+                                                                    </button>
+                                                                </div>
                                                             </form>
-                                                            <label>Quantity</label>
-                                                            <p id="itemQuantity" th:text="${item.quantity}"></p>
-                                                            <br>
-                                                            <br>
-                                                            <p class="modal-title">Enter Item Quantity For QC</p>
-                                                            <div class="input-effect">
-                                                                <input class="effect-21" id="item4QC" type="text" name="checkQC"
-                                                                       placeholder="">
-                                                                <span class="focus-border"><i></i></span>
-                                                            </div>
-                                                            <div id="checkQuantity"  class="checkQuantity"></div>
-                                                            <div class="d-flex justify-content-end">
-                                                                <button class="btn btn-outline-success"
-                                                                        th:attr="onclick=${'checkQC('+item.getId()+')'}"
-                                                                        name="accept">
-                                                                    Accept
-                                                                </button>
-                                                                <button class="btn btn-outline-danger ml-2"
-                                                                        th:attr="onclick=${'checkQC('+item.getId()+')'}"
-                                                                        name="inject">
-                                                                    Inject
-                                                                </button>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

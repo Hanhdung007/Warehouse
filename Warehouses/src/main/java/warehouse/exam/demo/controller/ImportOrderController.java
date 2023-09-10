@@ -122,7 +122,8 @@ public class ImportOrderController {
     public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemMaster, @ModelAttribute Itemmasters item) {
         model.addAttribute("idImport", itemmasterService.findOne(idImp));
         itemMaster.setDisable(false);
-        itemMaster.setPass(false);
+//        itemMaster.setPass(false);
+        itemMaster.setQcAcceptQuantity(0.0);
         itemmasterService.saveItemMaster(itemMaster, idImp, item);
         return "redirect:/import/index";
     }

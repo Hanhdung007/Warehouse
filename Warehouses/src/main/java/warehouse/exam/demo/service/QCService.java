@@ -3,12 +3,8 @@ package warehouse.exam.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.itemmasterDAO;
-import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
-import warehouse.exam.demo.reponsitory.locationReponsitory;
-
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +42,7 @@ public class QCService {
         if(itemMaster.isPresent()) {
             Itemmasters newItem = itemMaster.get();
             Double quantityInject = newItem.getQuantity() - quantityInput;
-            Double quantityAccept = newItem.getQcAcceptQuantity() - quantityInput;
+            Double quantityAccept = newItem.getQcAcceptQuantity() + quantityInput;
             boolean newPass = true;
             newItem.setQuantity(quantityInject);
             newItem.setQcAcceptQuantity(quantityAccept);
@@ -63,5 +59,4 @@ public class QCService {
             imMasterRepositoty.save(item);
         }
     }
-
 }

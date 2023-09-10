@@ -1,15 +1,15 @@
-.input-effect {
+.ef {
     position: relative;
     margin: 20px 0;
 }
 
 .effect-21 {
-    font: 15px/24px "Lato", Arial, sans-serif;
-    color: #333;
+    font: 15px/24px 'Inter', sans-serif;
+    color: #212121;
     width: 100%;
     box-sizing: border-box;
     letter-spacing: 1px;
-    border: 1px solid #ccc;
+    border: 3px solid #212121;
     padding: 7px 14px;
     transition: 0.4s;
     background: transparent;
@@ -22,11 +22,10 @@
     top: 0;
     right: 0;
     width: 0;
-    height: 2px;
+    height: 3px;
     transition: 0.2s;
-    /*background-image: linear-gradient(to right,  #d76d77, #ffaf7b, #3a1c71);*/
-    /*background-image: linear-gradient(to left, #c33764, #1d2671);*/
-    background: #1d2671;
+    /*background-image: linear-gradient(to left, #fab700, #1b1e21, #fab700, #1b1e21, #fab700, #1b1e21, #fab700, #1b1e21);*/
+    background: #fab700;
     transition-delay: 0.2s;
 }
 
@@ -44,11 +43,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 2px;
+    width: 3px;
     height: 0;
-    /*background-image: linear-gradient(to right,  #ffaf7b, #d76d77, #3a1c71);*/
-    /*background-image: linear-gradient(to left, #1d2671, #c33764);*/
-    background: #1d2671;
+    /*background-image: linear-gradient(to left, #fab700, #1b1e21, #fab700, #1b1e21, #fab700, #1b1e21, #fab700, #1b1e21);*/
+    background: #fab700;
     transition: 0.2s;
 }
 
@@ -83,11 +81,13 @@
 }
 
 .effect-21:focus ~ .focus-border i:after,
-.has-conten.effect-21 ~ .focus-border i:after {
+.has-content.effect-21 ~ .focus-border i:after {
     transition-delay: 0.4s;
 }
-
-.checkQuantity{
-
+.quantityCheck{
+    color: #bd2130;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 10px 0 -10px 2px;
 }
 
