@@ -22,13 +22,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title">Data Table Dark</h4>
+                            <h4 class="header-title">Warehouses Lists</h4>
                             <div class="data-tables datatable-dark">
                                 <table id="warehousetable" class="text-center">
                                     <thead class="text-capitalize">
                                         <tr>
-                                           <th>Code</th>
+                                            <th>Code</th>
                                             <th>Warehouse's Name</th>
+                                            <th>Total location</th>
+                                            <th>Total capacity</th>
+                                            <th>Total remain</th>
                                             <th>Active</th>
                                             <th>Action</th>
                                         </tr>
@@ -37,9 +40,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         <tr th:each="warehouse:${list}">
                                             <td th:text="${warehouse.code}"></td>
                                             <td th:text="${warehouse.name}"></td>
-                                            <td th:text="${warehouse.active}"></td>
+                                            <td th:text="${warehouse.totalLocation}"></td>
+                                            <td th:text="${warehouse.totalCapacity}"></td>
+                                            <td th:text="${warehouse.totalRemain}"></td>
+                                              <td>
+                                                <span th:if="${warehouse.active}" class="badge badge-pill badge-success">Active</span>
+                                                <span th:unless="${warehouse.active}" class="badge badge-pill badge-danger">Inactive</span>
+                                            </td>
                                             <td>
-                                                <a th:href="'/warehouse/update/'+${warehouse.code}">Edit</a>
+                                                <a th:href="'/warehouse/details/'+${warehouse.code}" class="btn btn-info">Details</a>
+                                                <a th:href="'/warehouse/update/'+${warehouse.code}" class="btn btn-primary">Edit</a>
                                             </td>
                                         </tr>
                                     </tbody>

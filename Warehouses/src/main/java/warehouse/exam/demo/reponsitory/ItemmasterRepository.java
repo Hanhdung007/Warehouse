@@ -17,8 +17,14 @@ public interface ItemmasterRepository extends JpaRepository<Itemmasters, Integer
 //    @Query("SELECT im, loc FROM itemmasters im JOIN  locations loc ON im.code_location = loc.code")
 //    List<Object[]> getItemmasterWithLocation();
 
-    @Query("SELECT o From Itemmasters o where o.qcBy != '' and o.locationCode = '' and o.qcAcceptQuantity > o.bookQty")
+    @Query("SELECT o From Itemmasters o where o.qcBy != '' and (o.locationCode = '' or o.locationCode = null) and o.qcAcceptQuantity > o.bookQty")
     List<Itemmasters> GetUnAllocated();
 
     Itemmasters findByLocationCode(String locationCode);
+    
+    @Query("Select o FROM Itemmasters o where o.qcBy != '' and o.locationCode =:locationCode")
+    List<Itemmasters> findItemsByLocationsCode(String locationCode);
+    
+    @Query("SELECT o FROM Itemmasters o WHERE o.qcBy != '' and o.locationCode != '' ")
+    List<Itemmasters> findAllInventorys();
 }

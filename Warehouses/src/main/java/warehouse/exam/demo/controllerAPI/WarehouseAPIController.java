@@ -29,6 +29,8 @@ public class WarehouseAPIController {
 
     @Autowired
     warehouseService service;
+    
+
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -44,8 +46,8 @@ public class WarehouseAPIController {
 
     @GetMapping("/{code}")
     @ResponseStatus(HttpStatus.OK)
-    public Warehouses getWarehouse(@PathVariable(value = "code") String code) {
-        Warehouses warehouse = service.findbycode(code);
+    public warehouseDAO getWarehouse(@PathVariable(value = "code") String code) {
+        warehouseDAO warehouse = service.findbycode(code);
         return warehouse;
     }
     @PutMapping("/{code}")
