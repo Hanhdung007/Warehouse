@@ -1,34 +1,29 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import warehouse.exam.demo.DAL.AccountDAO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import warehouse.exam.demo.model.Accounts;
-import warehouse.exam.demo.reponsitory.AccountRepository;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/auth")
 public class AccountController {
-    private final RestTemplate restTemplate;
+    private final AuthenticationManager authenticationManager;
+
     @Autowired
-    AccountController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public AccountController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
-    @Autowired
-    private HttpSession httpSession;
-    @Autowired
-    private AccountRepository accountRepository;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -37,40 +32,19 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password, Model model) {
-        AccountDAO accountDAO = AccountDAO.builder()
-                .email(email)
-                .password(password)
-                .build();
+    public String login(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
         try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    "http://localhost:9999/api/login",
-                    accountDAO,
-                    Map.class);
-            Map<String, Object> responseBody = response.getBody();
-            boolean isError = (boolean) responseBody.get("error");
-            String message = (String) responseBody.get("message");
-            if (!isError) {
-                // Xử lý thành công - Thêm thông tin vào model và chuyển hướng
-                httpSession.setAttribute("isAuthenticated", true);
-                return "redirect:/itemdata/index";
-            } else {
-                // Xử lý thất bại - Thêm thông tin lỗi vào model và hiển thị lại form đăng nhập
-                model.addAttribute("errorMessage", message);
-                return "login/login";
-            }
-        } catch (HttpClientErrorException ex) {
-            if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                // Xử lý lỗi đăng nhập không hợp lệ (401 Unauthorized)
-                model.addAttribute("errorMessage", "Invalid Email Or Password!");
-                return "login/login";
-            } else if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
-                // Xử lý lỗi máy chủ (500 Internal Server Error)
-                model.addAttribute("errorMessage", "Server Error!");
-                return "login/login";
-            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+            String username = authentication.getName();
+            session.setAttribute("username", username);
+            session.setAttribute("loggedInUser", true);
+            return "redirect:/itemdata/index";
+        } catch (AuthenticationException ex) {
+            model.addAttribute("errorMessage", "Invalid Email Or Password!");
+            return "login/login";
         }
-        return null;
     }
 
     @PostMapping("/logout")

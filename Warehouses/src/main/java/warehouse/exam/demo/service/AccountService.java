@@ -23,6 +23,16 @@ public class AccountService implements UserDetailsService {
         this.accountsRepository = accountRepository;
     }
 
+    //    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        Accounts account = accountsRepository.findAccountsByEmail(email);
+//        if (account == null) {
+//            throw new UsernameNotFoundException("User not found with email: " + email);
+//        }
+//        List<GrantedAuthority> authorityList = new ArrayList<>();
+////        authorityList.add(new SimpleGrantedAuthority("USER_ROLE"));
+//        return new User(account.getEmail(), account.getPassword(), authorityList);
+//    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Accounts account = accountsRepository.findAccountsByEmail(email);
@@ -30,12 +40,6 @@ public class AccountService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
         List<GrantedAuthority> authorityList = new ArrayList<>();
-//        authorityList.add(new SimpleGrantedAuthority("USER_ROLE"));
-        return new User(account.getEmail(), account.getPassword(), authorityList);
+        return new User(account.getName(), account.getPassword(), authorityList);
     }
-
-//    @Autowired
-//    public void findByName(String name){
-//        accountsRepository.findAccountByName(name);
-//    }
 }

@@ -187,8 +187,9 @@
                 <!-- profile info & task notification -->
                 <form th:action="@{/auth/logout}" method="post">
                     <button id="logoutButton" class="btn btn-outline-danger" type="submit">Logout</button>
-                    <span name="errorMessage"></span>
                 </form>
+                <br>
+                <div style="color: red;">Welcome, <span th:text="${session.username}"></span></div>
                 <div class="col-md-6 col-sm-4 clearfix">
                     <ul class="notification-area pull-right">
                         <li id="full-view"><i class="ti-fullscreen"></i></li>
