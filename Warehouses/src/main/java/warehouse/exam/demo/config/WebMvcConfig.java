@@ -15,6 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/import/**")
+                .addPathPatterns("/error/**")
                 .addPathPatterns("/itemaster/**")
                 .addPathPatterns("/itemdata/**")
                 .addPathPatterns("/location/**")

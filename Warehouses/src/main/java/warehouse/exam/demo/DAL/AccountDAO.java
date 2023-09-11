@@ -13,8 +13,6 @@ public class AccountDAO {
     private String email;
     private String password;
 
-
-
     public String getEmail() {
         return email;
     }

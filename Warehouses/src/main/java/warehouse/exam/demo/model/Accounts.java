@@ -5,7 +5,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -15,6 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Accounts implements UserDetails {
     @Id
+    @Basic
     @Column(name = "code")
     private String code;
     @Basic
@@ -29,9 +33,9 @@ public class Accounts implements UserDetails {
     @Basic
     @Column(name = "phone")
     private String phone;
-    @Basic
-    @Column(name = "isactive")
-    private String isactive;
+//    @Basic
+//    @Column(name = "isActive")
+//    private String isActive;
 
     public String getCode() {
         return code;
@@ -54,11 +58,9 @@ public class Accounts implements UserDetails {
         return Collections.emptyList();
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public String getUsername() {
@@ -101,12 +103,12 @@ public class Accounts implements UserDetails {
         this.phone = phone;
     }
 
-    public String getIsActive() {
-        return isactive;
-    }
-
-    public void setIsActive(String isactive) {
-        this.isactive = isactive;
-    }
+//    public String getIsActive() {
+//        return isActive;
+//    }
+//
+//    public void setIsActive(String isActive) {
+//        this.isActive = isActive;
+//    }
 
 }
