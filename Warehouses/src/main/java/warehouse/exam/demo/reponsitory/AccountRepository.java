@@ -5,4 +5,6 @@ import warehouse.exam.demo.model.Accounts;
 
 public interface AccountRepository extends JpaRepository<Accounts, String> {
     Accounts findAccountsByEmail(String email);
+
+    
 }
