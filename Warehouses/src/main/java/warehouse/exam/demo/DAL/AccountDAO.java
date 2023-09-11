@@ -17,6 +17,10 @@ public class AccountDAO {
     private String phone;
     private Boolean isActive;
 
+    public AccountDAO(){
+
+    }
+
     public String getCode() {
         return code;
     }
