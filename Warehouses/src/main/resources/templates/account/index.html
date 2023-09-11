@@ -84,14 +84,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 <!--                                            <td th:text="${list.role}"-->
 <!--                                            </td>-->
                                             <td>
-<!--                                                <a th:href="'/import/details/' + ${import.id}"-->
-<!--                                                   class="btn btn-outline-warning mb-3">-->
-<!--                                                    Details-->
-<!--                                                </a>-->
-<!--                                                <a th:href="'/import/edit/' + ${import.id}"-->
-<!--                                                   class="btn btn-outline-primary mb-3">-->
-<!--                                                    Update-->
-<!--                                                </a>-->
+                                                <a th:href="'/auth/edit/' + ${list.code}"
+                                                   class="btn btn-outline-primary mb-3">
+                                                    Update
+                                                </a>
                                             </td>
                                         </tr>
                                         </tbody>
