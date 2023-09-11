@@ -11,17 +11,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import warehouse.exam.demo.DAL.AccountDAO;
+import warehouse.exam.demo.DAL.importDAO;
+import warehouse.exam.demo.DAL.itemdataDAO;
 import warehouse.exam.demo.model.Accounts;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
+import warehouse.exam.demo.model.Importorders;
+import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.service.AccountService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -60,12 +67,47 @@ public class AccountController {
     }
 
     @GetMapping("/index")
-    public String index(Model model){
-        model.addAttribute("account", accountService.findAll());
+    public String index(Model model) {
+        List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
+        if (searchList != null) {
+            model.addAttribute("account", searchList);
+        } else {
+            model.addAttribute("account", accountService.findAll());
+        }
         return "account/index";
     }
 
-    
+    @GetMapping("/search")
+    public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
+        List<AccountDAO> foundOrders = accountService.searchAllAccount(keyword);
+        redirectAttributes.addFlashAttribute("searchResults", foundOrders);
+        return "redirect:/auth/index";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("account", new Accounts());
+        return "account/create";
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute AccountDAO dao) {
+        accountService.saveAccount(dao);
+        return "redirect:/auth/index";
+    }
+
+    @GetMapping("/edit/{code}")
+    public String update(Model model, @PathVariable("code") String code) {
+        Accounts acc = accountService.findOne(code);
+        model.addAttribute("accounts", acc);
+        return "account/edit";
+    }
+
+    @PostMapping("/edit")
+    public String update(@ModelAttribute AccountDAO accountDAO, @PathVariable("code") String code) throws IOException {
+        accountService.updateAccount(accountDAO, code);
+        return "redirect:/auth/index";
+    }
 
 //    @GetMapping("/index")
 //    public String index(Model model, HttpSession session) {

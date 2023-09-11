@@ -23,33 +23,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
         <div class="card">
           <div class="card-body">
             <h4 class="header-title">Add new Location</h4>
-            <form th:action="@{create}" th:object="${import}" method="post">
+            <form th:action="@{create}" th:object="${account}" method="post">
               <div class="form-group">
                 <label for="exampleInputPassword1">Driver's No</label>
-                <input type="text" class="form-control" th:field="*{id}" placeholder="Enter no.....">
+                <input type="text" class="form-control" th:field="*{code}" placeholder="Enter no.....">
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Driver's name</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name.....">
+                <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{name}" placeholder="Enter name.....">
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Driver's phone</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driversPhone}" placeholder="Enter name.....">
+                <input type="text" class="form-control" id="exampleInputPassword2" th:field="*{email}" placeholder="Enter name.....">
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">From</label>
-                <select th:field="*{supplierName}" class="form-control">
-                  <option th:each="sup:${supplier}" th:value="${sup.supName}" th:text="${sup.supName}"></option>
-                </select>
-                <!--<input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supplierName}">-->
+                <label for="exampleInputPassword1">Driver's phone</label>
+                <input type="text" class="form-control" id="exampleInputPassword3" th:field="*{phone}" placeholder="Enter name.....">
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">Date Import</label>
-                <input type="date" class="form-control" id="exampleInputPassword1" th:field="*{dateImport}" placeholder="Enter name.....">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Note</label>
-                <textarea  th:field="*{note}" class="form-control"></textarea>
+                <input type="checkbox" class="form-control" id="exampleInputPassword4" th:field="*{isActive}" placeholder="Enter name.....">
               </div>
               <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
             </form>

@@ -3,7 +3,6 @@ package warehouse.exam.demo.DAL;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import warehouse.exam.demo.model.Accounts;
 
 @AllArgsConstructor
@@ -22,8 +21,10 @@ public class AccountDAO {
         this.name = accounts.getName();
         this.email = accounts.getEmail();
         this.phone = accounts.getPhone();
+        this.isActive = accounts.getIsActive();
 //        this.role = accounts.getRole();
     }
+
     public AccountDAO() {
     }
 

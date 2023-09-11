@@ -35,15 +35,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
         <div class="col mt-5">
             <div class="card">
                 <div class="card-body">
-                    <a th:href="@{/import/create}">
-                        <button type="button" class="btn btn-outline-success mb-3">Add new Order</button>
+                    <a th:href="@{/auth/create}">
+                        <button type="button" class="btn btn-outline-success mb-3">Create New Account</button>
                     </a>
                     <br>
                     <h4 class="header-title">Thead secondary</h4>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 mx-auto">
-                                <form th:action="@{/import/search}" method="GET">
+                                <form th:action="@{/auth/search}" method="GET">
                                     <div class="input-group">
                                         <input type="text" name="keyword" placeholder="Search..."
                                                class="form-control"/>
