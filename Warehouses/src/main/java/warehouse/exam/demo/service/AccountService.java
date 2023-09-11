@@ -58,4 +58,7 @@ public class AccountService implements UserDetailsService {
         }
         return dao;
     }
+    public List<AccountDAO> searchAllImport(String keyword) {
+        return accountsRepository.searchAllAccount(keyword);
+    }
 }

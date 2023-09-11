@@ -65,6 +65,8 @@ public class AccountController {
         return "account/index";
     }
 
+    
+
 //    @GetMapping("/index")
 //    public String index(Model model, HttpSession session) {
 //        RestTemplate restTemplate = new RestTemplate();

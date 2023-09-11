@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import warehouse.exam.demo.model.Accounts;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 public class AccountDAO {
@@ -17,8 +17,14 @@ public class AccountDAO {
     private String phone;
     private Boolean isActive;
 
-    public AccountDAO(){
-
+    public AccountDAO(Accounts accounts) {
+        this.code = accounts.getCode();
+        this.name = accounts.getName();
+        this.email = accounts.getEmail();
+        this.phone = accounts.getPhone();
+//        this.role = accounts.getRole();
+    }
+    public AccountDAO() {
     }
 
     public String getCode() {
