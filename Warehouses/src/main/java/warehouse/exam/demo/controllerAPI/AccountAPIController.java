@@ -53,8 +53,8 @@ public class AccountAPIController {
         }
     }
 
-//    @GetMapping("/index")
-//    public ResponseEntity<List<AccountDAO>> index() {
-//        return ResponseEntity.ok(accountService.findAll());
-//    }
+    @GetMapping("/index")
+    public ResponseEntity<List<AccountDAO>> index() {
+        return ResponseEntity.ok(accountService.findAll());
+    }
 }

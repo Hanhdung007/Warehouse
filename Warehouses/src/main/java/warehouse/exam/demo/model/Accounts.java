@@ -32,9 +32,9 @@ public class Accounts implements UserDetails {
     @Basic
     @Column(name = "phone")
     private String phone;
-//    @Basic
-//    @Column(name = "isActive")
-//    private Boolean isActive;
+    @Basic
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     public String getCode() {
         return code;
@@ -102,11 +102,11 @@ public class Accounts implements UserDetails {
         this.phone = phone;
     }
 
-//    public Boolean getIsActive() {
-//        return isActive;
-//    }
-//    public void setIsActive(Boolean isActive) {
-//        this.isActive = isActive;
-//    }
+    public Boolean getIsActive() {
+        return isActive;
+    }
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
 }

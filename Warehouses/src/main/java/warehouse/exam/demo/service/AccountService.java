@@ -44,18 +44,18 @@ public class AccountService implements UserDetailsService {
         return new User(account.getName(), account.getPassword(), authorityList);
     }
 
-//    public List<AccountDAO> findAll() {
-//        List<AccountDAO> dao = new ArrayList<>();
-//        List<Accounts> accounts = accountsRepository.findAll();
-//        for (Accounts list : accounts) {
-//            AccountDAO acc = new AccountDAO();
-//            acc.setCode(list.getCode());
-//            acc.setName(list.getName());
-//            acc.setEmail(list.getEmail());
-//            acc.setPhone(list.getPhone());
-//            acc.setIsActive(list.getIsActive());
-//            dao.add(acc);
-//        }
-//        return dao;
-//    }
+    public List<AccountDAO> findAll() {
+        List<AccountDAO> dao = new ArrayList<>();
+        List<Accounts> accounts = accountsRepository.findAll();
+        for (Accounts list : accounts) {
+            AccountDAO acc = new AccountDAO();
+            acc.setCode(list.getCode());
+            acc.setName(list.getName());
+            acc.setEmail(list.getEmail());
+            acc.setPhone(list.getPhone());
+            acc.setIsActive(list.getIsActive());
+            dao.add(acc);
+        }
+        return dao;
+    }
 }

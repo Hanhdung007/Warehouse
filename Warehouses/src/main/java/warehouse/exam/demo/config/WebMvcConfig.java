@@ -21,6 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/location/**")
                 .addPathPatterns("/warehouse/**")
                 .addPathPatterns("/qc/**")
+                .addPathPatterns("/auth/**")
                 .excludePathPatterns("/auth/login", "/auth/logout");
     }
 }

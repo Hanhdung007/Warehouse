@@ -58,9 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
-//                .antMatchers("/itemdata/index").hasAnyAuthority("admin", "saleorder", "qc", "warehousemanager", "employee")
-//                .antMatchers("/itemdata/create", "/itemdata/update").hasAnyAuthority("admin", "warehousemanager")
-//                .antMatchers("/itemdata/delete").hasAuthority("admin")
+                .antMatchers("/").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
@@ -85,5 +83,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
+
 
 }
