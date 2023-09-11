@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import warehouse.exam.demo.model.Accounts;
 
 import javax.servlet.http.HttpSession;
+import java.net.http.HttpHeaders;
 
 @Controller
 @RequestMapping("/auth")
@@ -46,6 +48,13 @@ public class AccountController {
             return "login/login";
         }
     }
+
+//    @GetMapping("/index")
+//    public String index(Model model){
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//
+//    }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {

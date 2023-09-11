@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 
@@ -42,4 +43,19 @@ public class AccountService implements UserDetailsService {
         List<GrantedAuthority> authorityList = new ArrayList<>();
         return new User(account.getName(), account.getPassword(), authorityList);
     }
+
+//    public List<AccountDAO> findAll() {
+//        List<AccountDAO> dao = new ArrayList<>();
+//        List<Accounts> accounts = accountsRepository.findAll();
+//        for (Accounts list : accounts) {
+//            AccountDAO acc = new AccountDAO();
+//            acc.setCode(list.getCode());
+//            acc.setName(list.getName());
+//            acc.setEmail(list.getEmail());
+//            acc.setPhone(list.getPhone());
+//            acc.setIsActive(list.getIsActive());
+//            dao.add(acc);
+//        }
+//        return dao;
+//    }
 }

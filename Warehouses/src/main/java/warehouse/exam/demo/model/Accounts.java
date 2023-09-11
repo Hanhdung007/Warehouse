@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -35,7 +34,7 @@ public class Accounts implements UserDetails {
     private String phone;
 //    @Basic
 //    @Column(name = "isActive")
-//    private String isActive;
+//    private Boolean isActive;
 
     public String getCode() {
         return code;
@@ -103,11 +102,10 @@ public class Accounts implements UserDetails {
         this.phone = phone;
     }
 
-//    public String getIsActive() {
+//    public Boolean getIsActive() {
 //        return isActive;
 //    }
-//
-//    public void setIsActive(String isActive) {
+//    public void setIsActive(Boolean isActive) {
 //        this.isActive = isActive;
 //    }
 

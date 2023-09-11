@@ -11,6 +11,7 @@ import warehouse.exam.demo.service.AccountService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,4 +52,9 @@ public class AccountAPIController {
             return ResponseEntity.status(401).body(responseMap);
         }
     }
+
+//    @GetMapping("/index")
+//    public ResponseEntity<List<AccountDAO>> index() {
+//        return ResponseEntity.ok(accountService.findAll());
+//    }
 }

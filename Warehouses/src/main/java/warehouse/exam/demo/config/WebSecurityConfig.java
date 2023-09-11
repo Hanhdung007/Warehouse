@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,12 +54,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable()
+        httpSecurity
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
+//                .antMatchers("/itemdata/index").hasAnyAuthority("admin", "saleorder", "qc", "warehousemanager", "employee")
+//                .antMatchers("/itemdata/create", "/itemdata/update").hasAnyAuthority("admin", "warehousemanager")
+//                .antMatchers("/itemdata/delete").hasAuthority("admin")
                 .anyRequest().permitAll()
                 .and()
-                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) -> {
                     Map<String, Object> responseMap = new HashMap<>();
                     ObjectMapper mapper = new ObjectMapper();
                     response.setStatus(401);
@@ -71,6 +75,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     response.getWriter().write(responseMsg);
                 })
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
     }
+
 }
