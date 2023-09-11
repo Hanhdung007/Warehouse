@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import warehouse.exam.demo.DAL.AccountDAO;
+import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 import warehouse.exam.demo.service.AccountService;
 import warehouse.exam.demo.util.JwtTokenUtil;
@@ -77,26 +78,5 @@ public class AccountAPIController {
             responseMap.put("message", "Something went wrong");
             return ResponseEntity.status(500).body(responseMap);
         }
-    }
-
-    @PostMapping("/api/logout")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> logout(HttpServletResponse response, HttpServletRequest request) {
-        // Đăng xuất khỏi phiên làm việc trên máy chủ
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        // Xóa cookie JSESSIONID
-        Cookie cookie = new Cookie("JSESSIONID", null);
-        String contextPath = request.getContextPath();
-        String cookiePath = StringUtils.hasText(contextPath) ? contextPath : "/";
-        cookie.setPath(cookiePath);
-        cookie.setMaxAge(0);
-        cookie.setSecure(request.isSecure());
-        response.addCookie(cookie);
-        // Xóa token
-        JwtTokenUtil.CookieUtil.clearToken(response);
-        return ResponseEntity.ok("Logged out successfully!");
     }
 }

@@ -33,4 +33,9 @@ public class AccountService implements UserDetailsService {
 //        authorityList.add(new SimpleGrantedAuthority("USER_ROLE"));
         return new User(account.getEmail(), account.getPassword(), authorityList);
     }
+
+//    @Autowired
+//    public void findByName(String name){
+//        accountsRepository.findAccountByName(name);
+//    }
 }

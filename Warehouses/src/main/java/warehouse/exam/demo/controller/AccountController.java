@@ -5,17 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
+import warehouse.exam.demo.reponsitory.AccountRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/auth")
@@ -27,6 +27,8 @@ public class AccountController {
     }
     @Autowired
     private HttpSession httpSession;
+    @Autowired
+    private AccountRepository accountRepository;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -71,16 +73,9 @@ public class AccountController {
         return null;
     }
 
-    @GetMapping("/logout")
-    public String logout() {
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                "http://localhost:9999/api/logout",
-                null,
-                String.class
-        );
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return "redirect:/auth/login";
-        }
-        return null;
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/login";
     }
 }
