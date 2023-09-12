@@ -32,10 +32,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-//    @Bean
-//    public BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
 //
 //    @Bean
 //    public DaoAuthenticationProvider authenticationProvider() {

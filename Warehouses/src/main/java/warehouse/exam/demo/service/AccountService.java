@@ -1,17 +1,18 @@
 package warehouse.exam.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +20,14 @@ import java.util.Optional;
 @Service
 public class AccountService implements UserDetailsService {
 
+    @Autowired
+    @Lazy
+    private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountsRepository;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(BCryptPasswordEncoder passwordEncoder, AccountRepository accountRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.accountsRepository = accountRepository;
     }
 
@@ -70,7 +75,7 @@ public class AccountService implements UserDetailsService {
         newAccounts.setCode(accountDAO.getCode());
         newAccounts.setName(accountDAO.getName());
         newAccounts.setEmail(accountDAO.getEmail());
-        newAccounts.setPassword(accountDAO.getPassword());
+        newAccounts.setPassword(passwordEncoder.encode(accountDAO.getPassword()));
         newAccounts.setPhone(accountDAO.getPhone());
         newAccounts.setIsActive(accountDAO.getIsActive());
 //        newAccounts.setRole(newAccounts.getRole());
@@ -81,12 +86,11 @@ public class AccountService implements UserDetailsService {
         return accountsRepository.findById(code).get();
     }
 
-    @Transactional
     public void updateAccountPassword(String accountCode, String newPassword) {
         Optional<Accounts> optionalAccount = accountsRepository.findById(accountCode);
         if (optionalAccount.isPresent()) {
             Accounts acc = optionalAccount.get();
-            acc.setPassword(newPassword);
+            acc.setPassword(passwordEncoder.encode(newPassword));
             accountsRepository.save(acc);
         }
     }

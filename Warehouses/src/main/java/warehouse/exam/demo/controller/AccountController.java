@@ -1,7 +1,6 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,6 +54,13 @@ public class AccountController {
 
     @GetMapping("/index")
     public String index(Model model) {
+        List<String> roleAccess = List.of("admin", "supper_admin");
+        List<String> roleOfUser = List.of("admin", "employee");
+        boolean isAccess = roleOfUser.stream().filter(roleAccess::contains) != null;
+        if(!isAccess){
+//            is no access
+            return "account/index";
+        }
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
             model.addAttribute("account", searchList);
@@ -99,26 +105,11 @@ public class AccountController {
         return "redirect:/auth/index";
     }
 
-    @PostMapping("/updatePassword/{code}")
-    public String updatePassword(@Nullable @RequestParam String changedPass, @RequestParam("code") String code, @RequestParam String newPassword) {
-        if (changedPass != null) {
-            accountService.updateAccountPassword(code, newPassword);
-            return "redirect:/auth/index";
-        } else {
-            return "auth/index";
-        }
+    @PostMapping(value ="/updatePassword/{code}")
+    public String updatePassword(@PathVariable("code") String code, @RequestParam("newPassword") String newPassword) {
+        accountService.updateAccountPassword(code, newPassword);
+        return "redirect:/auth/index";
     }
-
-//    @PostMapping("/accept/{id}")
-//    public String AcceptedQuantity(@Nullable @RequestParam String accept, @Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput) {
-//        if (accept != null) {
-//            qcService.AcceptQuantity(id, quantityInput);
-//        } else if (inject != null) {
-//            qcService.InjectQuantity(id);
-//        }
-//        return "redirect:/qc/index";
-//    }
-
 
 //    @GetMapping("/index")
 //    public String index(Model model, HttpSession session) {

@@ -1,18 +1,32 @@
 package warehouse.exam.demo.model;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Roles {
-    @Basic
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id")
     private int id;
     @Basic
     @Column(name = "role_name")
     private String roleName;
+    @OneToMany(mappedBy = "rolesByRoleId")
+    private Collection<AccountsRoles> accountsRolesById;
+    @ManyToMany(mappedBy = "roles")
+    private Set<Accounts> accounts = new HashSet<>();
+
+    public Set<Accounts> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Set<Accounts> accounts) {
+        this.accounts = accounts;
+    }
 
     public int getId() {
         return id;
@@ -41,5 +55,13 @@ public class Roles {
     @Override
     public int hashCode() {
         return Objects.hash(id, roleName);
+    }
+
+    public Collection<AccountsRoles> getAccountsRolesById() {
+        return accountsRolesById;
+    }
+
+    public void setAccountsRolesById(Collection<AccountsRoles> accountsRolesById) {
+        this.accountsRolesById = accountsRolesById;
     }
 }

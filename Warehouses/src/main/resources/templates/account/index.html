@@ -83,29 +83,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <td th:text="${list.isActive}"
                                                 th:class="${list.isActive == true ? 'text-green' : 'text-red'}">>
                                             </td>
-                                            <!--                                            <td th:text="${list.role}"-->
-                                            <!--                                            </td>-->
                                             <td>
                                                 <a th:href="'/auth/edit/' + ${list.code}"
                                                    class="btn btn-outline-primary mb-3">
                                                     Update
                                                 </a>
-                                                <button type="button"
-                                                        class="btn btn-info md-3"
+                                                <a type="button"
+                                                   style="color:#1bd4a6"
+                                                        class="btn btn-outline-info mb-3"
                                                         data-toggle="modal"
                                                         th:data-target="'#myModal-'+${list.getCode()}">
-                                                    Change Your Password
-                                                </button>
+                                                    Change Password
+                                                </a>
                                             </td>
-                                            <!-- Modal for Change Password -->
-                                            <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
-                                                 aria-labelledby="changePasswordModalLabel"
-                                                 th:id="@{|myModal-${list.getCode()}|}" aria-hidden="true">
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="@{|myModal-${list.getCode()}|}"
+                                                 id="exampleModal" tabindex="-1" role="dialog"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="changePasswordModalLabel">Change
-                                                                Password</h5>
+                                                            <h5 class="modal-title" id="exampleModalLabel">Change
+                                                                Password Section</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -114,87 +113,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                         <div class="modal-body">
                                                             <form th:action="@{/auth/updatePassword/{code}(code=${list.getCode()})}"
                                                                   method="post" th:id="@{|form-${list.getCode()}|}">
-                                                                <!-- Input for new password -->
-                                                                <div class="form-group">
-                                                                    <label for="newPassword">Change Password</label>
-                                                                    <input type="password" class="form-control"
-                                                                           id="newPassword" name="newPassword"
-                                                                           placeholder="Enter Your Password You Want To Change...">
-                                                                </div>
-                                                                <!-- Hidden input to pass account code -->
                                                                 <input name="id" th:value="${list.getCode()}"
                                                                        type="hidden"/>
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label">Password:</label>
+                                                                    <input type="password" class="form-control"
+                                                                           th:text="${list.password}"
+                                                                           name="newPassword"
+                                                                           placeholder="Enter Your Password You Want To Change..." required>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-outline-danger"
+                                                                            data-dismiss="modal">Cancel
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-outline-success">
+                                                                        Confirm
+                                                                    </button>
+                                                                </div>
                                                             </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline-danger"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                            <button class="btn btn-outline-success acceptButton"
-                                                                    th:attr="onclick='code(\'' + *{list.code} + '\')'"
-                                                                    name="changedPass">
-                                                                Change Password
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!--                                            <div class="modal fade" th:id="@{|myModal-${list.getCode()}|}">-->
-                                            <!--                                                <div class="modal-dialog modal-dialog-centered">-->
-                                            <!--                                                    <div class="modal-content">-->
-                                            <!--                                                        &lt;!&ndash; Modal Header &ndash;&gt;-->
-                                            <!--                                                        <div class="modal-header">-->
-                                            <!--                                                            <h5 class="modal-title" style="display: block;font-size: 1.5em;-->
-                                            <!--                                                             color: black"-->
-                                            <!--                                                            >Item Quality Control Section</h5>-->
-                                            <!--                                                            <button type="button" class="close" data-dismiss="modal">-->
-                                            <!--                                                                &times;-->
-                                            <!--                                                            </button>-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                        &lt;!&ndash; Modal body &ndash;&gt;-->
-                                            <!--                                                        <div class="modal-body">-->
-                                            <!--                                                            <form th:action="@{/account/updatePassword/{code}(code=${list.getCode()})}"-->
-                                            <!--                                                                  method="post" th:id="@{|form-${list.getCode()}|}">-->
-                                            <!--                                                                <input name="id" th:value="${list.getCode()}"-->
-                                            <!--                                                                       type="hidden"/>-->
-                                            <!--                                                                <label style="display: block; color: black">Current-->
-                                            <!--                                                                    Quantity:-->
-                                            <!--                                                                    <span class="itemQuantity"-->
-                                            <!--                                                                          th:text="${list.password}"-->
-                                            <!--                                                                          style="display: block;font-size: 1.4em;color: black">-->
-                                            <!--                                                                </span>-->
-                                            <!--                                                                </label>-->
-                                            <!--                                                                <p class="modal-title" style="display: block;-->
-                                            <!--                                                            font-size: 1.0em;color: black">-->
-                                            <!--                                                                    Enter Item Quantity For QC-->
-                                            <!--                                                                </p>-->
-                                            <!--                                                                <div class="ef">-->
-                                            <!--                                                                    <input class="effect-21 item4QC" type="number"-->
-                                            <!--                                                                           name="quantityInput"-->
-                                            <!--                                                                           placeholder="Enter Item Quantity..."-->
-                                            <!--                                                                           required>-->
-                                            <!--                                                                    <span class="focus-border"><i></i></span>-->
-                                            <!--                                                                </div>-->
-                                            <!--                                                                <div class="quantityCheck checkQuantity"></div>-->
-                                            <!--                                                                <br>-->
-                                            <!--                                                                <div class="d-flex justify-content-end">-->
-                                            <!--                                                                    <button class="btn btn-outline-success acceptButton"-->
-                                            <!--                                                                            th:attr="onclick=${'checkQC('+item.getId()+')'}"-->
-                                            <!--                                                                            name="accept">-->
-                                            <!--                                                                        Accept-->
-                                            <!--                                                                    </button>-->
-                                            <!--                                                                    <button class="btn btn-outline-danger ml-2 injectButton"-->
-                                            <!--                                                                            th:attr="onclick=${'checkQC('+item.getId()+')'}"-->
-                                            <!--                                                                            name="inject">-->
-                                            <!--                                                                        Inject-->
-                                            <!--                                                                    </button>-->
-                                            <!--                                                                </div>-->
-                                            <!--                                                            </form>-->
-                                            <!--                                                        </div>-->
-                                            <!--                                                    </div>-->
-                                            <!--                                                </div>-->
-                                            <!--                                            </div>-->
                                         </tr>
                                         </tbody>
                                     </table>
