@@ -1,6 +1,7 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,12 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.AccountDAO;
-import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.service.AccountService;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -92,7 +91,7 @@ public class AccountController {
     }
 
     @PostMapping("/edit")
-    public String update(AccountDAO accountDAO, BindingResult bindingResult){
+    public String update(AccountDAO accountDAO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "/account/edit";
         }
@@ -100,11 +99,25 @@ public class AccountController {
         return "redirect:/auth/index";
     }
 
-    @PostMapping("/updatePassword")
-    public String updatePassword(@RequestParam("code") String code, @RequestParam("newPassword") String newPassword) {
-        accountService.updateAccountPassword(code, newPassword);
-        return "redirect:/auth/index";
+    @PostMapping("/updatePassword/{code}")
+    public String updatePassword(@Nullable @RequestParam String changedPass, @RequestParam("code") String code, @RequestParam String newPassword) {
+        if (changedPass != null) {
+            accountService.updateAccountPassword(code, newPassword);
+            return "redirect:/auth/index";
+        } else {
+            return "auth/index";
+        }
     }
+
+//    @PostMapping("/accept/{id}")
+//    public String AcceptedQuantity(@Nullable @RequestParam String accept, @Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput) {
+//        if (accept != null) {
+//            qcService.AcceptQuantity(id, quantityInput);
+//        } else if (inject != null) {
+//            qcService.InjectQuantity(id);
+//        }
+//        return "redirect:/qc/index";
+//    }
 
 
 //    @GetMapping("/index")
