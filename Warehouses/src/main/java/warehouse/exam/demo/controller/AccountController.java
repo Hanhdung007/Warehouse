@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.AccountDAO;
+import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.service.AccountService;
 
@@ -91,7 +92,7 @@ public class AccountController {
     }
 
     @PostMapping("/edit")
-    public String update(@ModelAttribute AccountDAO accountDAO, BindingResult bindingResult) throws IOException {
+    public String update(AccountDAO accountDAO, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "/account/edit";
         }

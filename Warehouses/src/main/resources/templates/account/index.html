@@ -103,7 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form th:action="'/auth/updatePassword/' + ${list.code}" method="post">
+                                                            <form th:action="'/auth/updatePassword' + ${list.code}" method="post">
                                                             <!-- Input for new password -->
                                                                 <div class="form-group">
                                                                     <label for="newPassword">Change Password</label>
@@ -114,8 +114,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-outline-success">Save Changes</button>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -91,9 +91,9 @@ public class AccountService implements UserDetailsService {
         }
     }
 
-    public void updateAccount(AccountDAO dao) {
+    public Accounts updateAccount(AccountDAO dao) {
         Optional<Accounts> accounts = accountsRepository.findById(dao.getCode());
-        if (!accounts.isPresent()) {
+        if (accounts.isPresent()) {
             Accounts acc = accounts.get();
             if (dao.getCode() != null) {
                 acc.setCode(dao.getCode());
@@ -110,7 +110,9 @@ public class AccountService implements UserDetailsService {
             if (dao.getIsActive() != null) {
                 acc.setIsActive(dao.getIsActive());
             }
-            accountsRepository.save(acc);
+            return accountsRepository.save(acc);
+        } else{
+            throw new RuntimeException("Can not find account with = " + dao.getCode());
         }
     }
 }
