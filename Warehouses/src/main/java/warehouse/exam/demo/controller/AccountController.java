@@ -1,33 +1,20 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.AccountDAO;
-import warehouse.exam.demo.DAL.importDAO;
-import warehouse.exam.demo.DAL.itemdataDAO;
 import warehouse.exam.demo.model.Accounts;
-
-import javax.servlet.http.HttpSession;
-import org.springframework.http.HttpHeaders;
-import warehouse.exam.demo.model.Importorders;
-import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.service.AccountService;
 
-import java.io.File;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -59,7 +46,7 @@ public class AccountController {
             String username = authentication.getName();
             session.setAttribute("username", username);
             session.setAttribute("loggedInUser", true);
-            return "redirect:/itemdata/index";
+            return "redirect:/auth/index";
         } catch (AuthenticationException ex) {
             model.addAttribute("errorMessage", "Invalid Email Or Password!");
             return "login/login";
@@ -104,10 +91,20 @@ public class AccountController {
     }
 
     @PostMapping("/edit")
-    public String update(@ModelAttribute AccountDAO accountDAO, @PathVariable("code") String code) throws IOException {
-        accountService.updateAccount(accountDAO, code);
+    public String update(@ModelAttribute AccountDAO accountDAO, BindingResult bindingResult) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "/account/edit";
+        }
+        accountService.updateAccount(accountDAO);
         return "redirect:/auth/index";
     }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(@RequestParam("code") String code, @RequestParam("newPassword") String newPassword) {
+        accountService.updateAccountPassword(code, newPassword);
+        return "redirect:/auth/index";
+    }
+
 
 //    @GetMapping("/index")
 //    public String index(Model model, HttpSession session) {

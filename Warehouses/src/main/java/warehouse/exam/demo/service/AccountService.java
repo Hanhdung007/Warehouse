@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.AccountDAO;
-import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.model.Accounts;
-import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -70,6 +70,7 @@ public class AccountService implements UserDetailsService {
         newAccounts.setCode(accountDAO.getCode());
         newAccounts.setName(accountDAO.getName());
         newAccounts.setEmail(accountDAO.getEmail());
+        newAccounts.setPassword(accountDAO.getPassword());
         newAccounts.setPhone(accountDAO.getPhone());
         newAccounts.setIsActive(accountDAO.getIsActive());
 //        newAccounts.setRole(newAccounts.getRole());
@@ -80,14 +81,36 @@ public class AccountService implements UserDetailsService {
         return accountsRepository.findById(code).get();
     }
 
-    public Accounts updateAccount(AccountDAO dao, String code) {
-        Accounts accounts = accountsRepository.findById(code).get();
-        accounts.setCode(dao.getCode());
-        accounts.setName(dao.getName());
-        accounts.setEmail(dao.getEmail());
-        accounts.setPhone(dao.getPhone());
-        accounts.setIsActive(dao.getIsActive());
-//        accounts.setRole(dao.getRole());
-        return accountsRepository.save(accounts);
+    @Transactional
+    public void updateAccountPassword(String accountCode, String newPassword) {
+        Optional<Accounts> optionalAccount = accountsRepository.findById(accountCode);
+        if (optionalAccount.isPresent()) {
+            Accounts acc = optionalAccount.get();
+            acc.setPassword(newPassword);
+            accountsRepository.save(acc);
+        }
+    }
+
+    public void updateAccount(AccountDAO dao) {
+        Optional<Accounts> accounts = accountsRepository.findById(dao.getCode());
+        if (!accounts.isPresent()) {
+            Accounts acc = accounts.get();
+            if (dao.getCode() != null) {
+                acc.setCode(dao.getCode());
+            }
+            if (dao.getName() != null) {
+                acc.setName(dao.getName());
+            }
+            if (dao.getEmail() != null) {
+                acc.setEmail(dao.getEmail());
+            }
+            if (dao.getPhone() != null) {
+                acc.setPhone(dao.getPhone());
+            }
+            if (dao.getIsActive() != null) {
+                acc.setIsActive(dao.getIsActive());
+            }
+            accountsRepository.save(acc);
+        }
     }
 }

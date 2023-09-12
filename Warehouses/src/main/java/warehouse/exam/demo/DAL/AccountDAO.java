@@ -20,6 +20,7 @@ public class AccountDAO {
         this.code = accounts.getCode();
         this.name = accounts.getName();
         this.email = accounts.getEmail();
+//        this.password = accounts.getPassword();
         this.phone = accounts.getPhone();
         this.isActive = accounts.getIsActive();
 //        this.role = accounts.getRole();

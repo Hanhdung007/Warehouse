@@ -11,6 +11,8 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Accounts, String> {
     Accounts findAccountsByEmail(String email);
 
+    Accounts findAccountsByCode(String code);
+
     @Query("SELECT NEW warehouse.exam.demo.DAL.AccountDAO(account) FROM Accounts account WHERE account.code LIKE %:keyword% OR account.name LIKE %:keyword% OR account.email LIKE %:keyword% OR account.phone LIKE %:keyword%")
     List<AccountDAO> searchAllAccount(@Param("keyword") String keyword);
 }
