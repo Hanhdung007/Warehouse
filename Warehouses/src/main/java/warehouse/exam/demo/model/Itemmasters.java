@@ -75,8 +75,20 @@ public class Itemmasters implements Serializable {
     private Double quantity;
     @Column(name = "qc_accept_quantity")
     private Double qcAcceptQuantity;
+    @Column(name = "qc_inject_quantity")
+    private Double qcInjectQuantity;
     @Column(name = "book_qty")
     private Double bookQty;
+
+    @Size(max = 255)
+    @Column(name = "qc_by")
+    private String qcBy;
+    @Column(name = "disable")
+    private Boolean disable;
+
+    @Column(name = "pass")
+    private Boolean pass;
+
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;
@@ -157,6 +169,14 @@ public class Itemmasters implements Serializable {
         this.qcAcceptQuantity = qcAcceptQuantity;
     }
 
+    public Double getQcInjectQuantity(){
+        return qcInjectQuantity;
+    }
+
+    public void setQcInjectQuantity(Double qcInjectQuantity) {
+        this.qcInjectQuantity = qcInjectQuantity;
+    }
+
     public String getQcBy() {
         return qcBy;
     }
@@ -189,6 +209,22 @@ public class Itemmasters implements Serializable {
         this.supId = supId;
     }
 
+    public Boolean getDisable(){
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
+
+    public Boolean getPass(){
+        return pass;
+    }
+
+    public void setPass(Boolean pass) {
+        this.pass = pass;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -213,7 +249,4 @@ public class Itemmasters implements Serializable {
     public String toString() {
         return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
     }
-
-    
-
 }

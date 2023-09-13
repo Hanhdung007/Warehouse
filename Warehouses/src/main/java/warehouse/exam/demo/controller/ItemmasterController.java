@@ -34,8 +34,10 @@ import warehouse.exam.demo.DAL.itemmasterDAO;
 // import warehouse.exam.demo.service.IetmmasterService;
 
 import java.text.ParseException;
+import java.util.Optional;
 import warehouse.exam.demo.model.Orders;
 import warehouse.exam.demo.reponsitory.OrdersRepository;
+
 
 /**
  *
@@ -65,7 +67,7 @@ public class ItemmasterController {
 
     @GetMapping("/picklist/{id}")
     public String picklist(Model model, @PathVariable(value = "id") int id) {
-        Itemmasters item = service.findOne(id);
+        Optional<Itemmasters> item = service.findOne(id);
         model.addAttribute("item", item);
         model.addAttribute("location", locService.pickListLocation());
         return "itemmaster/pickList";
