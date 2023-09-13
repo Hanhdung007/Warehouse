@@ -77,6 +77,15 @@ public class Itemmasters implements Serializable {
     private Double qcAcceptQuantity;
     @Column(name = "book_qty")
     private Double bookQty;
+<<<<<<< Updated upstream
+=======
+    @Column(name = "disable")
+    private Boolean disable;
+
+    @Column(name = "pass")
+    private Boolean pass;
+
+>>>>>>> Stashed changes
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;

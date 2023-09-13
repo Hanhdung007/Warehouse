@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.DAL;
 
+<<<<<<< Updated upstream
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.model.Locations;
+=======
+import java.util.Date;
+import warehouse.exam.demo.model.Itemmasters;
+>>>>>>> Stashed changes
 
 /**
  *
