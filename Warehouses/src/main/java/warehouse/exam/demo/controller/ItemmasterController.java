@@ -34,6 +34,8 @@ import warehouse.exam.demo.DAL.itemmasterDAO;
 // import warehouse.exam.demo.service.IetmmasterService;
 
 import java.text.ParseException;
+import warehouse.exam.demo.model.Orders;
+import warehouse.exam.demo.reponsitory.OrdersRepository;
 
 /**
  *
@@ -54,6 +56,7 @@ public class ItemmasterController {
     @Autowired
     allocateRepository AllocateOrderReponsitory;
 
+    
     @GetMapping("/unallocate")
     public String unallocate(Model model) {
         model.addAttribute("list", service.unallocate());
@@ -98,17 +101,4 @@ public class ItemmasterController {
         model.addAttribute("list", service.getAll());
         return "itemaster/index";
     }
-
-//    @GetMapping("/create/{id}")
-//    public String create(@PathVariable int id, Model model){
-//        model.addAttribute("idImport", id);
-//        model.addAttribute("item", new itemmasterDAO());
-//        return "import/createItem";
-//    }
-//
-//    @PostMapping("/create")
-//    public String create(@ModelAttribute itemmasterDAO item, Model model){
-//        service.saveItemMaster(item, item.getIdImport());
-//        return "redirect:/import/index";
-//    }
 }

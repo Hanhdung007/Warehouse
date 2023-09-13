@@ -25,6 +25,7 @@ public class LogService {
         List<Log> log = logService.findAll();
         for (Log lg : log) {
             logDAO logdao = new logDAO();
+            logdao.setId(lg.getId());
             logdao.setItemName(lg.getItemmasterId().getCodeItemdata().getName());
             logdao.setLocationName(lg.getLocationName());
             logdao.setRecieveNo(lg.getItemmasterId().getRecieveNo());

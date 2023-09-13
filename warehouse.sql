@@ -75,7 +75,8 @@ CREATE TABLE [issue_orders] (
   [issue_dated] datetime,
   [issue_reason] nvarchar(255),
   [submitBy] nvarchar(255),
-  [issue_active] bit
+  [issue_active] bit, 
+
 )
 GO
 Drop table Customers(

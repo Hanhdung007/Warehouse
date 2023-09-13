@@ -120,9 +120,7 @@
                                                          th:data-content="${order.status}"
                                                          th:class="${(order.status == 'New Order') ? 'progress-bar progress-bar-striped progress-bar-animated' : ((order.status == 'Pending') ? 'progress-bar progress-bar-striped bg-warning progress-bar-animated' : ((order.status == 'Complete') ? 'progress-bar progress-bar-striped bg-success progress-bar-animated' : 'progress-bar progress-bar-striped bg-danger progress-bar-animated'))}">
                                                     </div>
-                                                </div>
-
-                                            </td>
+                                                </div> </td>
                                             <td> 
                                                 <a class="details-link" th:data-id="${order.orderCode}" title="Details Order">
                                                     <i class="fa fa-eye"></i>
@@ -136,8 +134,8 @@
                                                     <i class="fa fa-share-square-o"></i>
                                                 </a>
 
-                                                <a class="check-link" th:data-id="${order.orderCode}" title="Complete The Order" th:if="${order.status != 'New Order' && order.status != 'Cancelled Order' && order.status != 'Complete'}">
-                                                    <i class="fa fa-check check-icon"></i>
+                                                <a class="check-stock" th:href="'/inventory/checkStock/'+${order.orderCode}" title="Complete The Order" th:if="${order.status != 'New Order' && order.status != 'Cancelled Order' && order.status != 'Complete'}">
+                                                    <i class="fa fa-navicon" ></i> 
                                                 </a>
 
                                                 <a class="cancelled-link" th:data-id="${order.orderCode}" title="Cancelled Order" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
@@ -306,14 +304,14 @@
                     }
 
                     // Sự kiện khi nhấp vào biểu tượng "check"
-                    $('#orderstable tbody').on('click', '.check-link', function () {
-                        var orderCode = $(this).data('id');
-                        // Hiển thị hộp thoại confirm
-                        if (confirm("Are you sure you want to complete this order?")) {
-                            // Nếu người dùng đồng ý, tiến hành hủy đơn hàng
-                            completeOrder(orderCode);
-                        }
-                    });
+//                    $('#orderstable tbody').on('click', '.check-link', function () {
+//                        var orderCode = $(this).data('id');
+//                        // Hiển thị hộp thoại confirm
+//                        if (confirm("Are you sure you want to complete this order?")) {
+//                            // Nếu người dùng đồng ý, tiến hành hủy đơn hàng
+//                            completeOrder(orderCode);
+//                        }
+//                    });
 
                     function completeOrder(orderCode) {
                         $.ajax({
