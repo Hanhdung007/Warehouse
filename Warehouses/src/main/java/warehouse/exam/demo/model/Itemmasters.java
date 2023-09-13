@@ -62,6 +62,8 @@ public class Itemmasters implements Serializable {
     private String note;
     @Column(name = "qc_accept_quantity")
     private Double qcAcceptQuantity;
+    @Column(name = "qc_inject_quantity")
+    private Double qcInjectQuantity;
     @Column(name = "book_qty")
     private Double bookQty;
     @Size(max = 255)
@@ -152,6 +154,14 @@ public class Itemmasters implements Serializable {
         this.qcAcceptQuantity = qcAcceptQuantity;
     }
 
+    public Double getQcInjectQuantity(){
+        return qcInjectQuantity;
+    }
+
+    public void setQcInjectQuantity(Double qcInjectQuantity) {
+        this.qcInjectQuantity = qcInjectQuantity;
+    }
+
     public String getQcBy() {
         return qcBy;
     }
@@ -224,5 +234,4 @@ public class Itemmasters implements Serializable {
     public String toString() {
         return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
     }
-
 }

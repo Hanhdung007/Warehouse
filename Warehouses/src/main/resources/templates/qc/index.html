@@ -51,6 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <th scope="col">Item's Name</th>
                                             <th scope="col">Quantity</th>
                                             <th scope="col">Accept Quantity</th>
+                                            <th scope="col">Inject Quantity</th>
                                             <th scope="col">QC By</th>
                                             <th scope="col">Receive No</th>
                                             <th scope="col">Date Imported</th>
@@ -59,11 +60,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                        <tr th:each="item:${list}">
+                                        <tr th:if="${item.quantity} != ${item.qcAcceptQuantity + item.qcInjectQuantity}" th:each="item:${list}">
                                             <td th:text="${item.codeItemdata}"></td>
                                             <td th:text="${item.quantity}"></td>
                                             <td th:text="${item.qcAcceptQuantity}"></td>
+                                            <td th:text="${item.qcInjectQuantity}"></td>
                                             <td th:text="${item.qcBy}"></td>
                                             <td th:text="${item.recieveNo}"></td>
                                             <td th:text="${item.dateImport}"></td>
@@ -97,7 +98,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                                        type="hidden"/>
                                                                 <label style="display: block; color: black">Current
                                                                     Quantity:
-                                                                    <span class="itemQuantity" th:text="${item.quantity}"
+                                                                    <span class="itemQuantity" th:text="${item.quantity - (item.qcAcceptQuantity + (item.qcInjectQuantity != null ? item.qcInjectQuantity : 0) )}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <label style="display: block; color: black" th:if="${item.qcAcceptQuantity} > 0.0">Accept
+                                                                    Quantity:
+                                                                    <span class="itemQuantityAccept" th:text="${item.qcAcceptQuantity}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <label style="display: block; color: black" th:if="${item.qcInjectQuantity} > 0.0">Inject
+                                                                    Quantity:
+                                                                    <span class="itemQuantityAccept" th:text="${item.qcInjectQuantity}"
                                                                           style="display: block;font-size: 1.4em;color: black">
                                                                 </span>
                                                                 </label>

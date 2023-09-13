@@ -23,7 +23,7 @@ public interface ItemmasterRepository extends JpaRepository<Itemmasters, Integer
     @Query("SELECT o From Itemmasters o where o.qcBy != '' and o.locationCode = '' and o.qcAcceptQuantity > o.bookQty")
     List<Itemmasters> GetUnAllocated();
 
-    @Query("SELECT NEW warehouse.exam.demo.DAL.itemmasterDAO(item) FROM Itemmasters item WHERE CAST(item.quantity AS string) LIKE %:keyword% OR item.codeItemdata.name LIKE %:keyword% OR item.qcBy LIKE %:keyword% OR CAST(item.qcAcceptQuantity AS string) LIKE %:keyword% OR item.recieveNo LIKE %:keyword% OR item.note LIKE %:keyword%")
+    @Query("SELECT NEW warehouse.exam.demo.DAL.itemmasterDAO(item) FROM Itemmasters item WHERE CAST(item.quantity AS string) LIKE %:keyword% OR item.codeItemdata.name LIKE %:keyword% OR item.qcBy LIKE %:keyword% OR CAST(item.qcAcceptQuantity AS string) LIKE %:keyword% OR CAST(item.qcInjectQuantity AS string) LIKE %:keyword% OR item.recieveNo LIKE %:keyword% OR item.note LIKE %:keyword%")
     List<itemmasterDAO> searchAllItem(@Param("keyword") String keyword);
     Itemmasters findByLocationCode(String locationCode);
 }

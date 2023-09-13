@@ -50,17 +50,10 @@ public class QCController {
             qcService.AcceptQuantity(id, quantityInput);
         }
         else if(inject != null){
-            qcService.InjectQuantity(id);
+            qcService.InjectQuantity(id, quantityInput);
         }
         return "redirect:/qc/index";
     }
-
-    @PostMapping("/inject/{id}")
-    public String InjectQuantity(@RequestParam int id){
-        qcService.InjectQuantity(id);
-        return "redirect:/qc/index";
-    }
-
 
 //    private final String qcUrl = "http://localhost:9999/api/qc";
 //

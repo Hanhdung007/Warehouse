@@ -14,6 +14,7 @@ import warehouse.exam.demo.reponsitory.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author DUNG
@@ -109,8 +110,8 @@ public class ItemmasterService {
         return imMasterRepositoty.save(item);
     }
 
-    public Itemmasters findOne(int code) {
-        return imMasterRepositoty.findById(code).get();
+    public Optional<Itemmasters> findOne(int code) {
+        return imMasterRepositoty.findById(code);
     }
 
     public Itemmasters update(int id, itemmasterDAO updateItem) {

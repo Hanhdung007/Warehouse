@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.itemmasterDAO;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class QCService {
             imtDao.setCodeItemdata(im.getCodeItemdata().getName());
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
+            imtDao.setQcInjectQuantity(im.getQcInjectQuantity());
             imtDao.setQcBy(im.getQcBy());
             imtDao.setQuantity(im.getQuantity());
             imtDao.setRecieveNo(im.getRecieveNo());
@@ -39,23 +41,26 @@ public class QCService {
 
     public void AcceptQuantity(int id, int quantityInput) {
         Optional<Itemmasters> itemMaster = imMasterRepositoty.findById(id);
-        if(itemMaster.isPresent()) {
+        if (itemMaster.isPresent()) {
             Itemmasters newItem = itemMaster.get();
-            Double quantityInject = newItem.getQuantity() - quantityInput;
             Double quantityAccept = newItem.getQcAcceptQuantity() + quantityInput;
             boolean newPass = true;
-            newItem.setQuantity(quantityInject);
+
             newItem.setQcAcceptQuantity(quantityAccept);
             newItem.setPass(newPass);
             imMasterRepositoty.save(newItem);
         }
     }
 
-    public void InjectQuantity(int id){
+    public void InjectQuantity(int id, int quantityInput) {
         Optional<Itemmasters> itemmasters = imMasterRepositoty.findById(id);
-        if(itemmasters.isPresent()){
+        if (itemmasters.isPresent()) {
             Itemmasters item = itemmasters.get();
-            item.setPass(false);
+            Double quantityInject = item.getQcInjectQuantity() + quantityInput;
+            boolean newPass = false;
+
+            item.setQcInjectQuantity(quantityInject);
+            item.setPass(newPass);
             imMasterRepositoty.save(item);
         }
     }
