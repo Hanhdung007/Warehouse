@@ -38,6 +38,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <th scope="col">Date Imported</th>
                                     <th scope="col">QC by</th>
                                     <th scope="col">Accept</th>
+                                    <th scope="col">Inject</th>
                                     <th scope="col">Note</th>
                                     <th scope="col" class="hide-action">Action</th>
                                 </tr>
@@ -52,6 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <td th:text="${item.dateImport}"></td>
                                     <td th:text="${item.qcBy}"></td>
                                     <td th:text="${item.qcAcceptQuantity}"></td>
+                                    <td th:text="${item.qcInjectQuantity}"></td>
                                     <td th:text="${item.note}"></td>
                                     <td>
                                         <button th:if="${!item.disable}" id="hideButton" type="button"

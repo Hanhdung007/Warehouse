@@ -102,6 +102,7 @@ public class ItemmasterService {
 //          item.setLocationCode(itemmasterDAO.);
         item.setNote(itemDAO.getNote());
         item.setQcAcceptQuantity(itemDAO.getQcAcceptQuantity());
+        item.setQcInjectQuantity(itemDAO.getQcInjectQuantity());
         item.setQcBy(itemDAO.getQcBy());
         item.setRecieveNo(itemDAO.getRecieveNo());
         item.setSupId(supReponsitory.findBySupName(itemDAO.getSupplierName()));
