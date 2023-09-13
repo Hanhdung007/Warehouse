@@ -15,18 +15,9 @@ public class Roles {
     @Basic
     @Column(name = "role_name")
     private String roleName;
-    @OneToMany(mappedBy = "rolesByRoleId")
+    @OneToMany(mappedBy = "roleId") // Sử dụng tên thuộc tính chính xác trong AccountsRoles
     private Collection<AccountsRoles> accountsRolesById;
-    @ManyToMany(mappedBy = "roles")
-    private Set<Accounts> accounts = new HashSet<>();
 
-    public Set<Accounts> getAccounts() {
-        return accounts;
-    }
-
-    public void setAccounts(Set<Accounts> accounts) {
-        this.accounts = accounts;
-    }
 
     public int getId() {
         return id;

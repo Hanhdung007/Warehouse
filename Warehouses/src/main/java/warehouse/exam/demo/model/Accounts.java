@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @NoArgsConstructor
@@ -34,21 +33,10 @@ public class Accounts implements UserDetails {
     @Basic
     @Column(name = "is_active")
     private Boolean isActive;
-    @ManyToMany
-    @JoinTable(
-            name = "accounts_roles",
-            joinColumns = @JoinColumn(name = "account_code"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Roles> roles = new HashSet<>();
-
-    public Set<Roles> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Roles> roles) {
-        this.roles = roles;
-    }
+    @lombok.Setter
+    @lombok.Getter
+    @OneToMany(mappedBy = "accountsByAccountCode")
+    private Collection<AccountsRoles> accountsRolesById;
 
     public String getCode() {
         return code;
@@ -78,6 +66,7 @@ public class Accounts implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
     @Override
     public String getUsername() {
         return email;
@@ -122,6 +111,7 @@ public class Accounts implements UserDetails {
     public Boolean getIsActive() {
         return isActive;
     }
+
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
+import warehouse.exam.demo.model.AccountsRoles;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ public class AccountService implements UserDetailsService {
             acc.setEmail(list.getEmail());
             acc.setPhone(list.getPhone());
             acc.setIsActive(list.getIsActive());
+//            acc.setAccountCode(String.join(", ", list.getAccountsRolesById().stream().map(AccountsRoles::getAccountCode).toList()));
+            acc.setAccountCode(String.join(", ", list.getAccountsRolesById().stream().map(accountsRoles -> accountsRoles.getRolesByRolesId().getRoleName()).toList()));
             dao.add(acc);
         }
         return dao;
@@ -78,7 +81,7 @@ public class AccountService implements UserDetailsService {
         newAccounts.setPassword(passwordEncoder.encode(accountDAO.getPassword()));
         newAccounts.setPhone(accountDAO.getPhone());
         newAccounts.setIsActive(accountDAO.getIsActive());
-//        newAccounts.setRole(newAccounts.getRole());
+        newAccounts.setAccountsRolesById(newAccounts.getAccountsRolesById());
         return accountsRepository.save(newAccounts);
     }
 
