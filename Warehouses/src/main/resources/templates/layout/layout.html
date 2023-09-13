@@ -26,11 +26,11 @@
         <link rel="stylesheet" th:href="@{/assets/css/responsive.css}"> 
 
         <script th:src="@{/assets/js/vendor/modernizr-2.8.3.min.js}"></script>
-        <script th:src="@{/devExtreme/js/dx.all.js}"></script>
-        <script th:src="@{/devExtreme/js/FileSaver.js}"></script>
-        <script th:src="@{/devExtreme/js/exceljs.js}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
         <script th:src="@{/devExtreme/js/jspdf.umd.min.js}"></script>
         <script th:src="@{/devExtreme/js/jspdf.plugin.autotable.min.js}" type="text/javascript"></script>
+        <script th:src="@{/devExtreme/js/dx.all.js}"></script>
         <link rel="stylesheet" th:href="@{/devExtreme/css/dx.light.css}"> 
     </head>
 
@@ -57,13 +57,15 @@
                         <nav>
                             <ul class="metismenu" id="menu">
                                 <li id="dashboard" class="active">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Home</span></a>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-home"></i><span>Home</span></a>
                                     <ul class="collapse">
-                                        <li class="active"><a href="#">Warehouse System</a></li>                                                                          
+                                        <li class="active"><a href="#">Warehouse System</a></li>    
+                                         <li><a href="/inventory">Warehouse Inventory</a></li>      
+                                         <li><a href="/logs">Transactions Logs</a></li>   
                                     </ul>
                                 </li>
                                 <li id="allocate">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Allocate</span></a>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-archive"></i><span>Allocate</span></a>
                                     <ul class="collapse">
                                         <li><a href="/allocate/requests">Allocate Request</a></li>                                      
                                         <li><a href="/itemmaster/unallocate">Unallocate</a></li>
@@ -76,13 +78,13 @@
                                     </ul>
                                 </li>
                                 <li id="user">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>User</span></a>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-users"></i><span>User</span></a>
                                     <ul class="collapse">
                                         <li><a href="#">User Management</a></li>                                                                            
                                     </ul>
                                 </li>
                                 <li id="settings">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>General Settings</span></a>
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-gear"></i><span>General Settings</span></a>
                                     <ul class="collapse">
                                         <li><a href="#">Warehouse</a></li>
                                         <li><a href="#">Location</a></li>

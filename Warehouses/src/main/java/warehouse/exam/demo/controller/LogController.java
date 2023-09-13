@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author DUNG
  */
 @Controller
+@RequestMapping("/logs")
 public class LogController {
     
-    @RequestMapping("/url")
-    public String page(Model model) {
-        model.addAttribute("attribute", "value");
-        return "view.name";
+     @RequestMapping("")
+    public String index(Model model) {
+        //model.addAttribute("attribute", "value");
+        return "logs/index";
     }
     
 }

@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByOrderCode", query = "SELECT o FROM Orders o WHERE o.orderCode = :orderCode"),
-    @NamedQuery(name = "Orders.findByName", query = "SELECT o FROM Orders o WHERE o.name = :name"),
+    @NamedQuery(name = "Orders.findByItemname", query = "SELECT o FROM Orders o WHERE o.itemname = :itemname"),
     @NamedQuery(name = "Orders.findByDescription", query = "SELECT o FROM Orders o WHERE o.description = :description"),
     @NamedQuery(name = "Orders.findByCreatedDate", query = "SELECT o FROM Orders o WHERE o.createdDate = :createdDate"),
     @NamedQuery(name = "Orders.findByAmount", query = "SELECT o FROM Orders o WHERE o.amount = :amount"),
@@ -46,9 +46,9 @@ public class Orders implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "Order_Code")
     private String orderCode;
-    @Size(max = 100)
-    @Column(name = "Name")
-    private String name;
+    @Size(max = 200)
+    @Column(name = "itemname")
+    private String itemname;
     @Size(max = 2147483647)
     @Column(name = "Description")
     private String description;
@@ -71,6 +71,10 @@ public class Orders implements Serializable {
     @JoinColumn(name = "UnitID", referencedColumnName = "UnitID")
     @ManyToOne
     private Unit unitID;
+    @Column(name = "booked_qty")
+    private Integer bookQty;
+    @Column(name = "shipped_qty")
+    private Integer shippedQty;
 
     public Orders() {
     }
@@ -87,12 +91,12 @@ public class Orders implements Serializable {
         this.orderCode = orderCode;
     }
 
-    public String getName() {
-        return name;
+    public String getItemname() {
+        return itemname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
     }
 
     public String getDescription() {
@@ -101,6 +105,22 @@ public class Orders implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getBookQty() {
+        return bookQty;
+    }
+
+    public void setBookQty(Integer bookQty) {
+        this.bookQty = bookQty;
+    }
+
+    public Integer getShippedQty() {
+        return shippedQty;
+    }
+
+    public void setShippedQty(Integer shippedQty) {
+        this.shippedQty = shippedQty;
     }
 
     public Date getCreatedDate() {

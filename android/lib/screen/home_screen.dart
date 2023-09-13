@@ -66,18 +66,18 @@ class HomePage extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 return Column(
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          color: Color(0xFFCB84FB), shape: BoxShape.circle),
-                      child: Center(
-                        child: Icon(Icons.warehouse,
-                            color: Colors.white, size: 30),
-                      ),
-                    )
-                  ],
+                  // children: [
+                  //   Container(
+                  //     height: 60,
+                  //     width: 60,
+                  //     decoration: BoxDecoration(
+                  //         color: Color(0xFFCB84FB), shape: BoxShape.circle),
+                  //     child: Center(
+                  //       child: Icon(Icons.warehouse,
+                  //           color: Colors.white, size: 30),
+                  //     ),
+                  //   )
+                  // ],
                 );
               },
             ),
