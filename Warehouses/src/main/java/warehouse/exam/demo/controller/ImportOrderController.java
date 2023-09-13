@@ -25,6 +25,10 @@ import warehouse.exam.demo.service.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import warehouse.exam.demo.reponsitory.ImportRepository;
+import warehouse.exam.demo.reponsitory.ItemmasterRepository;
+import warehouse.exam.demo.reponsitory.itemdataReponsitory;
+import warehouse.exam.demo.reponsitory.supplierRepository;
 
 /**
  * @author DUNG
@@ -43,6 +47,15 @@ public class ImportOrderController {
     itemdataService itemdataService;
     @Autowired
     ItemmasterService itemmasterService;
+
+    @Autowired
+    ItemmasterRepository imMasterRepositoty;
+    @Autowired
+    itemdataReponsitory imDataRepository;
+    @Autowired
+    supplierRepository supReponsitory;
+     @Autowired
+    ImportRepository impRepository;
 
     @RequestMapping("/index")
     public String index(Model model) {
@@ -98,11 +111,10 @@ public class ImportOrderController {
     }
 
     @PostMapping("/edit")
-    public String update(importDAO imp, BindingResult binding){
-        if(binding.hasErrors()){
+    public String update(importDAO imp, BindingResult binding) {
+        if (binding.hasErrors()) {
             return "/edit";
-        }
-        else {
+        } else {
             service.updateImpOrder(imp);
             return "redirect:/import/index";
         }
@@ -118,13 +130,24 @@ public class ImportOrderController {
         return "import/createItem";
     }
 
-    @PostMapping("/createItem")
-    public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemMaster, @ModelAttribute Itemmasters item) {
-        model.addAttribute("idImport", itemmasterService.findOne(idImp));
-        itemMaster.setDisable(false);
-        itemMaster.setQcAcceptQuantity(0.0);
-        itemMaster.setQcInjectQuantity(0.0);
-        itemmasterService.saveItemMaster(itemMaster, idImp, item);
+
+    @RequestMapping(value="/createItemMaster", method = RequestMethod.POST)
+    public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemmasterDAO) {
+        Importorders imp = impRepository.findById(idImp);
+        Itemmasters item = new Itemmasters();
+//model.addAttribute("idImport", itemmasterService.findOne(idImp));
+        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
+        item.setDateImport(itemmasterDAO.getDateImport());
+        item.setIdImport(imp);
+//          item.setLocationCode(itemmasterDAO.);
+        item.setNote(itemmasterDAO.getNote());
+        item.setQcAcceptQuantity(itemmasterDAO.getQcAcceptQuantity());
+        item.setQcBy(itemmasterDAO.getQcBy());
+        item.setRecieveNo(itemmasterDAO.getRecieveNo());
+        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
+        item.setQuantity(itemmasterDAO.getQuantity());
+        imMasterRepositoty.save(item) ;
+
         return "redirect:/import/index";
     }
 }

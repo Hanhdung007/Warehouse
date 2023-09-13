@@ -4,6 +4,9 @@
  */
 package warehouse.exam.demo.DAL;
 
+import java.util.List;
+import warehouse.exam.demo.model.Itemmasters;
+
 /**
  *
  * @author DUNG
@@ -16,6 +19,16 @@ public class locationDAO {
     private double remain;
     private boolean active;
     private String warehouseCode;
+    private List<itemmasterDAO> items;
+
+    public List<itemmasterDAO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<itemmasterDAO> items) {
+        this.items = items;
+    }
+    
 
     public String getWarehouseCode() {
         return warehouseCode;

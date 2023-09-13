@@ -29,7 +29,7 @@ public class itemmasterDAO {
     private String locationName;
     private Double quantity;
     private String recieveNo;
-    private String dateImport;
+    private Date dateImport;
     private String note;
     private Double qcAcceptQuantity;
     private Double qcInjectQuantity;
@@ -90,11 +90,12 @@ public class itemmasterDAO {
         this.recieveNo = recieveNo;
     }
 
-    public String getDateImport() {
+    public Date getDateImport() {
         return dateImport;
     }
 
-    public void setDateImport(String dateImport) {
+
+    public void setDateImport(Date dateImport){
         this.dateImport = dateImport;
     }
 

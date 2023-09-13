@@ -8,17 +8,24 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,33 +46,40 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Itemmasters.findByQcBy", query = "SELECT i FROM Itemmasters i WHERE i.qcBy = :qcBy")})
 public class Itemmasters implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 255)
     @Column(name = "location_code")
     private String locationCode;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "quantity")
-    private Double quantity;
     @Size(max = 255)
     @Column(name = "recieve_no")
     private String recieveNo;
     @Column(name = "date_import")
-//    @Temporal(TemporalType.TIMESTAMP)
-    private String dateImport;
+    @Temporal(TemporalType.DATE)
+    private Date dateImport;
     @Size(max = 255)
     @Column(name = "note")
     private String note;
+    @Size(max = 255)
+    @Column(name = "qc_by")
+    private String qcBy;
+    @OneToMany(mappedBy = "itemmasterId")
+    private List<Log> logList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "quantity")
+    private Double quantity;
     @Column(name = "qc_accept_quantity")
     private Double qcAcceptQuantity;
     @Column(name = "qc_inject_quantity")
     private Double qcInjectQuantity;
     @Column(name = "book_qty")
     private Double bookQty;
+
     @Size(max = 255)
     @Column(name = "qc_by")
     private String qcBy;
@@ -74,6 +88,7 @@ public class Itemmasters implements Serializable {
 
     @Column(name = "pass")
     private Boolean pass;
+
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;
@@ -131,10 +146,10 @@ public class Itemmasters implements Serializable {
         this.recieveNo = recieveNo;
     }
 
-    public String getDateImport() {
+    public Date getDateImport() {
         return dateImport;
     }
-    public void setDateImport(String dateImport) {
+    public void setDateImport(Date dateImport) {
         this.dateImport = dateImport;
     }
 

@@ -22,6 +22,8 @@ import warehouse.exam.demo.DAL.itemdataDAO;
 import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.service.itemdataService;
 
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author DUNG
@@ -36,7 +38,7 @@ public class itemDataController {
     private String fileUpload;
 
     @GetMapping("/index")
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
         model.addAttribute("list", itemService.getAll());
         model.addAttribute("itemdata", new Itemdatas());
         return "itemdata/index";

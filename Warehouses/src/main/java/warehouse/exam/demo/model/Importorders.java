@@ -43,12 +43,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Importorders.findByStatus", query = "SELECT i FROM Importorders i WHERE i.status = :status")})
 public class Importorders implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 255)
     @Column(name = "driver")
     private String driver;
@@ -61,6 +55,13 @@ public class Importorders implements Serializable {
     @Size(max = 255)
     @Column(name = "note")
     private String note;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "status")
     private Boolean status;
     @OneToMany(mappedBy = "idImport")

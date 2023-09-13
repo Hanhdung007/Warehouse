@@ -3,7 +3,7 @@
  --THEN 
  --DROP DATABASE Warehouse
 --END IF; 
-DROP DATABASE Warehouse
+Create DATABASE Warehouse
 go 
 USE Warehouse
 GO
@@ -75,10 +75,45 @@ CREATE TABLE [issue_orders] (
   [issue_dated] datetime,
   [issue_reason] nvarchar(255),
   [submitBy] nvarchar(255),
-  [issue_active] bit
+  [issue_active] bit, 
+
+)
+GO
+Drop table Customers(
+	CustomerID int primary key identity,
+	[Name] varchar(100),
+	[Email] varchar(100),
+	[Phone] varchar(20),
+	[Fax] varchar(20),
+	[Address] varchar(150),
+	[Disable] bit
 )
 GO
 
+Drop table Groups(
+	GroupID int primary key identity,
+	[Name] varchar(50)
+)
+GO
+Drop table Unit(
+	UnitID int primary key identity,
+	[Name] varchar(50)
+	
+)
+GO
+Drop table Orders(
+	Order_Code varchar(20) primary key,
+	[Name] varchar(100),
+	[Description] varchar(max),
+	GroupID int,
+	UnitID int,
+	CustomerID int,
+	CREATED_DATE datetime,
+	Amount int,
+	status varchar(50),
+	[Disable] bit
+)
+GO
 CREATE TABLE [issue_order_details] (
   [id] int PRIMARY KEY,
   [itemCode] nvarchar(255),
@@ -88,6 +123,11 @@ CREATE TABLE [issue_order_details] (
   [quantityActualexport] int
 )
 GO
+Create table tb_SYS_SEQUENCE(
+SEQNAME varchar(50) primary key,
+SEQVALUE int
+)
+Go
 CREATE TABLE supplier (
 	sup_id varchar(20) primary key,
 	sup_name varchar(max),
@@ -96,6 +136,16 @@ CREATE TABLE supplier (
 	city varchar(50),
 	tax_code varchar(max),
 	active bit
+)
+go
+
+CREATE TABLE [log] (
+	id int identity primary key,
+	locationName varchar(250),
+	itemmaster_id int, 
+	save_date datetime2(7),
+	quantity float,
+	method varchar(100)
 )
 go
 
@@ -108,8 +158,15 @@ GO
 ALTER TABLE [itemmasters]  ADD FOREIGN KEY ([code_itemdata]) REFERENCES [itemdatas] ([code])
 GO
 
-ALTER TABLE [itemmasters] ADD FOREIGN KEY ([id_import]) REFERENCES [importorders] ([id])
+ALTER TABLE Orders ADD FOREIGN KEY (UnitID) REFERENCES Unit (UnitID)
 GO
+ALTER TABLE Orders ADD FOREIGN KEY (GroupID) REFERENCES Groups (GroupID)
+GO
+ALTER TABLE Orders ADD FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID)
+GO
+ALTER TABLE [log] ADD FOREIGN KEY (itemmaster_id) REFERENCES [itemmasters] ([id])
+GO
+
 CREATE TABLE [roles] (
 	[id] int primary key identity,
 	[role_name] varchar(100)

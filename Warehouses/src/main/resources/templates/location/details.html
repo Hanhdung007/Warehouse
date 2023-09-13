@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html>
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+
+    <body>
+        <p data-th-text="#{welcome}">Welcome!</p>
+    </body>
+
+</html><!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <!--
+        xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+    -->
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="row mt-2">
+                <div class="col-12 mt-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title" th:text="${model.name}"></h4>
+                            <dl class="row">
+                                <dt class="col-md-2">Location Code:</dt>
+                                <dd class="col-md-10" th:text="${model.code}"></dd>
+                                <dt class="col-md-2">Location Name:</dt>
+                                <dd class="col-md-10" th:text="${model.name}"></dd>
+                                <dt class="col-md-2">From Warehouse</dt>
+                                <dd class="col-md-10" th:text="${model.warehouseName}"></dd>
+                                <dt class="col-md-2">Total Capacity</dt>
+                                <dd class="col-md-10" th:text="${model.capacity}"></dd>
+                                <dt class="col-md-2">Remain</dt>
+                                <dd class="col-md-10" th:text="${model.remain}" ></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 mt-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title">Items in locations</h4>
+                            <div class="data-tables datatable-dark">
+                                <table class="table text-center" id="locationtable">
+                                    <thead class="text-uppercase bg-secondary">
+                                        <tr class="text-white">
+                                            
+                                            <th scope="col">Item's Name</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Recieve No</th>
+                                            <th scope="col">Date Imported</th>
+                                            <th scope="col">QC by</th>
+                                            <th scope="col">Accept</th>
+                                            <th scope="col">Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                                                                         
+                                        <tr th:each="item:${model.items}">                                         
+                                            <td th:text="${item.itemName}"></td>
+                                            <td th:text="${item.quantity}"></td>
+                                            <td th:text="${item.recieveNo}"></td>
+                                            <td th:text="${item.dateImport}"></td>
+                                            <td th:text="${item.qcBy}"></td>
+                                            <td th:text="${item.qcAcceptQuantity}"></td>
+                                            <td>
+                                                <img th:src="'/' + ${item.image}" width="150" height="150" alt="sai nha"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#locationtable').DataTable();
+                });
+            </script>
+        </div>
+    </body>
+
+</html>
+
