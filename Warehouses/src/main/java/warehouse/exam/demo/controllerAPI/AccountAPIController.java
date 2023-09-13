@@ -1,11 +1,13 @@
 package warehouse.exam.demo.controllerAPI;
 
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import warehouse.exam.demo.DAL.AccountDAO;
+import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.service.AccountService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -57,4 +60,13 @@ public class AccountAPIController {
     public ResponseEntity<List<AccountDAO>> index() {
         return ResponseEntity.ok(accountService.findAll());
     }
+
+//    @GetMapping("/index/{code}")
+//    public EntityModel<Accounts> details(@PathVariable String code){
+//        Accounts accounts = accountService.findOne(code);
+//        if(accounts == null){
+//            throw new RuntimeException("Account Is Not Found!" + code);
+//        }
+//        return EntityModel.of(accounts.getName(), accounts.getEmail());
+//    }
 }

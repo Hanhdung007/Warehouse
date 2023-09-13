@@ -185,11 +185,6 @@
                     </div>
                 </div>
                 <!-- profile info & task notification -->
-                <form th:action="@{/auth/logout}" method="post">
-                    <button id="logoutButton" class="btn btn-outline-danger" type="submit">Logout</button>
-                </form>
-                <br>
-                <div style="color: red;">Welcome, <span th:text="${session.username}"></span></div>
                 <div class="col-md-6 col-sm-4 clearfix">
                     <ul class="notification-area pull-right">
                         <li id="full-view"><i class="ti-fullscreen"></i></li>
@@ -353,13 +348,18 @@
                 </div>
                 <div class="col-sm-6 clearfix">
                     <div class="user-profile pull-right">
-                        <img class="avatar user-thumb" src="assets/images/author/avatar.png" alt="avatar">
-                        <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Kumkum Rai <i
+                        <img class="avatar user-thumb" src="/img/320222202_716264739840411_4617903201906532030_n.jpg" alt="avatar">
+                        <h4 class="user-name dropdown-toggle" data-toggle="dropdown"><span
+                                th:text="${session.username}"></span> <i
                                 class="fa fa-angle-down"></i></h4>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Message</a>
                             <a class="dropdown-item" href="#">Settings</a>
-                            <a class="dropdown-item" href="#">Log Out</a>
+                            <a class="dropdown-item">
+                                <form th:action="@{/auth/logout}" method="post">
+                                    <button style="background: none; border: none; color: #8A8A8A;" type="submit">Logout</button>
+                                </form>
+                            </a>
                         </div>
                     </div>
                 </div>
