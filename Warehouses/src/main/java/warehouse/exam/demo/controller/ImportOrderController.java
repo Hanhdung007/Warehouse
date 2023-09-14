@@ -47,6 +47,7 @@ public class ImportOrderController {
     itemdataService itemdataService;
     @Autowired
     ItemmasterService itemmasterService;
+
     @Autowired
     ItemmasterRepository imMasterRepositoty;
     @Autowired
@@ -95,6 +96,13 @@ public class ImportOrderController {
         return "import/detail";
     }
 
+    @PostMapping("/details/{idImport}")
+    public String updateDisable(@PathVariable int idImport, @RequestParam int id){
+        Boolean newDisable = true;
+        itemmasterService.updateDisable(id, newDisable);
+        return "redirect:/import/details/" + idImport;
+    }
+
     @GetMapping("edit/{id}")
     public String update(Model model, @PathVariable("id") int id) {
         model.addAttribute("import", service.findOne(id));
@@ -115,14 +123,13 @@ public class ImportOrderController {
     @GetMapping("/createItem/{id}")
     public String createItem(Model model, @PathVariable("id") int id) {
         itemmasterDAO itemDAO = new itemmasterDAO();
-//        Importorders idImport = service.findOne(id);
-//        itemDAO.setIdImport(importorders);
         model.addAttribute("itemmasterDAO", itemDAO);
         model.addAttribute("idImport", service.findOne(id));
         model.addAttribute("supplier", supService.getAll());
         model.addAttribute("itemdata", itemdataService.getAll());
         return "import/createItem";
     }
+
 
     @RequestMapping(value="/createItemMaster", method = RequestMethod.POST)
     public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemmasterDAO) {
@@ -140,6 +147,7 @@ public class ImportOrderController {
         item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
         item.setQuantity(itemmasterDAO.getQuantity());
         imMasterRepositoty.save(item) ;
+
         return "redirect:/import/index";
     }
 }

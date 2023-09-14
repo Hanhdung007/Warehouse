@@ -4,34 +4,45 @@
  */
 package warehouse.exam.demo.DAL;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import warehouse.exam.demo.model.Importorders;
-import warehouse.exam.demo.model.Itemdatas;
-import warehouse.exam.demo.model.Locations;
+import warehouse.exam.demo.model.Itemmasters;
 
 /**
- *
  * @author DUNG
  */
 public class itemmasterDAO {
+    public itemmasterDAO(Itemmasters item) {
+        this.id = item.getId();
+        this.quantity = item.getQuantity();
+        this.recieveNo = item.getRecieveNo();
+        this.dateImport = item.getDateImport();
+        this.note = item.getNote();
+        this.qcAcceptQuantity = item.getQcAcceptQuantity();
+        this.qcInjectQuantity = item.getQcInjectQuantity();
+        this.qcBy = item.getQcBy();
+        this.codeItemdata = item.getCodeItemdata().getName();
+    }
+
+    public itemmasterDAO() {
+    }
 
     private Integer id;
     private String locationName;
     private Double quantity;
     private String recieveNo;
-
     private Date dateImport;
     private String note;
     private Double qcAcceptQuantity;
+    private Double qcInjectQuantity;
     private String qcBy;
     private int idImport;
     private String itemName;
+    private String codeItemdata;
     private String supplierName;
+    //    private Itemdatas codeItemdatas;
     private String image;
+    private Boolean disable;
+    private Boolean pass;
 
     public String getSupplierName() {
         return supplierName;
@@ -56,10 +67,9 @@ public class itemmasterDAO {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getLocationName() {
-        return locationName;
-    }
+//    public String getLocationName() {
+//        return locationName;
+//    }
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;
@@ -85,6 +95,7 @@ public class itemmasterDAO {
         return dateImport;
     }
 
+
     public void setDateImport(Date dateImport){
         this.dateImport = dateImport;
     }
@@ -105,6 +116,13 @@ public class itemmasterDAO {
         this.qcAcceptQuantity = qcAcceptQuantity;
     }
 
+    public Double getQcInjectQuantity() {
+        return qcInjectQuantity;
+    }
+    public void setQcInjectQuantity(Double qcInjectQuantity) {
+        this.qcInjectQuantity = qcInjectQuantity;
+    }
+
     public String getQcBy() {
         return qcBy;
     }
@@ -116,6 +134,14 @@ public class itemmasterDAO {
     public int getIdImport() {
         return idImport;
     }
+
+//    public Itemdatas getCodeItemdatas() {
+//        return codeItemdatas;
+//    }
+//
+//    public void setCodeItemdatas(Itemdatas codeItemdatas) {
+//        this.codeItemdatas = codeItemdatas;
+//    }
 
     public void setIdImport(int idImport) {
         this.idImport = idImport;
@@ -129,4 +155,28 @@ public class itemmasterDAO {
         this.itemName = itemName;
     }
 
+    public String getCodeItemdata() {
+        return codeItemdata;
+    }
+
+    public void setCodeItemdata(String codeItemdata) {
+        this.codeItemdata = codeItemdata;
+    }
+
+    public Boolean getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
+
+    public Boolean getPass() {
+        return pass;
+    }
+
+    public Boolean setPass(Boolean pass) {
+        this.pass = pass;
+        return pass;
+    }
 }
