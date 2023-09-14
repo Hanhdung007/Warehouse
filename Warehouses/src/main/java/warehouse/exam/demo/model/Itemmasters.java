@@ -79,10 +79,6 @@ public class Itemmasters implements Serializable {
     private Double qcInjectQuantity;
     @Column(name = "book_qty")
     private Double bookQty;
-
-    @Size(max = 255)
-    @Column(name = "qc_by")
-    private String qcBy;
     @Column(name = "disable")
     private Boolean disable;
 
