@@ -76,7 +76,10 @@ CREATE TABLE [issue_orders] (
   [issue_reason] nvarchar(255),
   [submitBy] nvarchar(255),
   [issue_active] bit, 
-
+  item_code nvarchar(255),
+  qtyExport float,
+  qtyActualExport float,
+  itemmaster_id int
 )
 GO
 Drop table Customers(
@@ -114,15 +117,6 @@ Drop table Orders(
 	[Disable] bit
 )
 GO
-CREATE TABLE [issue_order_details] (
-  [id] int PRIMARY KEY,
-  [itemCode] nvarchar(255),
-  [id_itemmaster] int,
-  [idissue_order] int,
-  [quantityExport] int,
-  [quantityActualexport] int
-)
-GO
 Create table tb_SYS_SEQUENCE(
 SEQNAME varchar(50) primary key,
 SEQVALUE int
@@ -148,9 +142,6 @@ CREATE TABLE [log] (
 	method varchar(100)
 )
 go
-
-ALTER TABLE [issue_order_details] ADD FOREIGN KEY ([idissue_order]) REFERENCES [issue_orders] ([id])
-GO
 
 ALTER TABLE [locations] ADD FOREIGN KEY ([warehouse_code]) REFERENCES [warehouses] ([code])
 GO
@@ -189,4 +180,6 @@ GO
 ALTER TABLE [importorders] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
 GO
 ALTER TABLE [itemmasters] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
+GO
+ALTER TABLE [issue_orders] ADD FOREIGN KEY (itemmaster_id) REFERENCES  [itemmasters] ([id])
 GO

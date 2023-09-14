@@ -76,6 +76,7 @@ public class warehouseService {
     public Warehouses updateWarehouse(String code,warehouseDAO warehousesDAO) {
         Warehouses warehouse = whReponsitory.findByCode(code);
         warehouse.setActive(warehousesDAO.isActive());
+        warehouse.setName(warehousesDAO.getName());
         return whReponsitory.save(warehouse);
     }
 }

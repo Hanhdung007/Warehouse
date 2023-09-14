@@ -22,6 +22,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-body">
+                            <a th:href="@{/warehouse/create}">
+                                <button type="button" class="btn btn-outline-success mb-3">Add new Warehouse</button>
+                            </a>
+                            <br>
                             <h4 class="header-title">Warehouses Lists</h4>
                             <div class="data-tables datatable-dark">
                                 <table id="warehousetable" class="text-center">
@@ -43,7 +47,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <td th:text="${warehouse.totalLocation}"></td>
                                             <td th:text="${warehouse.totalCapacity}"></td>
                                             <td th:text="${warehouse.totalRemain}"></td>
-                                              <td>
+                                            <td>
                                                 <span th:if="${warehouse.active}" class="badge badge-pill badge-success">Active</span>
                                                 <span th:unless="${warehouse.active}" class="badge badge-pill badge-danger">Inactive</span>
                                             </td>

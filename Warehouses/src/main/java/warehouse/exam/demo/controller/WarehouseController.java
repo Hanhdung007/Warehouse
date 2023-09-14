@@ -67,6 +67,6 @@ public class WarehouseController {
     public String update(Model model,@ModelAttribute warehouseDAO warehouses) {
          warehouseDAO warehouse = service.findbycode(warehouses.getCode());
         service.saveWarehouse(warehouses);
-        return "redirect:warehouse/index";
+        return "redirect:/warehouse/index";
     }
 }
