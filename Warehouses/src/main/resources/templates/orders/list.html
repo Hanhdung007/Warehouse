@@ -128,7 +128,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <a class="edit-link" th:data-id="${order.orderCode}" title="Edit Order" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
+                                                <a class="edit-link" th:data-id="${order.orderCode}" th:href="@{/orders/edit-order}" title="Edit Order" th:if="${order.status != 'Cancelled Order' && order.status != 'Pending' && order.status != 'Complete'}">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
 
