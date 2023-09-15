@@ -72,9 +72,9 @@ public class Orders implements Serializable {
     @ManyToOne
     private Unit unitID;
     @Column(name = "booked_qty")
-    private Integer bookQty;
+    private Double bookQty;
     @Column(name = "shipped_qty")
-    private Integer shippedQty;
+    private Double shippedQty;
 
     public Orders() {
     }
@@ -107,19 +107,19 @@ public class Orders implements Serializable {
         this.description = description;
     }
 
-    public Integer getBookQty() {
+    public Double getBookQty() {
         return bookQty;
     }
 
-    public void setBookQty(Integer bookQty) {
+    public void setBookQty(Double bookQty) {
         this.bookQty = bookQty;
     }
 
-    public Integer getShippedQty() {
+    public Double getShippedQty() {
         return shippedQty;
     }
 
-    public void setShippedQty(Integer shippedQty) {
+    public void setShippedQty(Double shippedQty) {
         this.shippedQty = shippedQty;
     }
 

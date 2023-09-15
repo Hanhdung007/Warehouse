@@ -95,31 +95,6 @@ public class Itemdatas implements Serializable {
         this.itemmastersList = itemmastersList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Itemdatas)) {
-            return false;
-        }
-        Itemdatas other = (Itemdatas) object;
-        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Itemdatas[ code=" + code + " ]";
-    }
-
     public String getName() {
         return name;
     }

@@ -23,7 +23,7 @@ public class QCService {
             itemmasterDAO imtDao = new itemmasterDAO();
             imtDao.setDateImport(im.getDateImport());
             imtDao.setId(im.getId());
-            imtDao.setCodeItemdata(im.getCodeItemdata().getName());
+            imtDao.setItemName(im.getCodeItemdata().getName());
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcInjectQuantity(im.getQcInjectQuantity());

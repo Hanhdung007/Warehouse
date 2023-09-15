@@ -22,38 +22,31 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <a th:href="@{/warehouse/create}">
-                                <button type="button" class="btn btn-outline-success mb-3">Add new Warehouse</button>
-                            </a>
-                            <br>
-                            <h4 class="header-title">Warehouses Lists</h4>
+                            <h4 class="header-title">Data Table Dark</h4>
                             <div class="data-tables datatable-dark">
-                                <table id="warehousetable" class="text-center">
+                                <table id="locationtable" class="text-center">
                                     <thead class="text-capitalize">
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Warehouse's Name</th>
-                                            <th>Total location</th>
-                                            <th>Total capacity</th>
-                                            <th>Total remain</th>
+                                            <th>Item Code</th>
+                                            <th>Quantity Required</th>
+                                            <th>Quantity Export</th>                                          
+                                            <th>Date</th>
+                                            <th>Reason</th>
+                                            <th>Request reviewer</th>
                                             <th>Active</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="warehouse:${list}">
-                                            <td th:text="${warehouse.code}"></td>
-                                            <td th:text="${warehouse.name}"></td>
-                                            <td th:text="${warehouse.totalLocation}"></td>
-                                            <td th:text="${warehouse.totalCapacity}"></td>
-                                            <td th:text="${warehouse.totalRemain}"></td>
+                                        <tr th:each="issue:${list}">
+                                            <td th:text="${issue.itemCode}"></td>
+                                            <td th:text="${issue.qtyExport}"></td>
+                                            <td th:text="${issue.qtyActualExport}"></td>
+                                            <td th:text="${issue.issueDated}"></td>
+                                            <td th:text="${issue.issueReason}"></td>
+                                            <td th:text="${issue.submitBy}"></td>
+                                            <td th:text="${issue.issueActive}"></td>
                                             <td>
-                                                <span th:if="${warehouse.active}" class="badge badge-pill badge-success">Active</span>
-                                                <span th:unless="${warehouse.active}" class="badge badge-pill badge-danger">Inactive</span>
-                                            </td>
-                                            <td>
-                                                <a th:href="'/warehouse/details/'+${warehouse.code}" class="btn btn-info">Details</a>
-                                                <a th:href="'/warehouse/update/'+${warehouse.code}" class="btn btn-primary">Edit</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -74,7 +67,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
             <script>
                 $(document).ready(function () {
-                    $('#warehousetable').DataTable();
+                    $('#locationtable').DataTable();
                 });
             </script>
         </div>

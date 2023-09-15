@@ -169,8 +169,8 @@ public class ItemmasterService {
         return imMasterRepositoty.save(item);
     }
 
-    public Optional<Itemmasters> findOne(int code) {
-        return imMasterRepositoty.findById(code);
+    public Itemmasters findOne(int code) {
+        return imMasterRepositoty.findById(code).get();
     }
 
     public Itemmasters update(int id, itemmasterDAO updateItem) {

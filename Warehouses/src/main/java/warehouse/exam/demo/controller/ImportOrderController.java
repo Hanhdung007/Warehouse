@@ -146,8 +146,10 @@ public class ImportOrderController {
         item.setRecieveNo(itemmasterDAO.getRecieveNo());
         item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
         item.setQuantity(itemmasterDAO.getQuantity());
+        item.setPass(false);
+        item.setDisable(false);
+        item.setQcInjectQuantity(0.0);
         imMasterRepositoty.save(item) ;
-
         return "redirect:/import/index";
     }
 }

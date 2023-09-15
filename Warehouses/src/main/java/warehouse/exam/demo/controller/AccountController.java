@@ -37,10 +37,15 @@ public class AccountController {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-            String username = authentication.getName();
-            session.setAttribute("username", username);
-            session.setAttribute("loggedInUser", true);
-            return "redirect:/itemdata/index";
+            if(authentication.isAuthenticated()){  
+                String username = authentication.getName();
+                session.setAttribute("username", username);
+                session.setAttribute("loggedInUser", true);
+                return "redirect:/itemdata/index";
+            }else{
+                 model.addAttribute("errorMessage", "Invalid Email Or Password!");
+            return "login/login";
+            }
         } catch (AuthenticationException ex) {
             model.addAttribute("errorMessage", "Invalid Email Or Password!");
             return "login/login";

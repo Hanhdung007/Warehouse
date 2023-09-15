@@ -174,6 +174,4 @@ public class Supplier implements Serializable {
         return "warehouse.exam.demo.model.Supplier[ supId=" + supId + " ]";
     }
 
-    
-    
 }

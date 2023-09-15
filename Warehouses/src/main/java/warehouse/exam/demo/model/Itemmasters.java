@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,15 +53,17 @@ public class Itemmasters implements Serializable {
     @Size(max = 255)
     @Column(name = "recieve_no")
     private String recieveNo;
-    @Column(name = "date_import")
-    @Temporal(TemporalType.DATE)
-    private Date dateImport;
     @Size(max = 255)
     @Column(name = "note")
     private String note;
     @Size(max = 255)
     @Column(name = "qc_by")
     private String qcBy;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemmasterId")
+    private List<IssueOrders> issueOrdersList;
+    @Column(name = "date_import")
+    @Temporal(TemporalType.DATE)
+    private Date dateImport;
     @OneToMany(mappedBy = "itemmasterId")
     private List<Log> logList;
 
@@ -81,10 +84,8 @@ public class Itemmasters implements Serializable {
     private Double bookQty;
     @Column(name = "disable")
     private Boolean disable;
-
     @Column(name = "pass")
     private Boolean pass;
-
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;
@@ -149,13 +150,6 @@ public class Itemmasters implements Serializable {
         this.dateImport = dateImport;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 
     public Double getQcAcceptQuantity() {
         return qcAcceptQuantity;
@@ -244,5 +238,24 @@ public class Itemmasters implements Serializable {
     @Override
     public String toString() {
         return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
+    }
+
+ 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+
+    @XmlTransient
+    public List<IssueOrders> getIssueOrdersList() {
+        return issueOrdersList;
+    }
+
+    public void setIssueOrdersList(List<IssueOrders> issueOrdersList) {
+        this.issueOrdersList = issueOrdersList;
     }
 }
