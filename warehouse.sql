@@ -36,7 +36,7 @@ GO
 CREATE TABLE allocate_order (
   [id] int PRIMARY KEY,
   [location_code] nvarchar(255),
-  ItemMasterId int,
+  itemasterid int,
   quantity float, 
   created_date datetime, 
   confirm bit
@@ -65,7 +65,7 @@ CREATE TABLE [locations] (
   [name] varchar(100),
   [warehouse_code] nvarchar(50),
   [capacity] float,
-  [active] bit
+  [active] bit,
   remain float 
 )
 GO
@@ -114,7 +114,9 @@ Drop table Orders(
 	CREATED_DATE datetime,
 	Amount int,
 	status varchar(50),
-	[Disable] bit
+	[Disable] bit,
+	booked_qty float,
+	shipped_qty float
 )
 GO
 Create table tb_SYS_SEQUENCE(
@@ -142,7 +144,15 @@ CREATE TABLE [log] (
 	method varchar(100)
 )
 go
-
+CREATE TABLE [Accounts] (
+  [code] varchar(255) primary key NOT NULL,
+  [name] nvarchar(255) NULL,
+  [password] nvarchar(255) NULL,
+  [email] nvarchar(255) NULL,
+  [phone] varchar(255) NULL,
+  [isActive] bit NULL,
+)
+GO
 ALTER TABLE [locations] ADD FOREIGN KEY ([warehouse_code]) REFERENCES [warehouses] ([code])
 GO
 
@@ -157,21 +167,6 @@ ALTER TABLE Orders ADD FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID
 GO
 ALTER TABLE [log] ADD FOREIGN KEY (itemmaster_id) REFERENCES [itemmasters] ([id])
 GO
-
-CREATE TABLE [roles] (
-	[id] int primary key identity,
-	[role_name] varchar(100)
-)
-CREATE TABLE [accounts_roles](
-	[id] int primary key identity,
-	[role_id] int, 
-	[account_code] varchar(255)
-)
-CREATE TABLE [Accounts] (
-  [code] varchar(255) PRIMARY KEY,
-  [name] nvarchar(255),
-  [password] nvarchar(255),
-)
 GO
 ALTER TABLE [accounts_roles] ADD FOREIGN KEY ([role_id]) REFERENCES  [roles] ([id])
 GO

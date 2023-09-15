@@ -67,8 +67,8 @@ public class OrdersService {
         order.setDisabled(false);
         
         //set booked_Qty & shipped_qty = 0
-        order.setBookQty(0);
-        order.setShippedQty(0);
+        order.setBookQty(0.0);
+        order.setShippedQty(0.0);
 
         return ordersRepository.save(order);
     }

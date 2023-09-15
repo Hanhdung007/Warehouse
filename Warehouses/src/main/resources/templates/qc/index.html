@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         </thead>
                                         <tbody>
                                         <tr th:if="${item.quantity} != ${item.qcAcceptQuantity + item.qcInjectQuantity}" th:each="item:${list}">
-                                            <td th:text="${item.codeItemdata}"></td>
+                                            <td th:text="${item.itemName}"></td>
                                             <td th:text="${item.quantity}"></td>
                                             <td th:text="${item.qcAcceptQuantity}"></td>
                                             <td th:text="${item.qcInjectQuantity}"></td>

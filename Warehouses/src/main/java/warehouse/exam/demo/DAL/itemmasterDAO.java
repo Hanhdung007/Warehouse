@@ -11,6 +11,7 @@ import warehouse.exam.demo.model.Itemmasters;
  * @author DUNG
  */
 public class itemmasterDAO {
+
     public itemmasterDAO(Itemmasters item) {
         this.id = item.getId();
         this.quantity = item.getQuantity();
@@ -95,8 +96,7 @@ public class itemmasterDAO {
         return dateImport;
     }
 
-
-    public void setDateImport(Date dateImport){
+    public void setDateImport(Date dateImport) {
         this.dateImport = dateImport;
     }
 
@@ -119,6 +119,7 @@ public class itemmasterDAO {
     public Double getQcInjectQuantity() {
         return qcInjectQuantity;
     }
+
     public void setQcInjectQuantity(Double qcInjectQuantity) {
         this.qcInjectQuantity = qcInjectQuantity;
     }
@@ -142,7 +143,6 @@ public class itemmasterDAO {
 //    public void setCodeItemdatas(Itemdatas codeItemdatas) {
 //        this.codeItemdatas = codeItemdatas;
 //    }
-
     public void setIdImport(int idImport) {
         this.idImport = idImport;
     }
