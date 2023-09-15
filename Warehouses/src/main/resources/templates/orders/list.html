@@ -32,6 +32,10 @@
                 opacity: 0.5;
             }
 
+            .edit-link i {
+                color: black;
+            }
+
             .details-link i:hover,
             .edit-link i:hover,
             .share-link i:hover,
@@ -63,6 +67,22 @@
                 display: inline-block;
                 width: 160px;
                 font-weight: bold;
+            }
+
+            .order-details .status.new {
+                color: blue;
+            }
+
+            .order-details .status.pending {
+                color: #ffc107;
+            }
+
+            .order-details .status.complete {
+                color: green;
+            }
+
+            .order-details .status.cancelled {
+                color: red;
             }
 
         </style>
@@ -253,7 +273,7 @@
                                             <strong>Order Creation Date:</strong> ${formatDate(data.createdDate)}
                                         </div>
                                         <div class="order-detail-row">
-                                            <strong>Status:</strong> ${data.status}
+                                            <strong>Status:</strong> <span class="status ${data.status.toLowerCase()}">${data.status}</span>
                                         </div>
                                     </div>
                                 `;
