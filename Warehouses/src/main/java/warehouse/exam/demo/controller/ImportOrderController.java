@@ -149,6 +149,7 @@ public class ImportOrderController {
         item.setQuantity(itemmasterDAO.getQuantity());
         item.setPass(false);
         item.setDisable(false);
+        item.setQcAcceptQuantity(0.0);
         item.setQcInjectQuantity(0.0);
         imMasterRepositoty.save(item) ;
         return "redirect:/import/index";

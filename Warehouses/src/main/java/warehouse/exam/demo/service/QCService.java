@@ -39,7 +39,7 @@ public class QCService {
         return imMasterRepositoty.searchAllItem(keyword);
     }
 
-    public void AcceptQuantity(int id, int quantityInput) {
+    public void AcceptQuantity(int id, int quantityInput, String qcBy) {
         Optional<Itemmasters> itemMaster = imMasterRepositoty.findById(id);
         if (itemMaster.isPresent()) {
             Itemmasters newItem = itemMaster.get();
@@ -48,11 +48,12 @@ public class QCService {
 
             newItem.setQcAcceptQuantity(quantityAccept);
             newItem.setPass(newPass);
+            newItem.setQcBy(qcBy);
             imMasterRepositoty.save(newItem);
         }
     }
 
-    public void InjectQuantity(int id, int quantityInput) {
+    public void InjectQuantity(int id, int quantityInput, String qcBy) {
         Optional<Itemmasters> itemmasters = imMasterRepositoty.findById(id);
         if (itemmasters.isPresent()) {
             Itemmasters item = itemmasters.get();
@@ -61,6 +62,7 @@ public class QCService {
 
             item.setQcInjectQuantity(quantityInject);
             item.setPass(newPass);
+            item.setQcBy(qcBy);
             imMasterRepositoty.save(item);
         }
     }

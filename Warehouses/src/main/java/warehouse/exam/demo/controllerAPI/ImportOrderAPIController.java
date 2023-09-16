@@ -92,6 +92,8 @@ public class ImportOrderAPIController {
         item.setSupId(supReponsitory.findBySupName(ItemmasterDAO.getSupplierName()));
         item.setQuantity(ItemmasterDAO.getQuantity());
         item.setDisable(false);
+        item.setQcAcceptQuantity(0.0);
+        item.setQcInjectQuantity(0.0);
         imMasterRepositoty.save(item);
         return ResponseEntity.ok(200);
     }

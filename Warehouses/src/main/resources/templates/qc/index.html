@@ -96,6 +96,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                                   method="post" th:id="@{|form-${item.getId()}|}">
                                                                 <input name="id" th:value="${item.getId()}"
                                                                        type="hidden"/>
+                                                                <div class="form-group">
+                                                                    <label style="display: block; color: black">QC By</label>
+                                                                    <input type="text" class="form-control" name="qcBy" th:value="${session.username}"
+                                                                           readonly="readonly">
+                                                                </div>
                                                                 <label style="display: block; color: black">Current
                                                                     Quantity:
                                                                     <span class="itemQuantity" th:text="${item.quantity - (item.qcAcceptQuantity + (item.qcInjectQuantity != null ? item.qcInjectQuantity : 0))}"
