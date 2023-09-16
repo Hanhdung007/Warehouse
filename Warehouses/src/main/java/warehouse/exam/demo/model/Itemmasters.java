@@ -46,7 +46,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Itemmasters.findByQcAcceptQuantity", query = "SELECT i FROM Itemmasters i WHERE i.qcAcceptQuantity = :qcAcceptQuantity"),
     @NamedQuery(name = "Itemmasters.findByQcBy", query = "SELECT i FROM Itemmasters i WHERE i.qcBy = :qcBy")})
 public class Itemmasters implements Serializable {
-
     @Size(max = 255)
     @Column(name = "location_code")
     private String locationCode;

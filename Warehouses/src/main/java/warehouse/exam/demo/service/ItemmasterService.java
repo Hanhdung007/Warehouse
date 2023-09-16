@@ -153,7 +153,7 @@ public class ItemmasterService {
     }
      public Itemmasters saveItemMaster(itemmasterDAO itemDAO, int id, Itemmasters item) {
           Importorders imp = impRepository.findById(id);
-//          item.setId(itemDAO.getId());
+          item.setId(itemDAO.getId());
           item.setCodeItemdata(imDataRepository.findByName(itemDAO.getItemName()));
           item.setDateImport(itemDAO.getDateImport());
           item.setIdImport(imp);

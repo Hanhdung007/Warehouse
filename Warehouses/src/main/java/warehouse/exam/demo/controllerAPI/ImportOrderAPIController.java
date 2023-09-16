@@ -91,6 +91,7 @@ public class ImportOrderAPIController {
         item.setRecieveNo(ItemmasterDAO.getRecieveNo());
         item.setSupId(supReponsitory.findBySupName(ItemmasterDAO.getSupplierName()));
         item.setQuantity(ItemmasterDAO.getQuantity());
+        item.setDisable(false);
         imMasterRepositoty.save(item);
         return ResponseEntity.ok(200);
     }
