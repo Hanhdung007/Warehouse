@@ -10,15 +10,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.model.AccountsRoles;
-import warehouse.exam.demo.model.Roles;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 import warehouse.exam.demo.reponsitory.RolesRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -68,7 +68,7 @@ public class AccountService implements UserDetailsService {
             acc.setPhone(list.getPhone());
             acc.setIsActive(list.getIsActive());
 //            acc.setAccountCode(String.join(", ", list.getAccountsRolesById().stream().map(AccountsRoles::getAccountCode).toList()));
-            acc.setAccountCode(String.join(", ", list.getAccountsRolesById().stream().map(accountsRoles
+            acc.setAccountCode(String.join(" | ", list.getAccountsRolesById().stream().map(accountsRoles
                     -> accountsRoles.getRolesByRolesId().getRoleName()).toList()));
             dao.add(acc);
         }
@@ -87,10 +87,8 @@ public class AccountService implements UserDetailsService {
         newAccounts.setPassword(passwordEncoder.encode(accountDAO.getPassword()));
         newAccounts.setPhone(accountDAO.getPhone());
         newAccounts.setIsActive(accountDAO.getIsActive());
-        newAccounts.setAccountsRolesById(accountDAO.getRoleId());
         return accountsRepository.save(newAccounts);
     }
-
     public Accounts findOne(String code) {
         return accountsRepository.findById(code).get();
     }

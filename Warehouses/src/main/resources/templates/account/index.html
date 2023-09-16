@@ -83,7 +83,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <td th:text="${list.name}"></td>
                                     <td th:text="${list.email}"></td>
                                     <td th:text="${list.phone}"></td>
-                                    <td th:text="${list.accountCode}"></td>
+                                    <td style="font-weight: bold" th:text="${list.accountCode}"></td>
                                     <td th:text="${list.isActive}"
                                         th:class="${list.isActive == true ? 'text-green' : 'text-red'}">>
                                     </td>
@@ -150,8 +150,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>
 </body>
 

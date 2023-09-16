@@ -9,6 +9,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@IdClass(AccountRolesId.class)
 @Table(name = "accounts_roles", schema = "dbo", catalog = "Warehouse")
 public class AccountsRoles implements Serializable {
     @Id
@@ -17,6 +18,8 @@ public class AccountsRoles implements Serializable {
     @Id
     @Column(name = "role_id")
     private Integer roleId;
+    @EmbeddedId
+    private AccountRolesId id;
     @ManyToOne
     @JoinColumn(name = "account_code", referencedColumnName = "code", insertable = false, updatable = false)
     private Accounts accountsByAccountCode;
