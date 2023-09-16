@@ -1,34 +1,42 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
+import warehouse.exam.demo.model.AccountsRoles;
+import warehouse.exam.demo.model.Roles;
+import warehouse.exam.demo.reponsitory.RolesRepository;
 import warehouse.exam.demo.service.AccountService;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")
 public class AccountController {
-    private final String url = "http://localhost:9999/api/auth";
+    private final RestTemplate restTemplate;
     private final AuthenticationManager authenticationManager;
     @Autowired
     AccountService accountService;
+    @Autowired
+    RolesRepository rolesRepository;
 
     @Autowired
-    public AccountController(AuthenticationManager authenticationManager) {
+    public AccountController(RestTemplate restTemplate, AuthenticationManager authenticationManager) {
+        this.restTemplate = restTemplate;
         this.authenticationManager = authenticationManager;
     }
 
@@ -40,57 +48,37 @@ public class AccountController {
 
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, Model model, HttpSession session) {
+        AccountDAO accountDAO = AccountDAO.builder()
+                .email(email)
+                .password(password)
+                .build();
         try {
-//            ResponseEntity<Map> response = restTemplate
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, password)
-            );
-            String username = authentication.getName();
-            session.setAttribute("username", username);
-            session.setAttribute("loggedInUser", true);
-            return "redirect:/auth/index";
-        } catch (AuthenticationException ex) {
-            model.addAttribute("errorMessage", "Invalid Email Or Password!");
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    "http://localhost:9999/api/login", accountDAO, Map.class);
+            Map responseBody = response.getBody();
+            assert responseBody != null;
+            boolean isError = (boolean) responseBody.get("error");
+            String message = (String) responseBody.get("message");
+            String username = (String) responseBody.get("username");
+            if (!isError && response.getStatusCode() == HttpStatus.OK) {
+                session.setAttribute("username", username);
+                session.setAttribute("loggedInUser", true);
+                session.setAttribute("message", message);
+                return "redirect:/auth/index";
+            } else {
+                model.addAttribute("errorMessage", message);
+                return "login/login";
+            }
+        } catch (HttpClientErrorException ex) {
+            if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                model.addAttribute("errorMessage", "Invalid Email Or Password!");
+                return "login/login";
+            } else {
+                model.addAttribute("errorMessage", "Server Error!");
+            }
             return "login/login";
         }
     }
-
-//    @PostMapping("/login")
-//    public String login(@RequestParam String email, @RequestParam String password, Model model) {
-//        AccountDAO accountDAO = AccountDAO.builder()
-//                .email(email)
-//                .password(password)
-//                .build();
-//        try {
-//            ResponseEntity<Map> response = restTemplate.postForEntity(
-//                    "http://localhost:9999/api/login",
-//                    accountDAO,
-//                    Map.class);
-//            Map<String, Object> responseBody = response.getBody();
-//            boolean isError = (boolean) responseBody.get("error");
-//            String message = (String) responseBody.get("message");
-//            if (!isError) {
-//                // Xử lý thành công - Thêm thông tin vào model và chuyển hướng
-//                httpSession.setAttribute("isAuthenticated", true);
-//                return "redirect:/itemdata/index";
-//            } else {
-//                // Xử lý thất bại - Thêm thông tin lỗi vào model và hiển thị lại form đăng nhập
-//                model.addAttribute("errorMessage", message);
-//                return "login/login";
-//            }
-//        } catch (HttpClientErrorException ex) {
-//            if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-//                // Xử lý lỗi đăng nhập không hợp lệ (401 Unauthorized)
-//                model.addAttribute("errorMessage", "Invalid Email Or Password!");
-//                return "login/login";
-//            } else if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR) {
-//                // Xử lý lỗi máy chủ (500 Internal Server Error)
-//                model.addAttribute("errorMessage", "Server Error!");
-//                return "login/login";
-//            }
-//        }
-//        return null;
-//    }
 
     @GetMapping("/index")
     public String index(Model model) {
@@ -119,15 +107,31 @@ public class AccountController {
 
     @GetMapping("/create")
     public String create(Model model) {
+        List<Roles> rolesList = rolesRepository.findAll();
+        model.addAttribute("rList", rolesList);
         model.addAttribute("account", new Accounts());
         return "account/create";
     }
 
+//    @PostMapping("/create")
+//    public String create(@ModelAttribute AccountDAO dao, Model model) {
+//        List<Roles> rolesList = rolesRepository.findAll();
+//        model.addAttribute("rList", rolesList);
+//        accountService.saveAccount(dao);
+//        return "redirect:/auth/index";
+//    }
+
     @PostMapping("/create")
-    public String create(@ModelAttribute AccountDAO dao) {
+    public String create(@ModelAttribute AccountDAO dao, Model model) {
+
+        // Lấy mã vai trò từ form và cập nhật vào AccountDAO
+        Collection<AccountsRoles> accountCodes = dao.getRoleId();
+        dao.setRoleId(accountCodes);
+
         accountService.saveAccount(dao);
         return "redirect:/auth/index";
     }
+
 
     @GetMapping("/edit/{code}")
     public String update(Model model, @PathVariable("code") String code) {
@@ -150,20 +154,6 @@ public class AccountController {
         accountService.updateAccountPassword(code, newPassword);
         return "redirect:/auth/index";
     }
-
-//    @GetMapping("/index")
-//    public String index(Model model, HttpSession session) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Cookie", "JSESSIONID=" + session.getId());
-//        ParameterizedTypeReference<List<Accounts>> responseType = new ParameterizedTypeReference<>() {
-//        };
-//        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-//        ResponseEntity<List<Accounts>> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
-//
-//        model.addAttribute("account", response.getBody());
-//        return "account/index";
-//    }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {

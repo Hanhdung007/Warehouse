@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import warehouse.exam.demo.model.Accounts;
+import warehouse.exam.demo.model.AccountsRoles;
+import warehouse.exam.demo.model.Roles;
+
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -16,6 +21,7 @@ public class AccountDAO {
     private String phone;
     private Boolean isActive;
     private String accountCode;
+    private Collection<AccountsRoles> roleId;
 
     public AccountDAO(Accounts accounts) {
         this.code = accounts.getCode();
@@ -82,5 +88,13 @@ public class AccountDAO {
 
     public void setAccountCode(String accountCode) {
         this.accountCode = accountCode;
+    }
+
+    public Collection<AccountsRoles> getRoleId(){
+        return roleId;
+    }
+
+    public void setRoleId(Collection<AccountsRoles> roleId) {
+        this.roleId = roleId;
     }
 }

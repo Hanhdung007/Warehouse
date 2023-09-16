@@ -1,9 +1,14 @@
 package warehouse.exam.demo.model;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "accounts_roles", schema = "dbo", catalog = "Warehouse")
 public class AccountsRoles implements Serializable {
     @Id
@@ -25,34 +30,5 @@ public class AccountsRoles implements Serializable {
     public AccountsRoles(String accountCode, Integer roleId) {
         this.accountCode = accountCode;
         this.roleId = roleId;
-    }
-
-    public String getAccountCode(){
-        return accountCode;
-    }
-    public void setAccountCode(String accountCode) {
-        this.accountCode = accountCode;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public Accounts getAccountsByAccountCode() {
-        return accountsByAccountCode;
-    }
-
-    public void setAccountsByAccountCode(Accounts accountsByAccountCode) {
-        this.accountsByAccountCode = accountsByAccountCode;
-    }
-    public Roles getRolesByRolesId(){
-        return rolesByRolesId;
-    }
-    public void setRolesByRolesId(Roles rolesByRolesId){
-        this.rolesByRolesId = rolesByRolesId;
     }
 }

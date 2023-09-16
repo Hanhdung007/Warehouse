@@ -3,17 +3,13 @@ package warehouse.exam.demo.controllerAPI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.service.AccountService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -32,84 +28,35 @@ public class AccountAPIController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody AccountDAO accountDAO, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> loginUser(HttpSession session, @RequestBody AccountDAO accountDAO) {
         Map<String, Object> responseMap = new HashMap<>();
         String email = accountDAO.getEmail();
         String password = accountDAO.getPassword();
+
         try {
-            // Thực hiện xác thực bằng email và password
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
-            // Kiểm tra mật khẩu
-            if (authentication != null) {
+            if (authentication.isAuthenticated()) {
                 // Lưu thông tin người dùng vào phiên làm việc (session)
+                String username = authentication.getName();
                 session.setAttribute("userDetails", authentication);
                 responseMap.put("error", false);
                 responseMap.put("message", "Logged In");
+                responseMap.put("username", username);
                 return ResponseEntity.ok(responseMap);
-            } else {
-                responseMap.put("error", true);
-                responseMap.put("message", "Invalid Credentials");
-                return ResponseEntity.status(401).body(responseMap);
             }
-        } catch (UsernameNotFoundException e) {
+        } catch (AuthenticationException e) {
+            // Lỗi khác, trả về mã lỗi 401
             responseMap.put("error", true);
-            responseMap.put("message", "User Not Found!");
-            return ResponseEntity.status(401).body(responseMap);
+            responseMap.put("message", "Invalid email or password!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMap);
         }
+        return null;
     }
-
-//    @PostMapping("/login")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody AccountDAO accountDAO) {
-//        Map<String, Object> responseMap = new HashMap<>();
-//        String email = accountDAO.getEmail();
-//        String password = accountDAO.getPassword();
-//        try {
-//            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email
-//                    , password));
-//            if (auth.isAuthenticated()) {
-//                logger.info("Logged In");
-//                UserDetails userDetails = accountService.loadUserByUsername(email);
-//                String token = jwtTokenUtil.generateToken(userDetails);
-//                responseMap.put("error", false);
-//                responseMap.put("message", "Logged In");
-//                responseMap.put("token", token);
-//                return ResponseEntity.ok(responseMap);
-//            } else {
-//                responseMap.put("error", true);
-//                responseMap.put("message", "Invalid Credentials");
-//                return ResponseEntity.status(401).body(responseMap);
-//            }
-//        } catch (DisabledException e) {
-//            e.printStackTrace();
-//            responseMap.put("error", true);
-//            responseMap.put("message", "User is disabled");
-//            return ResponseEntity.status(500).body(responseMap);
-//        } catch (BadCredentialsException e) {
-//            responseMap.put("error", true);
-//            responseMap.put("message", "Invalid Credentials");
-//            return ResponseEntity.status(401).body(responseMap);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            responseMap.put("error", true);
-//            responseMap.put("message", "Something went wrong");
-//            return ResponseEntity.status(500).body(responseMap);
-//        }
-//    }
 
     @GetMapping("/index")
     public ResponseEntity<List<AccountDAO>> index() {
         return ResponseEntity.ok(accountService.findAll());
     }
-
-//    @GetMapping("/index/{code}")
-//    public EntityModel<Accounts> details(@PathVariable String code){
-//        Accounts accounts = accountService.findOne(code);
-//        if(accounts == null){
-//            throw new RuntimeException("Account Is Not Found!" + code);
-//        }
-//        return EntityModel.of(accounts.getName(), accounts.getEmail());
-//    }
 }

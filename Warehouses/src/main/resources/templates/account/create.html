@@ -14,7 +14,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/css/disableCbxAcc.css">
-    <link/>
+    <link rel="stylesheet" type="text/css" href="/css/selectRole.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+    <script src="/js/selectRole.js"></script>
 </head>
 <body>
 <div class="main-content-inner" layout:fragment="content">
@@ -23,7 +26,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <div class="col-12 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="header-title">Add new Location</h4>
+                        <h4 class="header-title">Add New Account</h4>
                         <form th:action="@{create}" th:object="${account}" method="post">
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Code</label>
@@ -55,6 +58,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <input type="checkbox" class="custom-control-input" id="customCheck"
                                            th:field="*{isActive}">
                                     <label class="custom-control-label" for="customCheck"></label>
+                                </div>
+                            </div>
+<!--                            <div class="row d-flex justify-content-left" style="border-radius: 8px">-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <select th:field="*{accountsRolesById}" name="choiceRole" id="choices-multiple-remove-button" placeholder="Select roles..." multiple>-->
+<!--                                        <option th:each="account : ${rList}"-->
+<!--                                                th:value="${account.accountsRolesById}"-->
+<!--                                                th:text="${account.name}"-->
+<!--                                        >-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="row d-flex justify-content-left" style="border-radius: 8px">
+                                <div class="col-md-6">
+                                    <select th:field="*{accountsRolesById}" id="choices-multiple-remove-button" placeholder="Select roles..." multiple>
+                                        <option th:each="role : ${rList}" th:value="${role.id}" th:text="${role.roleName}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
