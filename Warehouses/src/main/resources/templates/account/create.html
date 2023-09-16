@@ -73,7 +73,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 <!--                            </div>-->
                             <div class="row d-flex justify-content-left" style="border-radius: 8px">
                                 <div class="col-md-6">
-                                    <select th:field="*{accountsRolesById}" id="choices-multiple-remove-button" placeholder="Select roles..." multiple>
+                                    <select name="roleId" id="choices-multiple-remove-button" placeholder="Select roles..." multiple>
                                         <option th:each="role : ${rList}" th:value="${role.id}" th:text="${role.roleName}"></option>
                                     </select>
                                 </div>

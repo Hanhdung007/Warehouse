@@ -122,12 +122,11 @@ public class AccountController {
 //    }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute AccountDAO dao, Model model) {
-
+    public String create(@ModelAttribute AccountDAO dao, Model model, @RequestBody String roleId) {
         // Lấy mã vai trò từ form và cập nhật vào AccountDAO
-        Collection<AccountsRoles> accountCodes = dao.getRoleId();
-        dao.setRoleId(accountCodes);
-
+//        String[] accountCodesArray = dao.getAccountCode().split(",");
+//        List<String> accountCodeList = Arrays.asList(accountCodesArray);
+//        dao.setRoleId(accountCodeList);
         accountService.saveAccount(dao);
         return "redirect:/auth/index";
     }

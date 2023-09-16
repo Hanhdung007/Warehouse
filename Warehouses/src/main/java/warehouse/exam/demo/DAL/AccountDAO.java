@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.model.AccountsRoles;
-import warehouse.exam.demo.model.Roles;
 
 import java.util.Collection;
 import java.util.List;
