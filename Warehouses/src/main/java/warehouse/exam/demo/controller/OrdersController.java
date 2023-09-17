@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.controller;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +61,29 @@ public class OrdersController {
     @PostMapping("/new-order")
     public String saveOrder(@ModelAttribute("order") Orders order) {
         Orders savedOrder = ordersService.saveOrder(order);
+        return "redirect:/orders/list";
+    }
+
+    @GetMapping("/edit-order/{orderCode}")
+    public String showEditOrderForm(@PathVariable String orderCode, Model model) {
+        Orders orderToEdit = rest.getForObject(url + orderCode, Orders.class);
+
+        // Lấy danh sách khách hàng, nhóm và đơn vị từ API hoặc dịch vụ
+        Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
+        Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
+        Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
+
+        model.addAttribute("order", orderToEdit);
+        model.addAttribute("customers", customersArray);
+        model.addAttribute("groups", groupsArray);
+        model.addAttribute("units", unitsArray);
+
+        return "orders/edit-order";
+    }
+
+    @PostMapping("/edit-order")
+    public String updateOrder(@ModelAttribute("order") Orders updatedOrder) {
+        Orders savedOrder = ordersService.updateOrder(updatedOrder);
         return "redirect:/orders/list";
     }
 }

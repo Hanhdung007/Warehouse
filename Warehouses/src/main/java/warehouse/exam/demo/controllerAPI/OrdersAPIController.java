@@ -51,7 +51,7 @@ public class OrdersAPIController {
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{orderCode}")
+    @PostMapping("/{orderCode}")
     public ResponseEntity<Orders> updateOrder(@PathVariable String orderCode, @RequestBody Orders order) {
         if (!ordersService.getOrderByCode(orderCode).isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
