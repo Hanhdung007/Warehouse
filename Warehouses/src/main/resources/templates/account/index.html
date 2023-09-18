@@ -83,7 +83,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <td th:text="${list.name}"></td>
                                     <td th:text="${list.email}"></td>
                                     <td th:text="${list.phone}"></td>
-                                    <td style="font-weight: bold" th:text="${list.accountCode}"></td>
+                                    <td style="font-weight: bold">
+                                        <span th:if="${list.accountCode.contains('admin')}">
+                                            <span th:text="${'Admin' + (list.accountCode.contains('sale') || list.accountCode.contains('qc') || list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                        </span>
+                                        <span th:if="${list.accountCode.contains('sale')}">
+                                            <span th:text="${'Sale Order' + (list.accountCode.contains('qc') || list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                        </span>
+                                        <span th:if="${list.accountCode.contains('qc')}">
+                                            <span th:text="${'Quantity Control' + (list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                        </span>
+                                        <span th:if="${list.accountCode.contains('whManager')}">
+                                            <span th:text="${'Warehouse Manager'}"></span>
+                                        </span>
+                                    </td>
                                     <td th:text="${list.isActive}"
                                         th:class="${list.isActive == true ? 'text-green' : 'text-red'}">>
                                     </td>

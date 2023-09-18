@@ -3,6 +3,7 @@ package warehouse.exam.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,16 +84,9 @@ public class AccountController {
             return "login/login";
         }
     }
-
+    @PreAuthorize("hasAnyAuthority('1')")
     @GetMapping("/index")
     public String index(Model model) {
-        List<String> roleAccess = List.of("admin", "supper_admin");
-        List<String> roleOfUser = List.of("admin", "employee");
-        boolean isAccess = roleOfUser.stream().filter(roleAccess::contains) != null;
-        if(!isAccess){
-//            is no access
-            return "account/index";
-        }
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
             model.addAttribute("account", searchList);
@@ -102,6 +96,7 @@ public class AccountController {
         return "account/index";
     }
 
+    @PreAuthorize("hasAnyAuthority('1')")
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<AccountDAO> foundOrders = accountService.searchAllAccount(keyword);
@@ -135,16 +130,6 @@ public class AccountController {
         return "redirect:/auth/index";
     }
 
-
-//    @GetMapping("/edit/{code}")
-//    public String update(Model model, @PathVariable("code") String code) {
-//        Accounts acc = accountService.findOne(code);
-//        List<Roles> rolesList = rolesRepository.findAll();
-//        model.addAttribute("rList", rolesList);
-//        model.addAttribute("accounts", acc);
-//        return "account/edit";
-//    }
-
     @GetMapping("/edit/{code}")
     public String update(Model model, @PathVariable("code") String code) {
         Accounts acc = accountService.findOne(code);
@@ -165,20 +150,41 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "/account/edit";
         }
-        List<AccountsRoles> accountsRoles = roleIds.stream().map(roleId -> {
-            AccountRolesId accountRolesId = new AccountRolesId();
-            accountRolesId.setAccountCode(accountDAO.getCode());
-            accountRolesId.setRoleId(roleId);
 
-            AccountsRoles accountsRole = new AccountsRoles();
-            accountsRole.setId(accountRolesId);
-            accountsRole.setAccountCode(accountDAO.getCode());
-            accountsRole.setRoleId(roleId);
-            return accountsRole;
-        }).toList();
-        accountRolesRepository.saveAll(accountsRoles);
+        List<AccountsRoles> existingRoles = accountRolesRepository.findAllByAccountCode(accountDAO.getCode());
+        for (AccountsRoles accountsRoles : existingRoles) {
+            if (!roleIds.contains(accountsRoles.getRoleId())) {
+                accountRolesRepository.delete(accountsRoles);
+            }
+        }
+        for (Integer roleId : roleIds) {
+            if (existingRoles.stream().noneMatch(role -> role.getRoleId().equals(roleId))) {
+                AccountRolesId accountRolesId = new AccountRolesId();
+                accountRolesId.setAccountCode(accountDAO.getCode());
+                accountRolesId.setRoleId(roleId);
+
+                AccountsRoles newRole = new AccountsRoles();
+                newRole.setId(accountRolesId);
+                newRole.setAccountCode(accountDAO.getCode());
+                newRole.setRoleId(roleId);
+
+                accountRolesRepository.save(newRole);
+            }
+        }
         accountService.updateAccount(accountDAO);
         return "redirect:/auth/index";
+//        List<AccountsRoles> accountsRoles = roleIds.stream().map(roleId -> {
+//            AccountRolesId accountRolesId = new AccountRolesId();
+//            accountRolesId.setAccountCode(accountDAO.getCode());
+//            accountRolesId.setRoleId(roleId);
+//
+//            AccountsRoles accountsRole = new AccountsRoles();
+//            accountsRole.setId(accountRolesId);
+//            accountsRole.setAccountCode(accountDAO.getCode());
+//            accountsRole.setRoleId(roleId);
+//            return accountsRole;
+//        }).toList();
+//        accountRolesRepository.saveAll(accountsRoles);
     }
 
     @PostMapping(value ="/updatePassword/{code}")

@@ -2,6 +2,7 @@ package warehouse.exam.demo.controllerAPI;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,7 +56,7 @@ public class AccountAPIController {
         return null;
     }
 
-    @GetMapping("/index")
+    @GetMapping("/auth/index")
     public ResponseEntity<List<AccountDAO>> index() {
         return ResponseEntity.ok(accountService.findAll());
     }

@@ -3,6 +3,7 @@ package warehouse.exam.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
-import warehouse.exam.demo.model.AccountsRoles;
+import warehouse.exam.demo.model.Roles;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 import warehouse.exam.demo.reponsitory.RolesRepository;
 
@@ -27,34 +28,29 @@ public class AccountService implements UserDetailsService {
     @Lazy
     private final BCryptPasswordEncoder passwordEncoder;
     private final AccountRepository accountsRepository;
-
-    private final RolesRepository rolesRepository;
+    private final RoleService roleService;
 
     @Autowired
-    public AccountService(BCryptPasswordEncoder passwordEncoder, AccountRepository accountRepository, RolesRepository rolesRepository) {
+    public AccountService(BCryptPasswordEncoder passwordEncoder, AccountRepository accountRepository, RolesRepository rolesRepository, RoleService roleService) {
         this.passwordEncoder = passwordEncoder;
         this.accountsRepository = accountRepository;
-        this.rolesRepository = rolesRepository;
+        this.roleService = roleService;
     }
 
-    //    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        Accounts account = accountsRepository.findAccountsByEmail(email);
-//        if (account == null) {
-//            throw new UsernameNotFoundException("User not found with email: " + email);
-//        }
-//        List<GrantedAuthority> authorityList = new ArrayList<>();
-////        authorityList.add(new SimpleGrantedAuthority("USER_ROLE"));
-//        return new User(account.getEmail(), account.getPassword(), authorityList);
-//    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Accounts account = accountsRepository.findAccountsByEmail(email);
         if (account == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        return new User(account.getName(), account.getPassword(), authorityList);
+        List<Roles> roles = roleService.getRolesByAccount(account);
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Roles role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getId()));
+        }
+
+        return new User(account.getEmail(), account.getPassword(), authorities);
     }
 
     public List<AccountDAO> findAll() {
@@ -99,6 +95,22 @@ public class AccountService implements UserDetailsService {
             Accounts acc = optionalAccount.get();
             acc.setPassword(passwordEncoder.encode(newPassword));
             accountsRepository.save(acc);
+        }
+    }
+
+    public static String getRoleNameById(int roleId) {
+        // Ánh xạ roleId thành tên vai trò tương ứng
+        switch (roleId) {
+            case 1:
+                return "Admin";
+            case 2:
+                return "Sale Order";
+            case 3:
+                return "Quantity Control";
+            case 4:
+                return "Warehouse Manager";
+            default:
+                return "Unknown Role";
         }
     }
 
