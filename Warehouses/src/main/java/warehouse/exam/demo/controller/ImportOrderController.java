@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.DAL.itemmasterDAO;
-import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.service.ItemmasterService;
@@ -20,11 +19,11 @@ import warehouse.exam.demo.service.ImportService;
 import warehouse.exam.demo.service.itemdataService;
 import warehouse.exam.demo.service.locationService;
 import warehouse.exam.demo.service.supplierService;
-import warehouse.exam.demo.model.Supplier;
-import warehouse.exam.demo.service.*;
-
-import javax.validation.Valid;
 import java.util.List;
+import warehouse.exam.demo.reponsitory.ImportRepository;
+import warehouse.exam.demo.reponsitory.ItemmasterRepository;
+import warehouse.exam.demo.reponsitory.itemdataReponsitory;
+import warehouse.exam.demo.reponsitory.supplierRepository;
 
 /**
  * @author DUNG
@@ -43,7 +42,16 @@ public class ImportOrderController {
     itemdataService itemdataService;
     @Autowired
     ItemmasterService itemmasterService;
-    
+
+    @Autowired
+    ItemmasterRepository imMasterRepositoty;
+    @Autowired
+    itemdataReponsitory imDataRepository;
+    @Autowired
+    supplierRepository supReponsitory;
+     @Autowired
+    ImportRepository impRepository;
+
     @RequestMapping("/index")
     public String index(Model model) {
         List<importDAO> searchList = (List<importDAO>) model.asMap().get("searchResults");
@@ -83,6 +91,13 @@ public class ImportOrderController {
         return "import/detail";
     }
 
+    @PostMapping("/details/{idImport}")
+    public String updateDisable(@PathVariable int idImport, @RequestParam int id){
+        Boolean newDisable = true;
+        itemmasterService.updateDisable(id, newDisable);
+        return "redirect:/import/details/" + idImport;
+    }
+
     @GetMapping("edit/{id}")
     public String update(Model model, @PathVariable("id") int id) {
         model.addAttribute("import", service.findOne(id));
@@ -91,11 +106,10 @@ public class ImportOrderController {
     }
 
     @PostMapping("/edit")
-    public String update(importDAO imp, BindingResult binding){
-        if(binding.hasErrors()){
+    public String update(importDAO imp, BindingResult binding) {
+        if (binding.hasErrors()) {
             return "/edit";
-        }
-        else {
+        } else {
             service.updateImpOrder(imp);
             return "redirect:/import/index";
         }
@@ -104,8 +118,6 @@ public class ImportOrderController {
     @GetMapping("/createItem/{id}")
     public String createItem(Model model, @PathVariable("id") int id) {
         itemmasterDAO itemDAO = new itemmasterDAO();
-//        Importorders idImport = service.findOne(id);
-//        itemDAO.setIdImport(importorders);
         model.addAttribute("itemmasterDAO", itemDAO);
         model.addAttribute("idImport", service.findOne(id));
         model.addAttribute("supplier", supService.getAll());
@@ -113,10 +125,29 @@ public class ImportOrderController {
         return "import/createItem";
     }
 
-    @PostMapping("/createItem")
-    public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemMaster, @ModelAttribute Itemmasters item) {
-        model.addAttribute("idImport", itemmasterService.findOne(idImp));
-        itemmasterService.saveItemMaster(itemMaster, idImp, item);
+
+    @RequestMapping(value="/createItemMaster", method = RequestMethod.POST)
+    public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemmasterDAO) {
+        Importorders imp = impRepository.findById(idImp);
+        Itemmasters item = new Itemmasters();
+//model.addAttribute("idImport", itemmasterService.findOne(idImp));
+        item.setId(itemmasterDAO.getId());
+        item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
+        item.setDateImport(itemmasterDAO.getDateImport());
+        item.setIdImport(imp);
+//          item.setLocationCode(itemmasterDAO.);
+        item.setNote(itemmasterDAO.getNote());
+        item.setQcAcceptQuantity(itemmasterDAO.getQcAcceptQuantity());
+        item.setQcBy(itemmasterDAO.getQcBy());
+        item.setRecieveNo(itemmasterDAO.getRecieveNo());
+        item.setSupId(supReponsitory.findBySupName(itemmasterDAO.getSupplierName()));
+        item.setQuantity(itemmasterDAO.getQuantity());
+        item.setPass(false);
+        item.setDisable(false);
+        item.setQcAcceptQuantity(0.0);
+        item.setQcInjectQuantity(0.0);
+        item.setLocationCode("");
+        imMasterRepositoty.save(item) ;
         return "redirect:/import/index";
     }
 }

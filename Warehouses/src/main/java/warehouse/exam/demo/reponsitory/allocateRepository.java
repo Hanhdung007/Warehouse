@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import warehouse.exam.demo.model.AllocateOrder;
+import warehouse.exam.demo.model.Log;
 
 /**
  *
@@ -22,3 +23,4 @@ public interface allocateRepository extends JpaRepository<AllocateOrder, Integer
     List<AllocateOrder> GetAllocateOrderbyFalse();
     AllocateOrder findById(int id);
 }
+

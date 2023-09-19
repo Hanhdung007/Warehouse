@@ -8,17 +8,25 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,35 +46,45 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Itemmasters.findByQcAcceptQuantity", query = "SELECT i FROM Itemmasters i WHERE i.qcAcceptQuantity = :qcAcceptQuantity"),
     @NamedQuery(name = "Itemmasters.findByQcBy", query = "SELECT i FROM Itemmasters i WHERE i.qcBy = :qcBy")})
 public class Itemmasters implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 255)
     @Column(name = "location_code")
     private String locationCode;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "quantity")
-    private Double quantity;
     @Size(max = 255)
     @Column(name = "recieve_no")
     private String recieveNo;
-    @Column(name = "date_import")
-//    @Temporal(TemporalType.TIMESTAMP)
-    private String dateImport;
     @Size(max = 255)
     @Column(name = "note")
     private String note;
-    @Column(name = "qc_accept_quantity")
-    private Double qcAcceptQuantity;
-    @Column(name = "book_qty")
-    private Double bookQty;
     @Size(max = 255)
     @Column(name = "qc_by")
     private String qcBy;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "itemmasterId")
+    private List<IssueOrders> issueOrdersList;
+    @Column(name = "date_import")
+    @Temporal(TemporalType.DATE)
+    private Date dateImport;
+    @OneToMany(mappedBy = "itemmasterId")
+    private List<Log> logList;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "quantity")
+    private Double quantity;
+    @Column(name = "qc_accept_quantity")
+    private Double qcAcceptQuantity;
+    @Column(name = "qc_inject_quantity")
+    private Double qcInjectQuantity;
+    @Column(name = "book_qty")
+    private Double bookQty;
+    @Column(name = "disable")
+    private Boolean disable;
+    @Column(name = "pass")
+    private Boolean pass;
     @JoinColumn(name = "id_import", referencedColumnName = "id")
     @ManyToOne
     private Importorders idImport;
@@ -124,20 +142,13 @@ public class Itemmasters implements Serializable {
         this.recieveNo = recieveNo;
     }
 
-    public String getDateImport() {
+    public Date getDateImport() {
         return dateImport;
     }
-    public void setDateImport(String dateImport) {
+    public void setDateImport(Date dateImport) {
         this.dateImport = dateImport;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 
     public Double getQcAcceptQuantity() {
         return qcAcceptQuantity;
@@ -145,6 +156,14 @@ public class Itemmasters implements Serializable {
 
     public void setQcAcceptQuantity(Double qcAcceptQuantity) {
         this.qcAcceptQuantity = qcAcceptQuantity;
+    }
+
+    public Double getQcInjectQuantity(){
+        return qcInjectQuantity;
+    }
+
+    public void setQcInjectQuantity(Double qcInjectQuantity) {
+        this.qcInjectQuantity = qcInjectQuantity;
     }
 
     public String getQcBy() {
@@ -179,6 +198,22 @@ public class Itemmasters implements Serializable {
         this.supId = supId;
     }
 
+    public Boolean getDisable(){
+        return disable;
+    }
+
+    public void setDisable(Boolean disable) {
+        this.disable = disable;
+    }
+
+    public Boolean getPass(){
+        return pass;
+    }
+
+    public void setPass(Boolean pass) {
+        this.pass = pass;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -204,4 +239,22 @@ public class Itemmasters implements Serializable {
         return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
     }
 
+ 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+
+    @XmlTransient
+    public List<IssueOrders> getIssueOrdersList() {
+        return issueOrdersList;
+    }
+
+    public void setIssueOrdersList(List<IssueOrders> issueOrdersList) {
+        this.issueOrdersList = issueOrdersList;
+    }
 }

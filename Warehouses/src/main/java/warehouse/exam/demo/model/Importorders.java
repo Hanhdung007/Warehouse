@@ -13,6 +13,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,12 +45,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Importorders.findByStatus", query = "SELECT i FROM Importorders i WHERE i.status = :status")})
 public class Importorders implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Size(max = 255)
     @Column(name = "driver")
     private String driver;
@@ -61,6 +57,13 @@ public class Importorders implements Serializable {
     @Size(max = 255)
     @Column(name = "note")
     private String note;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "status")
     private Boolean status;
     @OneToMany(mappedBy = "idImport")
@@ -84,13 +87,6 @@ public class Importorders implements Serializable {
         this.id = id;
     }
 
-    public String getDriver() {
-        return driver;
-    }
-
-    public void setDriver(String driver) {
-        this.driver = driver;
-    }
 
     public String getDriversPhone() {
         return driversPhone;
@@ -108,13 +104,6 @@ public class Importorders implements Serializable {
         this.dateImport = dateImport;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
 
     public Boolean getStatus() {
         return status;
@@ -140,30 +129,18 @@ public class Importorders implements Serializable {
     public void setSupId(Supplier supId) {
         this.supId = supId;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public String getDriver() {
+        return driver;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Importorders)) {
-            return false;
-        }
-        Importorders other = (Importorders) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Importorders[ id=" + id + " ]";
+    public String getNote() {
+        return note;
+    }
+    public void setNote(String note) {
+        this.note = note;
     }
     
 }

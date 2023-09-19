@@ -11,13 +11,21 @@ package warehouse.exam.demo.DAL;
 public class PickListDAO {
 
     private int itemMasterId;
-    private double qty;
+    private String orderCode;
+
+    public String orderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+    private Double qty;
     private String locationCode;
 
     /**
      * @return the itemMasterId
      */
-
     public int getItemMasterId() {
         return itemMasterId;
     }
@@ -32,7 +40,7 @@ public class PickListDAO {
     /**
      * @return the qty
      */
-    public double getQty() {
+    public Double getQty() {
         return qty;
     }
 
@@ -53,7 +61,7 @@ public class PickListDAO {
     /**
      * @param qty the qty to set
      */
-    public void setQty(double qty) {
+    public void setQty(Double qty) {
         this.qty = qty;
     }
 

@@ -37,16 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Supplier.findByActive", query = "SELECT s FROM Supplier s WHERE s.active = :active")})
 public class Supplier implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "sup_id")
-    private String supId;
-//    @Size(max = 2147483647)
-    @Column(name = "sup_name")
-    private String supName;
     @Size(max = 2147483647)
     @Column(name = "sup_address")
     private String supAddress;
@@ -59,6 +49,17 @@ public class Supplier implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "tax_code")
     private String taxCode;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "sup_id")
+    private String supId;
+//    @Size(max = 2147483647)
+    @Column(name = "sup_name")
+    private String supName;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "supId")
@@ -79,6 +80,14 @@ public class Supplier implements Serializable {
 
     public void setSupId(String supId) {
         this.supId = supId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getSupName() {
@@ -105,13 +114,6 @@ public class Supplier implements Serializable {
         this.supEmail = supEmail;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public String getTaxCode() {
         return taxCode;
@@ -171,5 +173,5 @@ public class Supplier implements Serializable {
     public String toString() {
         return "warehouse.exam.demo.model.Supplier[ supId=" + supId + " ]";
     }
-    
+
 }

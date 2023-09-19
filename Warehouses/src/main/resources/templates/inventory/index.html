@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+    <!--
+        xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+    -->
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    </head>
+
+    <body>
+        <div class="main-content-inner" layout:fragment="content">
+            <div class="col-lg-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-body">
+                            <div id="gridContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                let stockGrid;
+                window.jsPDF = window.jspdf.jsPDF;
+                $(() => {
+                    var stockDataSource = new DevExpress.data.CustomStore({
+                        key: "id",
+                        loadMode: "raw",
+                        selection: {
+                            mode: 'multiple',
+                        },
+                        load: function (loadOptions) {
+                            var d = $.Deferred();
+                            $.ajax({
+                                async: false,
+                                crossDomain: true,
+                                url: '/api/inventory/getdata',
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "cache-control": "no-cache"
+                                },
+                                method: "GET"
+                            }).done(function (result) {
+                                d.resolve(result);
+                            }).fail(function (xhr) {
+                                console.log("failed");
+                            });
+
+                            return d.promise();
+                        }
+
+                    });
+
+                    stockGrid = $('#gridContainer').dxDataGrid({
+                        dataSource: stockDataSource,
+                        keyExpr: 'ID',
+                        export: {
+                            enabled: true,
+                            formats: ['pdf', 'xlsx'],
+                            allowExportSelectedData: true,
+                        },
+                        showBorders: true,
+                        filterRow: {
+                            visible: true,
+                            applyFilter: 'auto',
+                        },
+                        searchPanel: {
+                            visible: true,
+                            width: 240,
+                            placeholder: 'Search...',
+                        },
+                        onExporting(e) {
+                            e.cancel = true;
+
+                            switch (e.format) {
+                                case "pdf":
+                                    const doc = new jsPDF();
+                                    const header = 'Inventory Stock';
+                                    const pageWidth = doc.internal.pageSize.getWidth();
+                                    doc.setFontSize(15);
+                                    const headerWidth = doc.getTextDimensions(header).w;
+                                    doc.text(header, (pageWidth - headerWidth) / 2, 5);
+                                    DevExpress.pdfExporter.exportDataGrid({
+                                        jsPDFDocument: doc,
+                                        component: stockGrid,
+                                        onRowExporting: (e) => {
+                                            const isHeader = e.rowCells[1].text === 'Image';
+                                            if (!isHeader) {
+                                                e.rowHeight = 40;
+                                            }
+                                        },
+                                        customDrawCell: (e) => {
+                                            if (e.gridCell.rowType === 'data' && e.gridCell.column.dataField === 'image') {
+                                                doc.addImage(e.gridCell.value, 'PNG', e.rect.x, e.rect.y, e.rect.w, e.rect.h);
+                                                e.cancel = true;
+                                            }
+                                        },
+                                    }).then(function () {
+                                        doc.save('Inventory Stock.pdf');
+                                    });
+                                    break;
+
+                                case "xlsx":
+                                      const workbook = new ExcelJS.Workbook(); 
+                                    const worksheet = workbook.addWorksheet("Inventory Stock");
+                                    DevExpress.excelExporter.exportDataGrid({
+                                        component: e.component,
+                                        worksheet: worksheet,
+                                        autoFilterEnabled: true
+                                    }).then(() => {
+                                        workbook.xlsx.writeBuffer().then((buffer) => {
+                                            saveAs(
+                                                    new Blob([buffer], {type: "application/octet-stream"}),
+                                                    "Inventory Stock.xlsx"
+                                                    );
+                                        });
+                                    });
+                                    break;
+                            }
+                        },
+                        headerFilter: {
+                            visible: true,
+                        },
+                          selection: {
+                            mode: 'multiple',
+                        },
+                        columns: [{
+                                dataField: 'id',
+                                caption: 'Id',
+                                width: '8%',
+                                alignment: 'center'
+                            },
+                            {
+                                dataField: 'image',
+                                caption: 'Image',
+                                cellTemplate(container, options) {
+                                    container.append("<img src ='/" + options.data.image + "' width='250' heigh='200'/>")
+                                },
+                                 width: '20%',
+                            },
+                            {
+                                dataField: 'itemName',
+                                caption: 'Item Name'
+                            },
+                            {
+                                dataField: 'supplierName',
+                                caption: 'Supplier Name'
+                            },
+                            {
+                                dataField: 'locationName',
+                                caption: 'Location Name',
+                                width: '12%',
+                            },
+                            {
+                                dataField: 'recieveNo',
+                                caption: 'Recieve No'
+                            },
+
+                            {
+                                dataField: 'dateImport',
+                                caption: 'Import Date',
+                                dataType: 'date',
+                                format: 'dd/MM/yyyy',
+                                width: '12%',
+                            },
+                            {
+                                dataField: 'quantity',
+                                caption: 'Import Quantity',
+                                width: '8%',
+                            },
+                            {
+                                dataField: 'qcAcceptQuantity',
+                                caption: 'Remain Quantity',
+                                width: '8%',
+                            },
+                            {
+                                dataField: 'note',
+                                caption: 'Note'
+                            },
+                        ],
+                        columnAutoWidth: true,
+                        showRowLines: true,
+                        showBorders: true,
+                    }).dxDataGrid("instance");
+                })
+
+            </script>
+        </div>
+        <!--        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                <script>
+              // Add the following code if you want the name of the file appear on select
+                    $(".custom-file-input").on("change", function () {
+                        var fileName = $(this).val().split("\\").pop();
+                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                    });
+                </script>-->
+    </body>
+
+</html>
