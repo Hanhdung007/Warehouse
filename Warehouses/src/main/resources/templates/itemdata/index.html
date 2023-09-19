@@ -18,114 +18,67 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
     <body>
         <div class="main-content-inner" layout:fragment="content">
-            <div class="col-lg-12 mt-5">
-                <div class="card">
-                    <div class="card-body">
+            <div class="row">
+                <div class="col-12 mt-5">
+                    <div class="card">
                         <div class="card-body">
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Create new Item</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content mt-3" id="myTabContent">
-                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <h4 class="header-title">Item List</h4>
-                                    <div class="single-table">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped text-center">
-                                                <thead class="text-uppercase"> <tr>
-                                                        <th scope="col">Code</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Color</th>
-                                                        <th scope="col">Type</th>
-                                                        <th scope="col">Active</th>
-                                                        <th scope="col">Image</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr th:each="items:${list}">
-                                                        <td th:text="${items.code}"></td>
-                                                        <td th:text="${items.name}"></td>
-                                                        <td th:text="${items.color}"></td>
-                                                        <td th:text="${items.type}"></td>
-                                                        <td th:text="${items.active}"></td>
-                                                        <td>
-                                                            <img th:src="'/' + ${items.image}" width="150" height="150" alt="sai nha"/>
-                                                        </td>
-                                                        <td>
-                                                            <a th:href="'/itemdata/update/' + ${items.code}">Edit</a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                            <a th:href="@{/itemdata/create}">
+                                <button type="button" class="btn btn-outline-success mb-3">Add new Item Data</button>
+                            </a>
+                            <br>
+                            <h4 class="header-title">Item List</h4>
+                            <div class="single-table">
+                                <div class="table-responsive">
+                                    <table class="table table-striped text-center">
+                                        <thead class="text-uppercase"> <tr>
+                                                <th scope="col">Code</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Color</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Active</th>
+                                                <th scope="col">Image</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="items:${list}">
+                                                <td th:text="${items.code}"></td>
+                                                <td th:text="${items.name}"></td>
+                                                <td th:text="${items.color}"></td>
+                                                <td th:text="${items.type}"></td>
+                                                <td th:text="${items.active}"></td>
+                                                <td>
+                                                    <img th:src="'/' + ${items.image}" width="150" height="150" alt="sai nha"/>
+                                                </td>
+                                                <td>
+                                                    <a th:href="'/itemdata/update/' + ${items.code}">Edit</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <div class="col-12 mt-5">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="header-title">Add new Item</h4>
-                                                <form th:action="@{create}" th:object="${itemdata}" method="post" enctype="multipart/form-data">
-                                                    <div class="form-group">
-                                                        <label>Item's code: </label>
-                                                        <input type="text" hidden="hidden" class="form-control" th:field="*{code}"/>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Item's name: </label>
-                                                        <input type="text" class="form-control" th:field="*{name}"/>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Item's color: </label>
-                                                        <input type="text" class="form-control" th:field="*{color}"/>
-                                                    </div>
-<!--                                                    <div class="form-group">-->
-                                                        <label>Item's type: </label>
-                                                        <select name="cars" class="custom-select mb-3 col-6" th:field="*{type}">
-                                                            <option value="goods">Goods</option>
-                                                            <option value="material">Material</option>
-                                                        </select>
-                                                        <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" th:field="*{active}"/>
-                                                        <label>Active</label>
-                                                    </div>
-<!--                                                        <input type="text" class="form-control" th:field="*{type}"/>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" th:field="*{active}"/>
-                                                        <label>Active</label>
-                                                    </div>-->
-                                                    <div class="form-group">
-                                                        <label>Choose image file: </label>
-                                                        <input type="file" class="form-control" name="file">
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.jqueryui.min.css">
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+            <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#warehousetable').DataTable();
+                });
+            </script>
         </div>
-        <!--        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-                <script>
-              // Add the following code if you want the name of the file appear on select
-                    $(".custom-file-input").on("change", function () {
-                        var fileName = $(this).val().split("\\").pop();
-                        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-                    });
-                </script>-->
-        <script src="/js/authToken.js"></script>
     </body>
+
+    <script src="/js/authToken.js"></script>
 
 </html>

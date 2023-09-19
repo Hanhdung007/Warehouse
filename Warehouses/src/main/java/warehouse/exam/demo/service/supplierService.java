@@ -57,15 +57,9 @@ public class supplierService {
         supplier.setTaxCode(supDAO.getTaxCode());
         return supRepository.save(supplier);
     }
-    public Supplier updateSupplier(String code, supplierDAO supDAO) {
-        Supplier supplier = supRepository.findById(code).get();
-        supplier.setSupId(supDAO.getSupId());
-        supplier.setActive(supDAO.getActive());
-        supplier.setCity(supDAO.getCity());
-        supplier.setSupAddress(supDAO.getSupAddress());
-        supplier.setSupEmail(supDAO.getSupEmail());
-        supplier.setSupName(supDAO.getSupName());
-        supplier.setTaxCode(supDAO.getTaxCode());
+     public Supplier updateStatusSupplier(supplierDAO supDAO) {
+        Supplier supplier = supRepository.findById(supDAO.getSupId()).get();
+        supplier.setActive(true);
         return supRepository.save(supplier);
     }
 }

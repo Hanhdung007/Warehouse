@@ -21,11 +21,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title">Add new Warehouse</h4>
-                            <form th:action="@{create}" th:object="${supplier}" method="post">
+                            <h4 class="header-title">Update Supplier</h4>
+                            <form th:action="@{/supplier/update}" th:object="${supplier}" method="post">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Supplier's Code</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" th:field="*{supId}" placeholder="Enter code.....">
+                                    <input type="text" class="form-control" id="exampleInputEmail1" th:field="*{supId}" placeholder="Enter code....." readonly="true">
                                     <!--                                <small id="emailHelp" class="form-text text-muted">We'll never share your
                                                                         email with anyone else.</small>-->
                                 </div>
@@ -35,32 +35,33 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Address</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supAddress}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supAddress}" placeholder="Enter address.....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Email</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supEmail}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supEmail}" placeholder="Enter email.....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">City</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{city}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{city}" placeholder="Enter city.....">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Tax Code</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{taxCode}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{taxCode}" placeholder="Enter taxcode.....">
                                 </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{active}">
                                     <label class="form-check-label" for="exampleCheck1">Active</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
-                                <a href="/supplier/index" class="btn btn-secondary" type="submit">Cancle</a>
+                                <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Update</button>
+                                <a href="/supplier/index" class="btn btn-secondary mt-4 pr-4 pl-4" type="submit">Cancle</a>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 
 </html>

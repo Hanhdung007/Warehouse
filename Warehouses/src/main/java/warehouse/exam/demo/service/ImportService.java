@@ -50,7 +50,7 @@ public class ImportService {
 
     public Importorders saveImportOrder(importDAO importDAO) {
         Importorders impOrder = new Importorders();
-        impOrder.setId(importDAO.getId());
+//        impOrder.setId(importDAO.getId());
         impOrder.setDriver(importDAO.getDriver());
         impOrder.setDateImport(importDAO.getDateImport());
         impOrder.setDriversPhone(importDAO.getDriversPhone());

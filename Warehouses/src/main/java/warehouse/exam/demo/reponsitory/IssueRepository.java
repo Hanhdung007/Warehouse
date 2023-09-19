@@ -12,5 +12,6 @@ import warehouse.exam.demo.model.IssueOrders;
  * @author DUNG
  */
 public interface IssueRepository extends JpaRepository<IssueOrders, Integer> {
-    
+
+    IssueOrders findById(int id);
 }
