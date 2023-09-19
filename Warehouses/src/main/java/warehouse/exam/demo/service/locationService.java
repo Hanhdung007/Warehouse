@@ -44,8 +44,8 @@ public class locationService {
         locdao.setActive(loc.getActive());
         List<itemmasterDAO> dao = new ArrayList<>();
         List<Itemmasters> itemMasters = itemmasterRepository.findItemsByLocationsCode(code);
-        for(Itemmasters im: itemMasters){
-             itemmasterDAO imtDao = new itemmasterDAO();
+        for (Itemmasters im : itemMasters) {
+            itemmasterDAO imtDao = new itemmasterDAO();
             imtDao.setDateImport(im.getDateImport());
             imtDao.setId(im.getId());
             imtDao.setIdImport(im.getIdImport().getId());
@@ -65,7 +65,7 @@ public class locationService {
             imtDao.setQuantity(im.getQuantity());
             imtDao.setRecieveNo(im.getRecieveNo());
             imtDao.setSupplierName(im.getSupId().getSupName());
-             imtDao.setImage(im.getCodeItemdata().getImage());
+            imtDao.setImage(im.getCodeItemdata().getImage());
             dao.add(imtDao);
         }
         locdao.setItems(dao);
@@ -106,7 +106,9 @@ public class locationService {
 
     public Locations saveLocation(locationDAO newLocations) {
         Locations location = new Locations();
-        location.setCode(newLocations.getCode());
+        if(location.getCode().isEmpty()) {
+            location.setCode(newLocations.getCode());
+        }
         location.setName(newLocations.getName());
         location.setActive(newLocations.isActive());
         location.setCapacity(newLocations.getCapacity());
@@ -127,9 +129,4 @@ public class locationService {
         location.setWarehouseCode(whReponsitory.findByCode(newLocations.getWarehouseCode()));
         return locReponsitory.save(location);
     }
-//    public List<itemmasterDAO> getItem(){
-//        List<locationDAO> dao = new ArrayList<>();
-//        List<Locations> location = locReponsitory.findAll();
-//        
-//    }
 }

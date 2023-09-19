@@ -49,6 +49,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <dt class="col-md-2">Total Locations</dt>
                                 <dd class="col-md-10" th:text="${model.totalLocation}" ></dd>
                             </dl>
+                            <a href="/warehouse/index">back to list</a>
                         </div>
                     </div>
                 </div>
@@ -57,6 +58,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-2">
                     <div class="card">
                         <div class="card-body">
+                            <a th:href="'/warehouse/addLocation/'+${model.code}">
+                                <button type="button" class="btn btn-outline-success mb-3">Add new Location</button>
+                            </a>
                             <h4 class="header-title">Locations Lists</h4>
                             <div class="data-tables datatable-dark">
                                 <table id="locationtable" class="text-center">
@@ -85,12 +89,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             </td>
                                             <td th:text="${location.remain}"></td>
                                             <td>
-                                                <span th:if="${location.active}" class="badge badge-pill badge-success">Active</span>
-                                                <span th:unless="${location.active}" class="badge badge-pill badge-danger">Inactive</span>
+                                                <span th:if="${location.remain > 0}" class="badge badge-pill badge-success">Active</span>
+                                                <span th:if="${location.remain == 0} " class="badge badge-pill badge-danger">Inactive</span>
                                             </td>
                                             <td>
-                                                <a th:href="'/location/details/'+${location.code}" class="btn btn-info">Details</a>
-                                                <a th:href="'/location/update/'+${location.code}" class="btn btn-primary">Edit</a>
+                                                <a th:href="'/location/details/'+${location.code}" class="btn btn-outline-info-info">Details</a>
+                                                <a th:href="'/location/update/'+${location.code}" class="btn btn-outline-primaryprimary">Edit</a>
                                             </td>
                                         </tr>
                                     </tbody>

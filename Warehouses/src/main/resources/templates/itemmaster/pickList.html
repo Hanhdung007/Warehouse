@@ -18,8 +18,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
     <body>
         <div class="main-content-inner" layout:fragment="content">
-            <div class="row">
-                <div class="col-lg-12 mt-5">
+            <div class="row mt-2">
+                <div class="col-12 mt-2">
                     <div class="card">
                         <div class="card-header">
                             <h3>Item management</h3>
@@ -37,9 +37,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <dt class="col-md-2">Recieve No:</dt>
                                 <dd class="col-md-10" th:text="${item.recieveNo}" ></dd>
                             </dl>
-                        <a href="/itemmaster/unallocate">back to list</a>
+                            <a href="/itemmaster/unallocate">back to list</a>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-12 mt-2">
+
                     <div class="single-table">
                         <div class="table-responsive">
                             <table class="table text-center">
@@ -72,50 +78,51 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     </div>
                 </div>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-                function pickList(locationCode, itemMasterId) {
-                    const pickList = {
-                        locationCode: locationCode,
-                        qty: $('#' + locationCode).val(),
-                        itemMasterId: itemMasterId
-                    }
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function pickList(locationCode, itemMasterId) {
+                const pickList = {
+                    locationCode: locationCode,
+                    qty: $('#' + locationCode).val(),
+                    itemMasterId: itemMasterId
+                }
 
 
-                    $.ajax({
-                        url: '/itemmaster/confirmPickList',
-                        type: 'POST',
-                        contentType: "application/json",
-                        data: JSON.stringify(pickList),
-                        success: function (common) {
-                            if (common === 200) {
-                                Swal.fire(
-                                        'Good job!',
-                                        'Pick List success',
-                                        'success'
-                                        ).then(function(){
-                                            window.location.reload();
-                                        });
-                            }else if(common === 300){
-                                 Swal.fire(
+                $.ajax({
+                    url: '/itemmaster/confirmPickList',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify(pickList),
+                    success: function (common) {
+                        if (common === 200) {
+                            Swal.fire(
+                                    'Good job!',
+                                    'Pick List success',
+                                    'success'
+                                    ).then(function () {
+                                window.location.reload();
+                            });
+                        } else if (common === 300) {
+                            Swal.fire(
                                     'Oops!',
                                     'This location does not have enough remain cappacity , please try another locations',
                                     'error'
-                                    );                          
-                            }
-                        },
-                        error: function (err) {
-                            Swal.fire(
-                                    'Oops!',
-                                    'Something error',
-                                    'error'
                                     );
                         }
-                    });
-                }
-            </script>
+                    },
+                    error: function (err) {
+                        Swal.fire(
+                                'Oops!',
+                                'Something error',
+                                'error'
+                                );
+                    }
+                });
+            }
+        </script>
         </div>
-    </body>
+    </div>
+</body>
 
 </html>
 

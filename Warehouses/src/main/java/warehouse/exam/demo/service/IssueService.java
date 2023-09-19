@@ -18,10 +18,10 @@ import warehouse.exam.demo.reponsitory.IssueRepository;
  */
 @Service
 public class IssueService {
-    
+
     @Autowired
     IssueRepository issueReponsitory;
-    
+
     public List<issueOrderDAO> getAll() {
         List<issueOrderDAO> dao = new ArrayList<>();
         List<IssueOrders> whs = issueReponsitory.findAll();
@@ -31,7 +31,7 @@ public class IssueService {
             issuedao.setIssueActive(issue.getIssueActive());
             issuedao.setIssueDated(issue.getIssueDated());
             issuedao.setIssueReason(issue.getIssueReason());
-            issuedao.setItemCode(issue.getItemmasterId().getCodeItemdata().getCode());
+            issuedao.setItemCode(issue.getItemmasterId().getCodeItemdata().getName());
             issuedao.setItemMasterId(issue.getItemmasterId().getId());
             issuedao.setQtyActualExport(issue.getQtyActualExport());
             issuedao.setQtyExport(issue.getQtyExport());
@@ -40,8 +40,12 @@ public class IssueService {
         }
         return dao;
     }
-    
+
     public IssueOrders saveIssue(IssueOrders issue) {
         return issueReponsitory.save(issue);
+    }
+
+    public IssueOrders findOne(int id) {
+        return issueReponsitory.findById(id);
     }
 }

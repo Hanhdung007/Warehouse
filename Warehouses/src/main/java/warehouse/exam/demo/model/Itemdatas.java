@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -60,7 +61,6 @@ public class Itemdatas implements Serializable {
     private Boolean active;
     @OneToMany(mappedBy = "codeItemdata")
     private List<Itemmasters> itemmastersList;
-
     public Itemdatas() {
     }
 
@@ -76,7 +76,6 @@ public class Itemdatas implements Serializable {
         this.code = code;
     }
 
-
     public Boolean getActive() {
         return active;
     }
@@ -84,7 +83,6 @@ public class Itemdatas implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
-
 
     @XmlTransient
     public List<Itemmasters> getItemmastersList() {
@@ -106,7 +104,6 @@ public class Itemdatas implements Serializable {
     public String getColor() {
         return color;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
@@ -126,5 +123,5 @@ public class Itemdatas implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
-    
+
 }
