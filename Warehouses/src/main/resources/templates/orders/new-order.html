@@ -39,8 +39,8 @@
                                     <div class="col-sm-4 input-group">
                                         <select id="customerID" name="customerID" class="form-control select-custom-size">
                                             <option value="">-- Select a customer --</option>
-                                            <option th:each="customer : ${customers}" th:value="${customer.customerID}" th:text="${customer.name}" th:unless="${customer.disable}">
-                                            <span th:text="${customer.name}"></span>
+                                            <option th:each="customer : ${customers}" th:value="${customer.customerID}">
+                                            <span th:text="${customer.name + ' (' + customer.phone + ')'}"></span>
                                             </option>
                                         </select>
                                         <div class="input-group-append">

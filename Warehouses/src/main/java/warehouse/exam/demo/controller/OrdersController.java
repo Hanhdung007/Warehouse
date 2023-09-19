@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import warehouse.exam.demo.model.Customers;
 import warehouse.exam.demo.model.Groups;
+import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.model.Orders;
 import warehouse.exam.demo.model.Unit;
 import warehouse.exam.demo.service.OrdersService;
@@ -72,11 +73,13 @@ public class OrdersController {
         Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
         Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
         Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
-
+        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
+        
         model.addAttribute("order", orderToEdit);
         model.addAttribute("customers", customersArray);
         model.addAttribute("groups", groupsArray);
         model.addAttribute("units", unitsArray);
+        model.addAttribute("itemdata", itemdataArray);
 
         return "orders/edit-order";
     }
