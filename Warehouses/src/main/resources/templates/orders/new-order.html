@@ -28,7 +28,7 @@
                             <div class="datatable-header">
                                 <h4 class="header-title">Add New Order</h4>
                             </div>
-                            <form th:action="@{new-order}" method="post">
+                            <form th:action="@{new-order}" id="yourForm" method="post">
                                 <div class="form-group row">
                                     <label for="orderCode" class="col-sm-2 col-form-label">Order Code</label>
                                     <div class="col-sm-4">
@@ -39,27 +39,34 @@
                                     <div class="col-sm-4 input-group">
                                         <select id="customerID" name="customerID" class="form-control select-custom-size">
                                             <option value="">-- Select a customer --</option>
-                                            <option th:each="customer : ${customers}" th:value="${customer.customerID}" th:text="${customer.name}" th:unless="${customer.disable}">
-                                            <span th:text="${customer.name}"></span>
+                                            <option th:each="customer : ${customers}" th:value="${customer.customerID}">
+                                            <span th:text="${customer.name + ' (' + customer.phone + ')'}"></span>
                                             </option>
                                         </select>
                                         <div class="input-group-append">
                                             <a class="btn btn-success" id="openDialogButton" title="New Customer">
                                                 <i class="fas fa-user-plus text-white"></i>
                                             </a>
-                                        </div>
+                                        </div>                                       
+                                    </div>                                   
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-4 offset-sm-8">
+                                        <div id="customerIDError" class="text-danger" style="display: none;"></div>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Goods Name</label>
                                     <div class="col-sm-4">
-                                        <select id="groupID" name="itemname" class="form-control select-custom-size">
+                                       <select id="groupID" name="itemname" class="form-control select-custom-size">
                                             <option value="">-- Select a item --</option>
                                             <option th:each="item : ${itemdata}" th:value="${item.code}">
                                             <span th:text="${item.name}"></span>
                                             </option>
                                         </select>
+                                        <div id="nameError" class="text-danger" style="display: none;"></div>
                                     </div>
 
                                     <label for="groupID" class="col-sm-2 col-form-label">Group</label>
@@ -70,6 +77,7 @@
                                             <span th:text="${group.name}"></span>
                                             </option>
                                         </select>
+                                        <div id="groupIDError" class="text-danger" style="display: none;"></div>
                                     </div>
                                 </div>
 
@@ -82,18 +90,20 @@
                                             <span th:text="${unit.name}"></span>
                                             </option>
                                         </select>
+                                        <div id="unitIDError" class="text-danger" style="display: none;"></div>
                                     </div>
 
                                     <label for="amount" class="col-sm-2 col-form-label">Amount</label>
                                     <div class="col-sm-4">
                                         <input type="number" id="amount" name="amount" th:value="${order.amount}" class="form-control">
+                                        <div id="amountError" class="text-danger" style="display: none;"></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea id="description" name="description" class="form-control" rows="4" th:text="${order.description}"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
                                 <a th:href="@{/orders/list}" class="btn btn-secondary">Cancel</a>
                             </form>
                         </div>
@@ -115,28 +125,31 @@
                                 <div class="form-group">
                                     <label for="customerName">Customer Name</label>
                                     <input type="text" class="form-control" id="customerName" name="customerName">
+                                    <div id="customerNameError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" class="form-control" id="email" name="email">
+                                    <div id="emailError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="phone">Phone</label>
                                     <input type="text" class="form-control" id="phone" name="phone">
+                                    <div id="phoneError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="fax">Tax</label>
                                     <input type="text" class="form-control" id="fax" name="fax">
+                                    <div id="faxError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="address">Address</label>
                                     <input type="text" class="form-control" id="address" name="address">
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="disableCustomer" name="disableCustomer">
-                                        <label class="form-check-label" for="disableCustomer">Disable Customer</label>
-                                    </div>
+                                    <div id="addressError" class="text-danger" style="display: none;"></div>
                                 </div>
                             </form>
                         </div>
@@ -159,6 +172,46 @@
                     $('#customerModal').modal('show');
                 });
 
+                // Hide the error message when the user starts entering Customer Name
+                $('#customerName').on('input', function () {
+                    $('#customerNameError').hide();
+                });
+
+                // Hide the error message when the user starts entering Email
+                $('#email').on('input', function () {
+                    $('#emailError').hide();
+                });
+
+                // Hide the error message when the user starts entering Phone
+                $('#phone').on('input', function () {
+                    $('#phoneError').hide();
+                });
+
+                // Hide the error message when the user starts entering Tax
+                $('#fax').on('input', function () {
+                    $('#faxError').hide();
+                });
+
+                // Hide the error message when the user starts entering Address
+                $('#address').on('input', function () {
+                    $('#addressError').hide();
+                });
+
+                function isValidEmail(email) {
+                    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    return emailPattern.test(email);
+                }
+
+                function isValidPhoneNumber(phone) {
+                    var phonePattern = /^\d{10,12}$/;
+                    return phonePattern.test(phone);
+                }
+
+                function isValidFax(fax) {
+                    var faxPattern = /^\d{13}$/;
+                    return faxPattern.test(fax);
+                }
+
                 $('#saveCustomerButton').click(function () {
                     // Lấy thông tin khách hàng từ modal
                     var customerName = $('#customerName').val();
@@ -167,6 +220,64 @@
                     var fax = $('#fax').val();
                     var address = $('#address').val();
                     var disableCustomer = $('#disableCustomer').prop('checked');
+
+                    // Check Customer Name is not empty
+                    if (customerName.trim() === '') {
+                        $('#customerNameError').text('Please enter a customer name.');
+                        $('#customerNameError').show();
+                        return; // Prevent saving when Customer Name is empty
+                    } else {
+                        $('#customerNameError').hide();
+                    }
+
+                    // Check Email format if it's not empty
+                    if (email.trim() !== '') {
+                        if (!isValidEmail(email)) {
+                            $('#emailError').text('Invalid email. Please enter email in the correct format.');
+                            $('#emailError').show();
+                            return; // Prevent saving when Email is invalid
+                        } else {
+                            $('#emailError').hide();
+                        }
+                    }
+
+                    // Check Phone is not empty
+                    if (phone.trim() === '') {
+                        $('#phoneError').text('Please enter a phone number.');
+                        $('#phoneError').show();
+                        return; // Prevent saving when Phone is empty
+                    } else {
+                        $('#phoneError').hide();
+                    }
+
+                    // Check Phone format
+                    if (!isValidPhoneNumber(phone)) {
+                        $('#phoneError').text('Invalid phone number. The phone number must have 10 to 12 digits.');
+                        $('#phoneError').show();
+                        return;
+                    } else {
+                        $('#phoneError').hide();
+                    }
+
+                    // Check Fax format if it's not empty
+                    if (fax.trim() !== '') {
+                        if (!isValidFax(fax)) {
+                            $('#faxError').text('Invalid tax code. Tax code must have exactly 13 digits.');
+                            $('#faxError').show();
+                            return; // Prevent saving when Fax is invalid
+                        } else {
+                            $('#faxError').hide();
+                        }
+                    }
+
+                    // Check Address is not empty
+                    if (address.trim() === '') {
+                        $('#addressError').text('Please enter an address.');
+                        $('#addressError').show();
+                        return; // Prevent saving when Address is empty
+                    } else {
+                        $('#addressError').hide();
+                    }
 
                     var newCustomer = {
                         name: customerName,
@@ -223,6 +334,84 @@
                             console.error('Lỗi khi thêm khách hàng:', error);
                         }
                     });
+                });
+
+                $('#name').on('input', function () {
+                    $('#nameError').hide();
+                });
+
+                $('#customerID').on('input', function () {
+                    $('#customerIDError').hide();
+                });
+
+                $('#groupID').on('input', function () {
+                    $('#groupIDError').hide();
+                });
+
+                $('#unitID').on('input', function () {
+                    $('#unitIDError').hide();
+                });
+
+                $('#amount').on('input', function () {
+                    $('#amountError').hide();
+                });
+
+                $('#saveButton').click(function (event) {
+                    // Prevent the default form submission
+                    event.preventDefault();
+
+                    // Validate "Customer Name"
+                    var customerName = $('#customerID').val();
+                    if (customerName === '') {
+                        $('#customerIDError').text('Please select a customer.');
+                        $('#customerIDError').show();
+                        return;
+                    } else {
+                        $('#customerIDError').hide();
+                    }
+
+                    // Validate "Goods Name"
+                    var goodsName = $('#name').val();
+                    if (goodsName.trim() === '') {
+                        $('#nameError').text('Goods Name is required.');
+                        $('#nameError').show();
+                        return;
+                    } else {
+                        $('#nameError').hide();
+                    }
+
+                    // Validate "Group"
+                    var group = $('#groupID').val();
+                    if (group === '') {
+                        $('#groupIDError').text('Please select a group.');
+                        $('#groupIDError').show();
+                        return;
+                    } else {
+                        $('#groupIDError').hide();
+                    }
+
+                    // Validate "Unit"
+                    var unit = $('#unitID').val();
+                    if (unit === '') {
+                        $('#unitIDError').text('Please select a unit.');
+                        $('#unitIDError').show();
+                        return;
+                    } else {
+                        $('#unitIDError').hide();
+                    }
+
+                    // Validate "Amount"
+                    var amount = $('#amount').val();
+                    if (amount.trim() === '') {
+                        $('#amountError').text('Amount is required.');
+                        $('#amountError').show();
+                        return;
+                    } else {
+                        $('#amountError').hide();
+                    }
+
+                    // If all validations pass, submit the form
+                    $('#yourForm').submit();
                 });
             </script>
         </div>

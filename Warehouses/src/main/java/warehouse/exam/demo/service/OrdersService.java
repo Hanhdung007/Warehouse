@@ -62,7 +62,7 @@ public class OrdersService {
 
         // Đặt status thành "New Order"
         order.setStatus("New Order");
-        
+
         // Đặt disabled thành "false"
         order.setDisabled(false);
         
@@ -73,11 +73,39 @@ public class OrdersService {
         return ordersRepository.save(order);
     }
 
+    public Orders updateOrder(Orders updatedOrder) {
+        Optional<Orders> existingOrder = ordersRepository.findById(updatedOrder.getOrderCode());
+
+        if (existingOrder.isPresent()) {
+            Orders currentOrder = existingOrder.get();
+
+            // Cập nhật thông tin đơn hàng với thông tin từ updatedOrder
+            currentOrder.setName(updatedOrder.getName());
+            currentOrder.setGroupID(updatedOrder.getGroupID());
+            currentOrder.setUnitID(updatedOrder.getUnitID());
+            currentOrder.setAmount(updatedOrder.getAmount());
+            currentOrder.setDescription(updatedOrder.getDescription());
+
+            // Đặt createdDate thành ngày giờ hiện tại
+            currentOrder.setCreatedDate(Calendar.getInstance().getTime());
+
+            return ordersRepository.save(currentOrder); // Hibernate sẽ tự động cập nhật bản ghi
+        } else {
+            try {
+                // Xử lý khi đơn hàng không tồn tại
+                throw new NotFoundException("Không tìm thấy đơn hàng với mã " + updatedOrder.getOrderCode());
+            } catch (NotFoundException ex) {
+                Logger.getLogger(OrdersService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
+    }
+
     public Orders getOrderByOrderCode(String orderCode) {
         Optional<Orders> order = ordersRepository.findById(orderCode);
         return order.orElse(null);
     }
-    
+
     public void confirmOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);
@@ -94,7 +122,7 @@ public class OrdersService {
             }
         }
     }
-    
+
     public void completeOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);
@@ -111,7 +139,7 @@ public class OrdersService {
             }
         }
     }
-    
+
     public void cancelOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);
