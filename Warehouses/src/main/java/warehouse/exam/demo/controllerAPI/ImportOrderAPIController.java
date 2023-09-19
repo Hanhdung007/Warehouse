@@ -86,11 +86,11 @@ public class ImportOrderAPIController {
         item.setDateImport(ItemmasterDAO.getDateImport());
         item.setIdImport(imp);
         item.setNote(ItemmasterDAO.getNote());
-        item.setQcAcceptQuantity(0.0);
         item.setQcBy("admin");
         item.setRecieveNo(ItemmasterDAO.getRecieveNo());
         item.setSupId(supReponsitory.findBySupName(ItemmasterDAO.getSupplierName()));
         item.setQuantity(ItemmasterDAO.getQuantity());
+        item.setQcAcceptQuantity(0.0);
         item.setPass(false);
         item.setDisable(false);
         item.setQcInjectQuantity(0.0);

@@ -131,6 +131,7 @@ public class ImportOrderController {
         Importorders imp = impRepository.findById(idImp);
         Itemmasters item = new Itemmasters();
 //model.addAttribute("idImport", itemmasterService.findOne(idImp));
+        item.setId(itemmasterDAO.getId());
         item.setCodeItemdata(imDataRepository.findByName(itemmasterDAO.getItemName()));
         item.setDateImport(itemmasterDAO.getDateImport());
         item.setIdImport(imp);
@@ -143,6 +144,7 @@ public class ImportOrderController {
         item.setQuantity(itemmasterDAO.getQuantity());
         item.setPass(false);
         item.setDisable(false);
+        item.setQcAcceptQuantity(0.0);
         item.setQcInjectQuantity(0.0);
         item.setLocationCode("");
         imMasterRepositoty.save(item) ;
