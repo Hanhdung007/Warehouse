@@ -76,6 +76,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                 ).then(function () {
                                             window.location.reload();
                                         });
+                                    } else if (res === 300){
+                                        Swal.fire(
+                                                'Oops!',
+                                                'This location does not have enough remain cappacity ',
+                                                'error'
+                                                );
                                     }
                                 }
                             });

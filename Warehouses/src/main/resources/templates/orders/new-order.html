@@ -60,7 +60,12 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-sm-2 col-form-label">Goods Name</label>
                                     <div class="col-sm-4">
-                                        <input type="text" id="name" name="name" th:value="${order.name}" class="form-control">
+                                       <select id="groupID" name="itemname" class="form-control select-custom-size">
+                                            <option value="">-- Select a item --</option>
+                                            <option th:each="item : ${itemdata}" th:value="${item.code}">
+                                            <span th:text="${item.name}"></span>
+                                            </option>
+                                        </select>
                                         <div id="nameError" class="text-danger" style="display: none;"></div>
                                     </div>
 

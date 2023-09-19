@@ -3,7 +3,7 @@
  --THEN 
  --DROP DATABASE Warehouse
 --END IF; 
-DROP DATABASE Warehouse
+Create DATABASE Warehouse
 go 
 USE Warehouse
 GO
@@ -36,7 +36,7 @@ GO
 CREATE TABLE allocate_order (
   [id] int PRIMARY KEY,
   [location_code] nvarchar(255),
-  ItemMasterId int,
+  itemasterid int,
   quantity float, 
   created_date datetime, 
   confirm bit
@@ -65,7 +65,7 @@ CREATE TABLE [locations] (
   [name] varchar(100),
   [warehouse_code] nvarchar(50),
   [capacity] float,
-  [active] bit
+  [active] bit,
   remain float 
 )
 GO
@@ -75,19 +75,55 @@ CREATE TABLE [issue_orders] (
   [issue_dated] datetime,
   [issue_reason] nvarchar(255),
   [submitBy] nvarchar(255),
-  [issue_active] bit
+  [issue_active] bit, 
+  item_code nvarchar(255),
+  qtyExport float,
+  qtyActualExport float,
+  itemmaster_id int
+)
+GO
+Drop table Customers(
+	CustomerID int primary key identity,
+	[Name] varchar(100),
+	[Email] varchar(100),
+	[Phone] varchar(20),
+	[Fax] varchar(20),
+	[Address] varchar(150),
+	[Disable] bit
 )
 GO
 
-CREATE TABLE [issue_order_details] (
-  [id] int PRIMARY KEY,
-  [itemCode] nvarchar(255),
-  [id_itemmaster] int,
-  [idissue_order] int,
-  [quantityExport] int,
-  [quantityActualexport] int
+Drop table Groups(
+	GroupID int primary key identity,
+	[Name] varchar(50)
 )
 GO
+Drop table Unit(
+	UnitID int primary key identity,
+	[Name] varchar(50)
+	
+)
+GO
+Drop table Orders(
+	Order_Code varchar(20) primary key,
+	[Name] varchar(100),
+	[Description] varchar(max),
+	GroupID int,
+	UnitID int,
+	CustomerID int,
+	CREATED_DATE datetime,
+	Amount int,
+	status varchar(50),
+	[Disable] bit,
+	booked_qty float,
+	shipped_qty float
+)
+GO
+Create table tb_SYS_SEQUENCE(
+SEQNAME varchar(50) primary key,
+SEQVALUE int
+)
+Go
 CREATE TABLE supplier (
 	sup_id varchar(20) primary key,
 	sup_name varchar(max),
@@ -99,31 +135,38 @@ CREATE TABLE supplier (
 )
 go
 
-ALTER TABLE [issue_order_details] ADD FOREIGN KEY ([idissue_order]) REFERENCES [issue_orders] ([id])
+CREATE TABLE [log] (
+	id int identity primary key,
+	locationName varchar(250),
+	itemmaster_id int, 
+	save_date datetime2(7),
+	quantity float,
+	method varchar(100)
+)
+go
+CREATE TABLE [Accounts] (
+  [code] varchar(255) primary key NOT NULL,
+  [name] nvarchar(255) NULL,
+  [password] nvarchar(255) NULL,
+  [email] nvarchar(255) NULL,
+  [phone] varchar(255) NULL,
+  [isActive] bit NULL,
+)
 GO
-
 ALTER TABLE [locations] ADD FOREIGN KEY ([warehouse_code]) REFERENCES [warehouses] ([code])
 GO
 
 ALTER TABLE [itemmasters]  ADD FOREIGN KEY ([code_itemdata]) REFERENCES [itemdatas] ([code])
 GO
 
-ALTER TABLE [itemmasters] ADD FOREIGN KEY ([id_import]) REFERENCES [importorders] ([id])
+ALTER TABLE Orders ADD FOREIGN KEY (UnitID) REFERENCES Unit (UnitID)
 GO
-CREATE TABLE [roles] (
-	[id] int primary key identity,
-	[role_name] varchar(100)
-)
-CREATE TABLE [accounts_roles](
-	[id] int primary key identity,
-	[role_id] int, 
-	[account_code] varchar(255)
-)
-CREATE TABLE [Accounts] (
-  [code] varchar(255) PRIMARY KEY,
-  [name] nvarchar(255),
-  [password] nvarchar(255),
-)
+ALTER TABLE Orders ADD FOREIGN KEY (GroupID) REFERENCES Groups (GroupID)
+GO
+ALTER TABLE Orders ADD FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID)
+GO
+ALTER TABLE [log] ADD FOREIGN KEY (itemmaster_id) REFERENCES [itemmasters] ([id])
+GO
 GO
 ALTER TABLE [accounts_roles] ADD FOREIGN KEY ([role_id]) REFERENCES  [roles] ([id])
 GO
@@ -132,4 +175,6 @@ GO
 ALTER TABLE [importorders] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
 GO
 ALTER TABLE [itemmasters] ADD FOREIGN KEY (sup_id) REFERENCES  [supplier] (sup_id)
+GO
+ALTER TABLE [issue_orders] ADD FOREIGN KEY (itemmaster_id) REFERENCES  [itemmasters] ([id])
 GO

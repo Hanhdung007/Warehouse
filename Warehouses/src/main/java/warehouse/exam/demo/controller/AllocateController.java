@@ -4,6 +4,10 @@
  */
 package warehouse.exam.demo.controller;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import warehouse.exam.demo.model.AllocateOrder;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.model.Locations;
+import warehouse.exam.demo.model.Log;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
 import warehouse.exam.demo.reponsitory.allocateRepository;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
+import warehouse.exam.demo.reponsitory.logRepository;
 import warehouse.exam.demo.service.AllocateService;
 import warehouse.exam.demo.service.ItemmasterService;
 import warehouse.exam.demo.service.locationService;
@@ -39,6 +45,8 @@ public class AllocateController {
     locationReponsitory locationReponsitory;
     @Autowired
     allocateRepository allocateRepository;
+    @Autowired
+    logRepository logRepository;
 
     @GetMapping("/requests")
     public String allocateRequest(Model model) {
@@ -58,10 +66,19 @@ public class AllocateController {
             6. Cập nhật Allocate Order Confirm = true
            7. Gọi hàm save cho Allocate Order , ItemMaster , Location
          */
-          AllocateOrder allocate = allocateRepository.findById(id);
-            Itemmasters item = itemMasterReponsitory.findById(allocate.getItemMasterId()).get();
-           List<AllocateOrder> currentAllocate = allocateRepository.finbyItemAndLocation(allocate.getLocationCode(),allocate.getItemMasterId(),allocate.getId());
-          // 1.Kiểm tra coi allocate Order  có ItemMasterId và locationCode của pickList hay chưa và id != id truyền về từ controller
+        //Check capcity 
+        AllocateOrder allocate = allocateRepository.findById(id);
+        Locations location = locationReponsitory.findByCode(allocate.getLocationCode());
+        if (location.getRemain() < allocate.getQuantity()) {
+            return ResponseEntity.ok(300);
+        }
+        location.setRemain(location.getRemain() - allocate.getQuantity());
+        allocate.setConfirm(true);
+        Itemmasters item = itemMasterReponsitory.findById(allocate.getItemMasterId()).get();
+        List<AllocateOrder> currentAllocate = allocateRepository.finbyItemAndLocation(allocate.getLocationCode(), allocate.getItemMasterId(), allocate.getId());
+        // 1.Kiểm tra coi allocate Order  có ItemMasterId và locationCode của pickList hay chưa và id != id truyền về từ controller
+        // Save Log 
+        Log log = new Log();
         if (!currentAllocate.isEmpty()) {
             // tạo mới item masters, gán mọi thông tin từ oldItem sang newItem (trừ các biến lqty, qty gán = pickList.getQty())
             Itemmasters newItem = new Itemmasters();
@@ -77,17 +94,24 @@ public class AllocateController {
             newItem.setSupId(item.getSupId());
             newItem.setLocationCode(allocate.getLocationCode());
             itemMasterReponsitory.save(newItem);
-        }else{
+            log.setItemmasterId(newItem);
+        } else {
             item.setLocationCode(allocate.getLocationCode());
             item.setQuantity(allocate.getQuantity());
             item.setQcAcceptQuantity(allocate.getQuantity());
             item.setBookQty(allocate.getQuantity());
+            log.setItemmasterId(item);
         }
-      
-        Locations location = locationReponsitory.findByCode(allocate.getLocationCode());
-       
-        location.setRemain(location.getRemain() - allocate.getQuantity());
-        allocate.setConfirm(true);
+        
+        log.setLocationName(location.getName());
+        log.setMethod("Allocate");
+        log.setQuantity(allocate.getQuantity());
+         LocalDateTime ldt = LocalDateTime.now();
+        Instant instant = ldt.toInstant(ZoneOffset.UTC);
+        Date date = Date.from(instant);
+        log.setSaveDate(date);
+        logRepository.save(log);
+
         allocateRepository.save(allocate);
         itemMasterReponsitory.save(item);
         locationReponsitory.save(location);

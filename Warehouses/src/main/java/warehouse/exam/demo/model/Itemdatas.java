@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -36,13 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Itemdatas.findByImage", query = "SELECT i FROM Itemdatas i WHERE i.image = :image")})
 public class Itemdatas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "code")
-    private String code;
     @Size(max = 255)
     @Column(name = "name")
     private String name;
@@ -52,14 +46,21 @@ public class Itemdatas implements Serializable {
     @Size(max = 255)
     @Column(name = "type")
     private String type;
-    @Column(name = "active")
-    private Boolean active;
     @Size(max = 255)
     @Column(name = "image")
     private String image;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "code")
+    private String code;
+    @Column(name = "active")
+    private Boolean active;
     @OneToMany(mappedBy = "codeItemdata")
     private List<Itemmasters> itemmastersList;
-
     public Itemdatas() {
     }
 
@@ -75,6 +76,23 @@ public class Itemdatas implements Serializable {
         this.code = code;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    @XmlTransient
+    public List<Itemmasters> getItemmastersList() {
+        return itemmastersList;
+    }
+
+    public void setItemmastersList(List<Itemmasters> itemmastersList) {
+        this.itemmastersList = itemmastersList;
+    }
+
     public String getName() {
         return name;
     }
@@ -86,7 +104,6 @@ public class Itemdatas implements Serializable {
     public String getColor() {
         return color;
     }
-
     public void setColor(String color) {
         this.color = color;
     }
@@ -99,14 +116,6 @@ public class Itemdatas implements Serializable {
         this.type = type;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
     public String getImage() {
         return image;
     }
@@ -115,38 +124,4 @@ public class Itemdatas implements Serializable {
         this.image = image;
     }
 
-    @XmlTransient
-    public List<Itemmasters> getItemmastersList() {
-        return itemmastersList;
-    }
-
-    public void setItemmastersList(List<Itemmasters> itemmastersList) {
-        this.itemmastersList = itemmastersList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Itemdatas)) {
-            return false;
-        }
-        Itemdatas other = (Itemdatas) object;
-        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Itemdatas[ code=" + code + " ]";
-    }
-    
 }

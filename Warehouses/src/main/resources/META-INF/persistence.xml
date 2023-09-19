@@ -16,8 +16,8 @@
     <class>warehouse.exam.demo.model.Customers</class>
     <class>warehouse.exam.demo.model.Orders</class>
     <class>warehouse.exam.demo.model.AllocateOrder</class>
+    <class>warehouse.exam.demo.model.Log</class>
     <class>warehouse.exam.demo.model.IssueOrders</class>
-    <class>warehouse.exam.demo.model.IssueOrderDetails</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;databaseName=Warehouse;encrypt=true;trustServerCertificate=true"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

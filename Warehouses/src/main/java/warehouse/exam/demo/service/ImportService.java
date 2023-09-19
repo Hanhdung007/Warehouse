@@ -50,7 +50,7 @@ public class ImportService {
 
     public Importorders saveImportOrder(importDAO importDAO) {
         Importorders impOrder = new Importorders();
-        impOrder.setId(importDAO.getId());
+//        impOrder.setId(importDAO.getId());
         impOrder.setDriver(importDAO.getDriver());
         impOrder.setDateImport(importDAO.getDateImport());
         impOrder.setDriversPhone(importDAO.getDriversPhone());
@@ -63,18 +63,6 @@ public class ImportService {
     public Importorders findOne(int id) {
         return importReponsitory.findById(id);
     }
-
-//    public void updateImpOrder(importDAO importDAO) {
-//        Importorders impOrder = importReponsitory.findById(importDAO.getId());
-//        impOrder.setId(impOrder.getId());
-//        impOrder.setDriver(importDAO.getDriver());
-//        impOrder.setDateImport(importDAO.getDateImport());
-//        impOrder.setDriversPhone(importDAO.getDriversPhone());
-//        impOrder.setSupId(supReponsity.findBySupName(importDAO.getSupplierName()));
-//        impOrder.setNote(importDAO.getNote());
-//        impOrder.setStatus(importDAO.getStatus());
-//        importReponsitory.save(impOrder);
-//    }
 
     public Importorders updateImpOrder(importDAO impDAO) {
         Optional<Importorders> optionalImp = importReponsitory.findById(impDAO.getId());
@@ -102,6 +90,9 @@ public class ImportService {
             }
             if (impDAO.getNote() != null) {
                 imp.setNote(impDAO.getNote());
+            }
+            if(impDAO.getStatus() != null) {
+                imp.setStatus(impDAO.getStatus());
             }
             return importReponsitory.save(imp);
         } else {

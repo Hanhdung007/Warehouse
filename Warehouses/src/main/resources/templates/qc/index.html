@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this template
+-->
+<html xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+
+<!--
+    xlmns:th="http://www.thymeleaf.org" xlmns:layout="http://www.ultrag.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}"
+-->
+
+<head>
+    <title>QC Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="/js/QCQuantity.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/inputQCCheck.css">
+</head>
+
+<body>
+<div class="main-content-inner" layout:fragment="content">
+    <div class="row">
+        <div class="col mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Quality Control Item List</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <form th:action="@{/qc/search}" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" name="keyword" class="form-control" placeholder="Search...">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-blue-grey darken-3" value="Search">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="container">
+                            <div class="single-table">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead class="text-uppercase bg-secondary">
+                                        <tr class="text-white">
+                                            <th scope="col">Item's Name</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Accept Quantity</th>
+                                            <th scope="col">Inject Quantity</th>
+                                            <th scope="col">QC By</th>
+                                            <th scope="col">Receive No</th>
+                                            <th scope="col">Date Imported</th>
+                                            <th scope="col">Note</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:if="${item.quantity} != ${item.qcAcceptQuantity + item.qcInjectQuantity}" th:each="item:${list}">
+                                            <td th:text="${item.itemName}"></td>
+                                            <td th:text="${item.quantity}"></td>
+                                            <td th:text="${item.qcAcceptQuantity}"></td>
+                                            <td th:text="${item.qcInjectQuantity}"></td>
+                                            <td th:text="${item.qcBy}"></td>
+                                            <td th:text="${item.recieveNo}"></td>
+                                            <td th:text="${item.dateImport}"></td>
+                                            <td th:text="${item.note}"></td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-info md-3"
+                                                        data-toggle="modal"
+                                                        th:data-target="'#myModal-'+${item.getId()}">
+                                                    QC Check
+                                                </button>
+                                            </td>
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="@{|myModal-${item.getId()}|}">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" style="display: block;font-size: 1.5em;
+                                                             color: black"
+                                                            >Item Quality Control Section</h5>
+                                                            <button type="button" class="close" data-dismiss="modal">
+                                                                &times;
+                                                            </button>
+                                                        </div>
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <form th:action="@{/qc/accept/{id}(id=${item.getId()})}"
+                                                                  method="post" th:id="@{|form-${item.getId()}|}">
+                                                                <input name="id" th:value="${item.getId()}"
+                                                                       type="hidden"/>
+                                                                <div class="form-group">
+                                                                    <label style="display: block; color: black">QC By</label>
+                                                                    <input type="text" class="form-control" name="qcBy" th:value="${session.username}"
+                                                                           readonly="readonly">
+                                                                </div>
+                                                                <label style="display: block; color: black">Current
+                                                                    Quantity:
+                                                                    <span class="itemQuantity" th:text="${item.quantity - (item.qcAcceptQuantity + (item.qcInjectQuantity != null ? item.qcInjectQuantity : 0))}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <label style="display: block; color: black" th:if="${item.qcAcceptQuantity} > 0.0">Accept
+                                                                    Quantity:
+                                                                    <span class="itemQuantityAccept" th:text="${item.qcAcceptQuantity}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <label style="display: block; color: black" th:if="${item.qcInjectQuantity} > 0.0">Inject
+                                                                    Quantity:
+                                                                    <span class="itemQuantityAccept" th:text="${item.qcInjectQuantity}"
+                                                                          style="display: block;font-size: 1.4em;color: black">
+                                                                </span>
+                                                                </label>
+                                                                <p class="modal-title" style="display: block;
+                                                            font-size: 1.0em;color: black">
+                                                                    Enter Item Quantity For QC
+                                                                </p>
+                                                                <div class="ef">
+                                                                    <input class="effect-21 item4QC" type="number" name="quantityInput" placeholder="Enter Item Quantity..." required>
+                                                                    <span class="focus-border"><i></i></span>
+                                                                </div>
+                                                                <div class="quantityCheck checkQuantity"></div>
+                                                                <br>
+                                                                <div class="d-flex justify-content-end">
+                                                                    <button class="btn btn-outline-success acceptButton" th:attr="onclick=${'checkQC('+item.getId()+')'}" name="accept">
+                                                                        Accept
+                                                                    </button>
+                                                                    <button class="btn btn-outline-danger ml-2 injectButton" th:attr="onclick=${'checkQC('+item.getId()+')'}" name="inject">
+                                                                        Inject
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

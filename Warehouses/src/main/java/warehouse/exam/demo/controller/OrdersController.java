@@ -50,12 +50,12 @@ public class OrdersController {
         Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
         Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
         Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
-
+        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
         model.addAttribute("order", newOrder);
         model.addAttribute("customers", customersArray);
         model.addAttribute("groups", groupsArray);
         model.addAttribute("units", unitsArray);
-
+        model.addAttribute("itemdata", itemdataArray);
         return "orders/new-order";
     }
 
