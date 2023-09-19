@@ -3,11 +3,14 @@ package warehouse.exam.demo.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -38,6 +41,7 @@ public class Accounts implements UserDetails {
     @OneToMany(mappedBy = "accountsByAccountCode")
     private Collection<AccountsRoles> accountsRolesById;
 
+
     public String getCode() {
         return code;
     }
@@ -54,9 +58,21 @@ public class Accounts implements UserDetails {
         this.name = name;
     }
 
+    @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch to load roles eagerly
+    @JoinTable(
+            name = "accounts_roles",
+            joinColumns = @JoinColumn(name = "account_code"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+
+    private Set<Roles> roles = new HashSet<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Roles role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        }
+        return authorities;
     }
 
     public String getPassword() {

@@ -18,6 +18,6 @@ public class RoleService {
     }
 
     public List<Roles> getRolesByAccount(Accounts account) {
-        return roleRepository.findByAccounts(account.getAccountsRolesById().toString());
+        return roleRepository.findByAccounts(account.getAuthorities().toString());
     }
 }

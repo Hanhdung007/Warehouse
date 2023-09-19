@@ -13,16 +13,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
+import warehouse.exam.demo.model.CustomUserDetails;
 import warehouse.exam.demo.model.Roles;
 import warehouse.exam.demo.reponsitory.AccountRepository;
+import warehouse.exam.demo.reponsitory.AccountRolesRepository;
+import warehouse.exam.demo.reponsitory.ImportRepository;
 import warehouse.exam.demo.reponsitory.RolesRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccountService implements UserDetailsService {
+    @Autowired
+    AccountRolesRepository accountRolesRepository;
 
     @Autowired
     @Lazy
@@ -38,19 +44,15 @@ public class AccountService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Accounts account = accountsRepository.findAccountsByEmail(email);
         if (account == null) {
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        List<Roles> roles = roleService.getRolesByAccount(account);
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Roles role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getId()));
-        }
+        Collection<? extends GrantedAuthority> authorities = account.getAuthorities();
 
-        return new User(account.getEmail(), account.getPassword(), authorities);
+        return new CustomUserDetails(account.getEmail(), account.getPassword(), authorities, account.getName());
     }
 
     public List<AccountDAO> findAll() {

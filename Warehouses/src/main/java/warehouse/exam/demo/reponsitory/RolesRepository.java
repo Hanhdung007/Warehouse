@@ -12,5 +12,5 @@ public interface RolesRepository extends JpaRepository<Roles, Integer> {
     Roles findAllById(int roleCode);
 
     @Query("SELECT r FROM Roles r JOIN r.accountsRolesById a WHERE a.accountCode = :accountCode")
-    List<Roles> findByAccounts(@Param("account") String accountCode);
+    List<Roles> findByAccounts(@Param("accountCode") String accountCode);
 }

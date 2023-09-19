@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.AccountDAO;
-import warehouse.exam.demo.model.AccountRolesId;
-import warehouse.exam.demo.model.Accounts;
-import warehouse.exam.demo.model.AccountsRoles;
-import warehouse.exam.demo.model.Roles;
+import warehouse.exam.demo.model.*;
 import warehouse.exam.demo.reponsitory.AccountRolesRepository;
 import warehouse.exam.demo.reponsitory.RolesRepository;
 import warehouse.exam.demo.service.AccountService;
@@ -65,10 +65,14 @@ public class AccountController {
             boolean isError = (boolean) responseBody.get("error");
             String message = (String) responseBody.get("message");
             String username = (String) responseBody.get("username");
-            if (!isError && response.getStatusCode() == HttpStatus.OK) {
-                session.setAttribute("username", username);
-                session.setAttribute("loggedInUser", true);
-                session.setAttribute("message", message);
+                if (!isError && response.getStatusCode() == HttpStatus.OK) {
+                    CustomUserDetails userDetails = accountService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                    session.setAttribute("username", username);
+                    session.setAttribute("loggedInUser", true);
+                    session.setAttribute("message", message);
                 return "redirect:/auth/index";
             } else {
                 model.addAttribute("errorMessage", message);
@@ -84,9 +88,10 @@ public class AccountController {
             return "login/login";
         }
     }
-    @PreAuthorize("hasAnyAuthority('1')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'qc', 'sale', 'whManager')")
     @GetMapping("/index")
-    public String index(Model model) {
+    @PreAuthorize("hasRole('qc')")
+    public String index(Model model, Authentication auth, HttpSession sesson) {
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
             model.addAttribute("account", searchList);
@@ -96,7 +101,7 @@ public class AccountController {
         return "account/index";
     }
 
-    @PreAuthorize("hasAnyAuthority('1')")
+//    @PreAuthorize("hasAnyAuthority('admin', 'qc', 'sale', 'whManager')")
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<AccountDAO> foundOrders = accountService.searchAllAccount(keyword);
@@ -104,6 +109,7 @@ public class AccountController {
         return "redirect:/auth/index";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/create")
     public String create(Model model) {
         List<Roles> rolesList = rolesRepository.findAll();
@@ -111,7 +117,7 @@ public class AccountController {
         model.addAttribute("account", new Accounts());
         return "account/create";
     }
-
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/create")
     public String create(@ModelAttribute AccountDAO dao, @RequestParam("roleIds") Collection<Integer> roleIds) {
         accountService.saveAccount(dao);
@@ -129,7 +135,7 @@ public class AccountController {
         accountRolesRepository.saveAll(accountsRoles);
         return "redirect:/auth/index";
     }
-
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/edit/{code}")
     public String update(Model model, @PathVariable("code") String code) {
         Accounts acc = accountService.findOne(code);
@@ -144,7 +150,7 @@ public class AccountController {
         return "account/edit";
     }
 
-
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/edit")
     public String update(@ModelAttribute AccountDAO accountDAO, BindingResult bindingResult, @RequestParam("roleIds") Collection<Integer> roleIds) {
         if (bindingResult.hasErrors()) {
@@ -173,6 +179,7 @@ public class AccountController {
         }
         accountService.updateAccount(accountDAO);
         return "redirect:/auth/index";
+
 //        List<AccountsRoles> accountsRoles = roleIds.stream().map(roleId -> {
 //            AccountRolesId accountRolesId = new AccountRolesId();
 //            accountRolesId.setAccountCode(accountDAO.getCode());
@@ -186,13 +193,14 @@ public class AccountController {
 //        }).toList();
 //        accountRolesRepository.saveAll(accountsRoles);
     }
-
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping(value ="/updatePassword/{code}")
     public String updatePassword(@PathVariable("code") String code, @RequestParam("newPassword") String newPassword) {
         accountService.updateAccountPassword(code, newPassword);
         return "redirect:/auth/index";
     }
 
+    @PreAuthorize("hasAnyAuthority('admin', 'qc', 'whManager', 'sale')")
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
