@@ -63,7 +63,7 @@
                                             <th>Customer Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>Fax</th>
+                                            <th>Tax</th>
                                             <th>Address</th>
                                             <th>Action</th>
                                         </tr>
@@ -103,28 +103,31 @@
                                 <div class="form-group">
                                     <label for="customerName">Customer Name</label>
                                     <input type="text" class="form-control" id="customerName" name="customerName">
+                                    <div id="customerNameError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" class="form-control" id="email" name="email">
+                                    <div id="emailError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="phone">Phone</label>
                                     <input type="text" class="form-control" id="phone" name="phone">
+                                    <div id="phoneError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="fax">Fax</label>
+                                    <label for="fax">Tax</label>
                                     <input type="text" class="form-control" id="fax" name="fax">
+                                    <div id="faxError" class="text-danger" style="display: none;"></div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="address">Address</label>
                                     <input type="text" class="form-control" id="address" name="address">
-                                </div>
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="disableCustomer" name="disableCustomer">
-                                        <label class="form-check-label" for="disableCustomer">Disable Customer</label>
-                                    </div>
+                                    <div id="addressError" class="text-danger" style="display: none;"></div>
                                 </div>
                             </form>
                         </div>
@@ -161,7 +164,7 @@
                                     <input type="text" class="form-control" id="editPhone" name="editPhone">
                                 </div>
                                 <div class="form-group">
-                                    <label for="editFax">Fax</label>
+                                    <label for="editFax">Tax</label>
                                     <input type="text" class="form-control" id="editFax" name="editFax">
                                 </div>
                                 <div class="form-group">
@@ -210,6 +213,46 @@
                     $('#customerModal').modal('show');
                 });
 
+                // Hide the error message when the user starts entering Customer Name
+                $('#customerName').on('input', function () {
+                    $('#customerNameError').hide();
+                });
+
+                // Hide the error message when the user starts entering Email
+                $('#email').on('input', function () {
+                    $('#emailError').hide();
+                });
+
+                // Hide the error message when the user starts entering Phone
+                $('#phone').on('input', function () {
+                    $('#phoneError').hide();
+                });
+
+                // Hide the error message when the user starts entering Tax
+                $('#fax').on('input', function () {
+                    $('#faxError').hide();
+                });
+
+                // Hide the error message when the user starts entering Address
+                $('#address').on('input', function () {
+                    $('#addressError').hide();
+                });
+
+                function isValidEmail(email) {
+                    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                    return emailPattern.test(email);
+                }
+
+                function isValidPhoneNumber(phone) {
+                    var phonePattern = /^\d{10,12}$/;
+                    return phonePattern.test(phone);
+                }
+
+                function isValidFax(fax) {
+                    var faxPattern = /^\d{13}$/;
+                    return faxPattern.test(fax);
+                }
+
                 $('#saveCustomerButton').click(function () {
                     var customerName = $('#customerName').val();
                     var email = $('#email').val();
@@ -217,6 +260,64 @@
                     var fax = $('#fax').val();
                     var address = $('#address').val();
                     var disableCustomer = $('#disableCustomer').prop('checked');
+
+                    // Check Customer Name is not empty
+                    if (customerName.trim() === '') {
+                        $('#customerNameError').text('Please enter a customer name.');
+                        $('#customerNameError').show();
+                        return; // Prevent saving when Customer Name is empty
+                    } else {
+                        $('#customerNameError').hide();
+                    }
+
+                    // Check Email format if it's not empty
+                    if (email.trim() !== '') {
+                        if (!isValidEmail(email)) {
+                            $('#emailError').text('Invalid email. Please enter email in the correct format.');
+                            $('#emailError').show();
+                            return; // Prevent saving when Email is invalid
+                        } else {
+                            $('#emailError').hide();
+                        }
+                    }
+
+                    // Check Phone is not empty
+                    if (phone.trim() === '') {
+                        $('#phoneError').text('Please enter a phone number.');
+                        $('#phoneError').show();
+                        return; // Prevent saving when Phone is empty
+                    } else {
+                        $('#phoneError').hide();
+                    }
+
+                    // Check Phone format
+                    if (!isValidPhoneNumber(phone)) {
+                        $('#phoneError').text('Invalid phone number. The phone number must have 10 to 12 digits.');
+                        $('#phoneError').show();
+                        return;
+                    } else {
+                        $('#phoneError').hide();
+                    }
+
+                    // Check Fax format if it's not empty
+                    if (fax.trim() !== '') {
+                        if (!isValidFax(fax)) {
+                            $('#faxError').text('Invalid tax code. Tax code must have exactly 13 digits.');
+                            $('#faxError').show();
+                            return; // Prevent saving when Fax is invalid
+                        } else {
+                            $('#faxError').hide();
+                        }
+                    }
+
+                    // Check Address is not empty
+                    if (address.trim() === '') {
+                        $('#addressError').text('Please enter an address.');
+                        $('#addressError').show();
+                        return; // Prevent saving when Address is empty
+                    } else {
+                        $('#addressError').hide();
+                    }
 
                     var newCustomer = {
                         name: customerName,
