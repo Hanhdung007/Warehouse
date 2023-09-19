@@ -5,6 +5,7 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Supplier;
+import warehouse.exam.demo.reponsitory.supplierRepository;
 import warehouse.exam.demo.service.supplierService;
 
 /**
@@ -28,6 +30,8 @@ public class SupplierController {
 
     @Autowired
     supplierService service;
+    @Autowired
+    supplierRepository supRepo;
 
     @RequestMapping("/index")
     public String index(Model model) {
@@ -48,10 +52,30 @@ public class SupplierController {
         return "redirect:/supplier/index";
     }
 
-//    @GetMapping("/{id}")
-//    public String findOne(Model model, @PathVariable("id") int id) {
-//        model.addAttribute("import", service.findOne(id));
-//        return "import/detail";
-//    }
+    @GetMapping("/update/{code}")
+    public String findOne(Model model, @PathVariable("code") String code) {
+        Supplier sup = service.findbycode(code);
+        model.addAttribute("supplier", sup);
+        return "supplier/editSup";
+    }
+    
+    @GetMapping("/updateStatus/{code}")
+    public ResponseEntity updateStatus(@PathVariable("code") String code){
+        Supplier sup = service.findbycode(code);
+        sup.setActive(!sup.getActive());
+        supRepo.save(sup);
+        return ResponseEntity.ok(200);
+    }
 
+    @PostMapping("/update")
+    public String update(Model model, @ModelAttribute supplierDAO dao) {
+        service.saveSupplier(dao);
+        return "redirect:/supplier/index";
+    }
+
+    @PostMapping("/updateStatus")
+    public String updateStatus(Model model, @ModelAttribute supplierDAO dao) {
+        service.updateStatusSupplier(dao);
+        return "redirect:/supplier/index";
+    }
 }

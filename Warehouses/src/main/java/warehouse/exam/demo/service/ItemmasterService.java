@@ -114,7 +114,7 @@ public class ItemmasterService {
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());
-            imtDao.setQuantity(im.getQuantity());
+            imtDao.setQuantity(im.getQcAcceptQuantity());
             imtDao.setRecieveNo(im.getRecieveNo());
             imtDao.setSupplierName(im.getSupId().getSupName());
              imtDao.setImage(im.getCodeItemdata().getImage());

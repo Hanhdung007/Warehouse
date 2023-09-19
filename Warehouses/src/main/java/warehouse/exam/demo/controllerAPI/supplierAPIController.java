@@ -47,9 +47,4 @@ public class supplierAPIController {
         Supplier supplier = service.findbycode(code);
         return supplier;
     }
-    @PutMapping("/{code}")
-    @ResponseStatus(HttpStatus.OK)
-    public Supplier updateWarehouse(@PathVariable(value = "code") String code, @RequestBody supplierDAO supplierDAO) {
-        return service.updateSupplier(code, supplierDAO);
-    }
 }

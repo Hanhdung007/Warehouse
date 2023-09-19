@@ -68,9 +68,9 @@ public class itemmasterDAO {
     public void setId(Integer id) {
         this.id = id;
     }
-//    public String getLocationName() {
-//        return locationName;
-//    }
+    public String getLocationName() {
+        return locationName;
+    }
 
     public void setLocationName(String locationName) {
         this.locationName = locationName;

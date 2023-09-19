@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.DAL.itemmasterDAO;
-import warehouse.exam.demo.DAL.supplierDAO;
 import warehouse.exam.demo.model.Importorders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.service.ItemmasterService;
@@ -20,10 +19,6 @@ import warehouse.exam.demo.service.ImportService;
 import warehouse.exam.demo.service.itemdataService;
 import warehouse.exam.demo.service.locationService;
 import warehouse.exam.demo.service.supplierService;
-import warehouse.exam.demo.model.Supplier;
-import warehouse.exam.demo.service.*;
-
-import javax.validation.Valid;
 import java.util.List;
 import warehouse.exam.demo.reponsitory.ImportRepository;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
@@ -151,6 +146,7 @@ public class ImportOrderController {
         item.setDisable(false);
         item.setQcAcceptQuantity(0.0);
         item.setQcInjectQuantity(0.0);
+        item.setLocationCode("");
         imMasterRepositoty.save(item) ;
         return "redirect:/import/index";
     }

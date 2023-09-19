@@ -20,7 +20,7 @@ public interface ItemmasterRepository extends JpaRepository<Itemmasters, Integer
 //    @Query("SELECT im, loc FROM itemmasters im JOIN  locations loc ON im.code_location = loc.code")
 //    List<Object[]> getItemmasterWithLocation();
 
-    @Query("SELECT o From Itemmasters o where o.qcBy != '' and (o.locationCode = '' or o.locationCode = null) and o.qcAcceptQuantity > o.bookQty")
+    @Query("SELECT o From Itemmasters o where o.qcBy != '' and o.locationCode = '' and o.qcAcceptQuantity > o.bookQty")
     List<Itemmasters> GetUnAllocated();
 
     @Query("SELECT NEW warehouse.exam.demo.DAL.itemmasterDAO(item) FROM Itemmasters item WHERE CAST(item.quantity AS string) LIKE %:keyword% OR item.codeItemdata.name LIKE %:keyword% OR item.qcBy LIKE %:keyword% OR CAST(item.qcAcceptQuantity AS string) LIKE %:keyword% OR CAST(item.qcInjectQuantity AS string) LIKE %:keyword% OR item.recieveNo LIKE %:keyword% OR item.note LIKE %:keyword%")
@@ -33,6 +33,6 @@ public interface ItemmasterRepository extends JpaRepository<Itemmasters, Integer
     @Query("SELECT o FROM Itemmasters o WHERE o.qcBy != '' and o.locationCode != '' ")
     List<Itemmasters> findAllInventorys();
 
-    @Query("SELECT o FROM Itemmasters o WHERE o.codeItemdata.name = :itemName AND (o.locationCode != '' or o.locationCode != null) AND o.qcAcceptQuantity > 0")
+    @Query("SELECT o FROM Itemmasters o WHERE o.codeItemdata.code = :itemName AND o.locationCode != '' AND o.qcAcceptQuantity > 0")
     List<Itemmasters> checkStock(String itemName);
 }

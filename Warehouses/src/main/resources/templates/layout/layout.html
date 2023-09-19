@@ -59,9 +59,29 @@
                                 <li id="dashboard" class="active">
                                     <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-home"></i><span>Home</span></a>
                                     <ul class="collapse">
-                                        <li class="active"><a href="#">Warehouse System</a></li>    
                                          <li><a href="/inventory">Warehouse Inventory</a></li>      
                                          <li><a href="/logs">Transactions Logs</a></li>   
+                                    </ul>
+                                </li>
+                                <li id="order">
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Order</span></a>
+                                    <ul class="collapse">
+                                        <li><a href="/orders/list">Sale Order</a></li> 
+                                        <li><a href="/issues/">Issue Order</a></li>                                                                            
+                                    </ul>
+                                </li>
+                                <li id="import">
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Import</span></a>
+                                    <ul class="collapse">
+                                        <li><a href="/import/index">Import Request</a></li> 
+                                        <li><a href="/qc/index">Qc</a></li>                                                                            
+                                    </ul>
+                                </li>
+                                <li id="warehouse" class="active">
+                                    <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-home"></i><span>Warehouse</span></a>
+                                    <ul class="collapse">
+                                         <li><a href="/warehouse/index">Warehouse</a></li>      
+                                         <li><a href="/location/index">Location</a></li>   
                                     </ul>
                                 </li>
                                 <li id="allocate">
@@ -71,12 +91,7 @@
                                         <li><a href="/itemmaster/unallocate">Unallocate</a></li>
                                     </ul>
                                 </li>
-                                <li id="issue">
-                                    <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Issue</span></a>
-                                    <ul class="collapse">
-                                        <li><a href="/allocate/requests">Issue Order</a></li>                                                                            
-                                    </ul>
-                                </li>
+                                
                                 <li id="user">
                                     <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-users"></i><span>User</span></a>
                                     <ul class="collapse">
@@ -86,12 +101,9 @@
                                 <li id="settings">
                                     <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-gear"></i><span>General Settings</span></a>
                                     <ul class="collapse">
-                                        <li><a href="#">Warehouse</a></li>
-                                        <li><a href="#">Location</a></li>
-                                        <li><a href="#">Itemdata</a></li>
-                                        <li><a href="#">itemmaster</a></li>
-                                        <li><a href="#">Customer</a></li>
-                                        <li><a href="#">Supplier</a></li>
+                                        <li><a href="/itemdata/index">Itemdata</a></li>
+                                        <li><a href="/customers/list">Customer</a></li>
+                                        <li><a href="/supplier/index">Supplier</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -112,19 +124,19 @@
                                 <span></span>
                                 <span></span>
                             </div>
-                            <div class="search-box pull-left">
+<!--                            <div class="search-box pull-left">
                                 <form action="#">
                                     <input type="text" name="search" placeholder="Search..." required>
                                     <i class="ti-search"></i>
                                 </form>
-                            </div>
+                            </div>-->
                         </div>
                         <!-- profile info & task notification -->
                         <div class="col-md-6 col-sm-4 clearfix">
                             <ul class="notification-area pull-right">
                                 <li id="full-view"><i class="ti-fullscreen"></i></li>
                                 <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
-                                <li class="dropdown">
+<!--                                <li class="dropdown">
                                     <i class="ti-bell dropdown-toggle" data-toggle="dropdown">
                                         <span>2</span>
                                     </i>
@@ -263,7 +275,7 @@
                                 </li>
                                 <li class="settings-btn">
                                     <i class="ti-settings"></i>
-                                </li>
+                                </li>-->
                             </ul>
                         </div>
                     </div>
@@ -307,7 +319,7 @@
             <!-- footer area start-->
             <footer>
                 <div class="footer-area" layout:fragment="custom-footer">
-                    <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
+                    <p>© FPT Aptech - T1.2110.A0.</p>
                 </div>
             </footer>
             <!-- footer area end-->
