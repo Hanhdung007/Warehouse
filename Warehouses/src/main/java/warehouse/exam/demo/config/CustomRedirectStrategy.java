@@ -10,7 +10,6 @@ import java.io.IOException;
 
 @Component
 public class CustomRedirectStrategy {
-
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {

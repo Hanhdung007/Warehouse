@@ -1,18 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="vi" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Error Page!</title>
-    <!-- Fontawesome CDN Link -->
-    <link rel="stylesheet" href="/css/error.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Access Denied - Error 403</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/error.css">
+</head>
 <body>
-<div class="wrapper">
-    <div class="box">
-        <h1>403</h1>
-        <p>Sorry, it's not allowed to go beyond this point!</p>
-        <p><a th:href="'/itemdata/index/'">Please, go back this way.</a></p>
+<div class="error-container">
+    <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="error-content">
+        <h1 class="error-title">Access Denied - Error 403</h1>
+        <p style="font-size: 25px;">You Are Not Authorized To Access This Site!</p>
+        <p>Go Back <a href="/itemdata/index">Home</a>.</p>
     </div>
 </div>
 </body>

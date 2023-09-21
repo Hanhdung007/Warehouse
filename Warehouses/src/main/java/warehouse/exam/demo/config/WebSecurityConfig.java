@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,8 +30,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SessionAuthenticationFilter sessionAuthenticationFilter;
 
-    @Autowired
-    private CustomAccessDeniedHandler accessDeniedHandler;
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
 
     public WebSecurityConfig(UserDetailsService jwtUserDetailsService) {
         this.jwtUserDetailsService = jwtUserDetailsService;
@@ -62,23 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Quyền truy cập cho các trang MVC
                 .antMatchers("/auth/login", "/auth/logout",  "/auth/index").permitAll()
                 .and()
-                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .authenticationEntryPoint(authenticationEntryPoint());
-
-
-        //        httpSecurity
-//                .exceptionHandling()
-//                .accessDeniedPage("/error/error")
-//                .and()
-//                .authorizeRequests();
-
-        //Permission for mvc
-//                .antMatchers("/auth/index", "/qc/index", "/itemaster/index", "/import/index",
-//                        "/itemdata/index", "/location/index", "/warehouse/index").hasAnyAuthority("1", "2", "3", "4")
-//                .antMatchers("/auth/**", "/import/**", "/itemaster/**",
-//                        "/warehouse/**", "/itemdata/**", "/location/**").hasAuthority("1")
-//                .antMatchers("/import/**").hasAuthority("2")
-//                .antMatchers("/qc/**").hasAuthority("3")
-//                .antMatchers("/itemdata/**").hasAuthority("4");
     }
 }
