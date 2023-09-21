@@ -5,7 +5,11 @@
 package warehouse.exam.demo.controller;
 
 import static java.lang.Boolean.FALSE;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +25,12 @@ import warehouse.exam.demo.DAL.PickListDAO;
 import warehouse.exam.demo.model.IssueOrders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.model.Locations;
+import warehouse.exam.demo.model.Log;
 import warehouse.exam.demo.model.Orders;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
 import warehouse.exam.demo.reponsitory.OrdersRepository;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
+import warehouse.exam.demo.reponsitory.logRepository;
 import warehouse.exam.demo.service.IssueService;
 import warehouse.exam.demo.service.ItemmasterService;
 import warehouse.exam.demo.service.OrdersService;
@@ -46,35 +52,48 @@ public class IssueOrderControllers {
     OrdersRepository ordersRepository;
     @Autowired
     locationReponsitory locReponsitory;
+    @Autowired
+    logRepository logRepository;
 
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("list", issueService.getAll());
+
+        model.addAttribute("order", ordersRepository.findAll());
         return "issue/issueList";
     }
 
     @GetMapping("/confirmIssues/{id}")
     public ResponseEntity confirmIssues(@PathVariable("id") int id) {
-        //1 Lấy isssue order dựa trên id 
-        //2. Nếu QtyActualExport = qtyExport => active = true
-        //3. Lấy item master dựa trên issue order.itemmaster_id
-        //4. Trừ qc_accept_quantity 1 lượng = qtyExport
-        //5 Lấy location từ itemmaster.locCode
-        //6. + remain 1 lượng = QtyActualExport
-        //7. Update các thay đổi
         IssueOrders issueOrder = issueService.findOne(id);
         Itemmasters item = itemmasterReponsitory.findById(issueOrder.getItemmasterId().getId()).get();
         Locations location = locReponsitory.findByCode(item.getLocationCode());
-        
-            issueOrder.setIssueActive(true);
+
+        issueOrder.setIssueActive(true);
         if (issueOrder.getQtyExport() > item.getQcAcceptQuantity()) {
             return ResponseEntity.ok(300);
         }
+        Orders orders = ordersRepository.findByOrderCode(issueOrder.getOrderCode());
+        orders.setStatus("Complete");//save
+        orders.setShippedQty(issueOrder.getQtyExport());
+        issueOrder.setQtyActualExport(issueOrder.getQtyExport());
+        issueOrder.setAmout(orders.getAmount());
         item.setQcAcceptQuantity(item.getQcAcceptQuantity() - issueOrder.getQtyExport());
         location.setRemain(location.getRemain() + issueOrder.getQtyActualExport());
+        Log log = new Log();
+        log.setItemmasterId(item);
+        log.setLocationName(location.getName());
+        log.setMethod("Issued");
+        log.setQuantity(issueOrder.getQtyExport());
+        LocalDateTime ldt = LocalDateTime.now();
+        Instant instant = ldt.toInstant(ZoneOffset.UTC);
+        Date date = Date.from(instant);
+        log.setSaveDate(date);
+        logRepository.save(log);
         issueService.saveIssue(issueOrder);
         itemmasterReponsitory.save(item);
         locReponsitory.save(location);
+        ordersRepository.save(orders);
         return ResponseEntity.ok(200);
     }
 
@@ -94,6 +113,8 @@ public class IssueOrderControllers {
         issueOrder.setQtyExport(pickList.getQty());
         issueOrder.setQtyActualExport(0.0);
         issueOrder.setItemmasterId(item);
+        issueOrder.setOrderCode(pickList.orderCode());
+        issueOrder.setAmout(order.getAmount());
         ordersRepository.save(order);
         issueService.saveIssue(issueOrder);
         return ResponseEntity.ok(200);

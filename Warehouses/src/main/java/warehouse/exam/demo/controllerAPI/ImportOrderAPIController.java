@@ -86,7 +86,7 @@ public class ImportOrderAPIController {
         item.setDateImport(ItemmasterDAO.getDateImport());
         item.setIdImport(imp);
         item.setNote(ItemmasterDAO.getNote());
-        item.setQcBy("admin");
+        item.setQcBy("");
         item.setRecieveNo(ItemmasterDAO.getRecieveNo());
         item.setSupId(supReponsitory.findBySupName(ItemmasterDAO.getSupplierName()));
         item.setQuantity(ItemmasterDAO.getQuantity());

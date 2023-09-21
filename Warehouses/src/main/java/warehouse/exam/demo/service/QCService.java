@@ -18,7 +18,7 @@ public class QCService {
 
     public List<itemmasterDAO> getAll() {
         List<itemmasterDAO> dao = new ArrayList<>();
-        List<Itemmasters> list = imMasterRepositoty.findAll();
+        List<Itemmasters> list = imMasterRepositoty.findItemQC();
         for (Itemmasters im : list) {
             itemmasterDAO imtDao = new itemmasterDAO();
             imtDao.setDateImport(im.getDateImport());

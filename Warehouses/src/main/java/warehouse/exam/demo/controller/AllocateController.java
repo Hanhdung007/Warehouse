@@ -56,17 +56,7 @@ public class AllocateController {
 
     @GetMapping("/confirmAllocate/{id}")
     public ResponseEntity confirmAllocate(@PathVariable("id") int id) {
-        /*
-            1. Lấy ra AllocateOrder theo id truyền về
-            2. Lấy ra ItemMaster dựa trên itemMasterId AllocateOrder 
-            3. Cập nhật location code cho ItemMaster đó = location code của Allocate Order
-            4. Lấy location dựa vào location code của AllocateOrder
-            5. Lấy quantity của allocate order trừ vào remain của location 
-        vd: location.setRemain(location.getRemain - qty)
-            6. Cập nhật Allocate Order Confirm = true
-           7. Gọi hàm save cho Allocate Order , ItemMaster , Location
-         */
-        //Check capcity 
+
         AllocateOrder allocate = allocateRepository.findById(id);
         Locations location = locationReponsitory.findByCode(allocate.getLocationCode());
         if (location.getRemain() < allocate.getQuantity()) {
@@ -92,6 +82,9 @@ public class AllocateController {
             newItem.setQcAcceptQuantity(allocate.getQuantity());
             newItem.setRecieveNo(item.getRecieveNo());
             newItem.setSupId(item.getSupId());
+            newItem.setQcInjectQuantity(0.0);
+            newItem.setPass(item.getPass());
+            newItem.setDisable(item.getDisable());
             newItem.setLocationCode(allocate.getLocationCode());
             itemMasterReponsitory.save(newItem);
             log.setItemmasterId(newItem);
