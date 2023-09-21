@@ -93,7 +93,7 @@ public class AccountController{
     }
 
 @GetMapping("/index")
-@PreAuthorize("hasAnyRole('admin', 'whManager')")
+@PreAuthorize("hasAnyRole('qc', 'whManager')")
     public String index(Model model, Authentication auth, HttpSession sesson) {
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
