@@ -6,6 +6,7 @@ package warehouse.exam.demo.controller;
 
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class OrdersController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasAnyRole('sale', 'importer')")
     public String listOrders(Model model) {
         Orders[] ordersArray = rest.getForObject(url, Orders[].class);
         model.addAttribute("orders", ordersArray);
@@ -44,6 +46,7 @@ public class OrdersController {
     }
 
     @GetMapping("/new-order")
+    @PreAuthorize("hasAnyRole('sale', 'importer')")
     public String showAddOrderForm(Model model) {
         Orders newOrder = new Orders();
 
@@ -60,12 +63,14 @@ public class OrdersController {
     }
 
     @PostMapping("/new-order")
+    @PreAuthorize("hasAnyRole('sale', 'importer')")
     public String saveOrder(@ModelAttribute("order") Orders order) {
         Orders savedOrder = ordersService.saveOrder(order);
         return "redirect:/orders/list";
     }
 
     @GetMapping("/edit-order/{orderCode}")
+    @PreAuthorize("hasAnyRole('sale', 'importer')")
     public String showEditOrderForm(@PathVariable String orderCode, Model model) {
         Orders orderToEdit = rest.getForObject(url + orderCode, Orders.class);
 
@@ -85,6 +90,7 @@ public class OrdersController {
     }
 
     @PostMapping("/edit-order")
+    @PreAuthorize("hasAnyRole('sale', 'importer')")
     public String updateOrder(@ModelAttribute("order") Orders updatedOrder) {
         Orders savedOrder = ordersService.updateOrder(updatedOrder);
         return "redirect:/orders/list";

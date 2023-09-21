@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,12 +50,14 @@ public class AllocateController {
     logRepository logRepository;
 
     @GetMapping("/requests")
+    @PreAuthorize("hasRole('whManager')")
     public String allocateRequest(Model model) {
         model.addAttribute("list", service.getAllocateOrder());
         return "/itemmaster/allocateRequest";
     }
 
     @GetMapping("/confirmAllocate/{id}")
+    @PreAuthorize("hasRole('whManager')")
     public ResponseEntity confirmAllocate(@PathVariable("id") int id) {
 
         AllocateOrder allocate = allocateRepository.findById(id);

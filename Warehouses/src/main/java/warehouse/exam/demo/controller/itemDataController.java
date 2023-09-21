@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -38,6 +39,7 @@ public class itemDataController {
     private String fileUpload;
 
     @GetMapping("/index")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String index(Model model, HttpSession session) {
         model.addAttribute("list", itemService.getAll());
         model.addAttribute("itemdata", new Itemdatas());

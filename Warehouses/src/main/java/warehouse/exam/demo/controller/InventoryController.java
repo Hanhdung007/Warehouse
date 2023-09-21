@@ -38,6 +38,7 @@ public class InventoryController {
     }
 
     @GetMapping("/checkStock/{code}")
+    @PreAuthorize("hasRole('sale')")
     public String checkStock(Model model, @PathVariable(value = "code") String code) {
         Orders order = OrderReponsitory.findByOrderCode(code);
         model.addAttribute("order", order);

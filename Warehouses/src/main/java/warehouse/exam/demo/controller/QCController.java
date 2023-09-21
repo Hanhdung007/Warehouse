@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ public class QCController {
     QCService qcService;
 
     @GetMapping("/index")
+    @PreAuthorize("hasRole('qc')")
     public String index(Model model) throws ParseException {
         List<itemmasterDAO> searchList = (List<itemmasterDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -38,6 +40,7 @@ public class QCController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('qc')")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<itemmasterDAO> foundOrders = qcService.searchItem(keyword);
         redirectAttributes.addFlashAttribute("searchResults", foundOrders);
@@ -45,6 +48,7 @@ public class QCController {
     }
 
     @PostMapping("/accept/{id}")
+    @PreAuthorize("hasRole('qc')")
     public String AcceptedQuantity(@Nullable @RequestParam String accept,@Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy){
         if(accept != null){
             qcService.AcceptQuantity(id, quantityInput, qcBy);
@@ -54,42 +58,4 @@ public class QCController {
         }
         return "redirect:/qc/index";
     }
-
-//    private final String qcUrl = "http://localhost:9999/api/qc";
-//
-//    @GetMapping("/index")
-//    public String index(Model model) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        try {
-//            // Gọi API /api/qc/index
-//            ResponseEntity<List> indexResponse = restTemplate.getForEntity(qcUrl + "/index", List.class);
-//            // Xử lý kết quả từ API /api/qc/index
-//            List<itemmasterDAO> itemList = indexResponse.getBody();
-//            model.addAttribute("list", itemList);
-//        } catch (Exception ex) {
-//            // Xử lý lỗi và ném ngoại lệ ResponseStatusException với mã lỗi HTTP 500
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", ex);
-//        }
-//        return "qc/index";
-//    }
-//    @GetMapping("/index")
-//    public String index(Model model, HttpSession session) {
-//        // Kiểm tra biến session
-//        Boolean loggedInUser = (Boolean) session.getAttribute("loggedInUser");
-//        if (loggedInUser == null || !loggedInUser) {
-//            // Người dùng chưa đăng nhập, chuyển hướng đến trang login
-//            return "redirect:/login";
-//        }
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Cookie", "JSESSIONID=" + session.getId());
-//        ParameterizedTypeReference<List<Customer>> responseType = new ParameterizedTypeReference<List<Customer>>() {
-//        };
-//        HttpEntity<Object> requestEntity = new HttpEntity<>(null, headers);
-//        ResponseEntity<List<Customer>> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
-//
-//        model.addAttribute("list", response.getBody());
-//        return "index";
-//    }
 }

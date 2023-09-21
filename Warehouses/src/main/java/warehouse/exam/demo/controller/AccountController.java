@@ -93,7 +93,7 @@ public class AccountController{
     }
 
 @GetMapping("/index")
-@PreAuthorize("hasAnyRole('qc', 'whManager')")
+@PreAuthorize("hasRole('admin')")
     public String index(Model model, Authentication auth, HttpSession sesson) {
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -104,7 +104,7 @@ public class AccountController{
         return "account/index";
     }
 
-    @PreAuthorize("hasAnyRole('admin', 'qc', 'sale', 'whManager')")
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<AccountDAO> foundOrders = accountService.searchAllAccount(keyword);
@@ -112,7 +112,7 @@ public class AccountController{
         return "redirect:/auth/index";
     }
 
-    @PreAuthorize("hasRole('qc')")
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/create")
     public String create(Model model) {
         List<Roles> rolesList = rolesRepository.findAll();
@@ -190,7 +190,7 @@ public class AccountController{
         return "redirect:/auth/index";
     }
 
-    @PreAuthorize("hasAnyRole('admin', 'qc', 'whManager', 'sale')")
+    @PreAuthorize("hasAnyRole('admin', 'qc', 'whManager', 'sale', 'importer')")
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
