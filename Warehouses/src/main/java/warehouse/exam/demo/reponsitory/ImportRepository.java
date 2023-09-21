@@ -5,12 +5,17 @@
 package warehouse.exam.demo.reponsitory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import warehouse.exam.demo.DAL.importDAO;
 import warehouse.exam.demo.model.Importorders;
 
-/**
- *
- * @author DUNG
- */
+import java.util.List;
+
 public interface ImportRepository extends JpaRepository<Importorders, Integer> {
-//    public Importorders findById(int id);
+    Importorders findById(int id);
+
+    @Query("SELECT NEW warehouse.exam.demo.DAL.importDAO(import) FROM Importorders import WHERE import.driver LIKE %:keyword% OR import.driversPhone LIKE %:keyword% OR import.supId.supName LIKE %:keyword% OR import.note LIKE %:keyword%")
+    List<importDAO> searchAllImport(@Param("keyword") String keyword);
+
 }

@@ -22,9 +22,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Add new Location</h4>
+                                <h4 class="header-title">Add new Import</h4>
                                 <form th:action="@{/import/create}" th:object="${import}" method="post">
-                                    <div class="form-group">
+                                  <div class="form-group">
                                         <label for="exampleInputPassword1">Driver's name</label>
                                         <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name.....">
                                     </div>
@@ -34,7 +34,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">From</label>
-                                        <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{factory}" placeholder="Enter name.....">
+                                        <select th:field="*{supplierName}" class="form-control">
+                                        <option th:each="sup:${supplier}" th:value="${sup.supName}" th:text="${sup.supName}"></option>
+                                    </select>
+                                        <!--<input type="text" class="form-control" id="exampleInputPassword1" th:field="*{supplierName}">-->
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Date Import</label>

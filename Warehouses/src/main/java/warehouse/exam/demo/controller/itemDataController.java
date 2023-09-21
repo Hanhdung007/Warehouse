@@ -44,6 +44,12 @@ public class itemDataController {
         return "itemdata/index";
     }
 
+    @GetMapping("/create")
+    public String create(Model model, HttpSession session) {
+        model.addAttribute("itemdata", new Itemdatas());
+        return "itemdata/create";
+    }
+
     @PostMapping("/create")
     public String create(Model model, @ModelAttribute itemdataDAO itemData, @RequestParam("file") MultipartFile file) throws IOException {
         String fileName = file.getOriginalFilename();

@@ -1,34 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package warehouse.exam.demo.DAL;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import warehouse.exam.demo.model.Importorders;
+
 /**
- *
  * @author DUNG
  */
+
+@NonNull
+@AllArgsConstructor
 public class importDAO {
 
     private Integer id;
     private String driver;
     private String driversPhone;
-    private String factory;
     private String dateImport;
     private String note;
     private Boolean status;
+    private String supplierName;
+    private String supId;
 
-    public importDAO() {
+    public importDAO(Importorders importOrder) {
+        this.id = importOrder.getId();
+        this.driver = importOrder.getDriver();
+        this.driversPhone = importOrder.getDriversPhone();
+        this.dateImport = importOrder.getDateImport();
+        this.note = importOrder.getNote();
+        this.status = importOrder.getStatus();
+        this.supplierName = importOrder.getSupId().getSupName();
     }
 
-    public importDAO(Integer id, String driver, String driversPhone, String factory, String dateImport, String note, Boolean status) {
-        this.id = id;
-        this.driver = driver;
-        this.driversPhone = driversPhone;
-        this.factory = factory;
-        this.dateImport = dateImport;
-        this.note = note;
-        this.status = status;
+    public importDAO() {
     }
 
     public Integer getId() {
@@ -55,14 +58,6 @@ public class importDAO {
         this.driversPhone = driversPhone;
     }
 
-    public String getFactory() {
-        return factory;
-    }
-
-    public void setFactory(String factory) {
-        this.factory = factory;
-    }
-
     public String getDateImport() {
         return dateImport;
     }
@@ -86,5 +81,20 @@ public class importDAO {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-    
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getSupId() {
+        return supId;
+    }
+
+    public void setSupId(String supId) {
+        this.supId = supId;
+    }
 }

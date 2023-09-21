@@ -35,6 +35,12 @@ public class locationController {
         model.addAttribute("list", locService.getAll());
         return "location/index";
     }
+    
+    @RequestMapping("/details/{id}")
+    public String details(Model model,@PathVariable("id") String id) {
+        model.addAttribute("model", locService.findByLocationCode(id));
+        return "location/details";
+    }
 
     @GetMapping("/create")
     public String create(Model model) {
