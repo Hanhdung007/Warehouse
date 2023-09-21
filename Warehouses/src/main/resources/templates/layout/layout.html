@@ -110,7 +110,7 @@
                         </nav>
                     </div>
                 </div>
-            </div>
+          </div>
             <!-- sidebar menu area end -->
             <!-- main content area start -->
             <div class="main-content">
@@ -297,8 +297,12 @@
                     <div class="user-profile pull-right">
                         <img class="avatar user-thumb" src="/img/320222202_716264739840411_4617903201906532030_n.jpg" alt="avatar">
                         <h4 class="user-name dropdown-toggle" data-toggle="dropdown"><span
-                                th:text="${session.username}"></span> <i
+                                th:text="${session.getName}"></span> <i
                                 class="fa fa-angle-down"></i></h4>
+<!--                        <h4 class="user-name dropdown-toggle" data-toggle="dropdown">-->
+<!--                            <span th:text="${#authentication.name}"></span>-->
+<!--                            <i class="fa fa-angle-down"></i>-->
+<!--                        </h4>-->
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="#">Message</a>
                             <a class="dropdown-item" href="#">Settings</a>
