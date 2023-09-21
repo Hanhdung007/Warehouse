@@ -10,7 +10,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @IdClass(AccountRolesId.class)
-@Table(name = "accounts_roles", schema = "dbo", catalog = "Warehouse")
+@Table(name = "accounts_roles")
 public class AccountsRoles implements Serializable {
     @Id
     @Column(name = "account_code")

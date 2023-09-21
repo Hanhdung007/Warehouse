@@ -45,51 +45,12 @@ public class QCController {
     }
 
     @PostMapping("/accept/{id}")
-    public String AcceptedQuantity(@Nullable @RequestParam String accept,@Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy){
-        if(accept != null){
+    public String AcceptedQuantity(@Nullable @RequestParam String accept, @Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy) {
+        if (accept != null) {
             qcService.AcceptQuantity(id, quantityInput, qcBy);
-        }
-        else if(inject != null){
+        } else if (inject != null) {
             qcService.InjectQuantity(id, quantityInput, qcBy);
         }
         return "redirect:/qc/index";
     }
-
-//    private final String qcUrl = "http://localhost:9999/api/qc";
-//
-//    @GetMapping("/index")
-//    public String index(Model model) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        try {
-//            // Gọi API /api/qc/index
-//            ResponseEntity<List> indexResponse = restTemplate.getForEntity(qcUrl + "/index", List.class);
-//            // Xử lý kết quả từ API /api/qc/index
-//            List<itemmasterDAO> itemList = indexResponse.getBody();
-//            model.addAttribute("list", itemList);
-//        } catch (Exception ex) {
-//            // Xử lý lỗi và ném ngoại lệ ResponseStatusException với mã lỗi HTTP 500
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", ex);
-//        }
-//        return "qc/index";
-//    }
-//    @GetMapping("/index")
-//    public String index(Model model, HttpSession session) {
-//        // Kiểm tra biến session
-//        Boolean loggedInUser = (Boolean) session.getAttribute("loggedInUser");
-//        if (loggedInUser == null || !loggedInUser) {
-//            // Người dùng chưa đăng nhập, chuyển hướng đến trang login
-//            return "redirect:/login";
-//        }
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Cookie", "JSESSIONID=" + session.getId());
-//        ParameterizedTypeReference<List<Customer>> responseType = new ParameterizedTypeReference<List<Customer>>() {
-//        };
-//        HttpEntity<Object> requestEntity = new HttpEntity<>(null, headers);
-//        ResponseEntity<List<Customer>> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, responseType);
-//
-//        model.addAttribute("list", response.getBody());
-//        return "index";
-//    }
 }

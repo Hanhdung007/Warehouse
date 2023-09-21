@@ -44,7 +44,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         <a href="/itemmaster/unallocate">back to list</a>
                         </div>
                     </div>
-                    <div class="single-table">
+                    <div class="single-table" th:if="${order.amount}>${order.bookQty}">
                         <div class="table-responsive">
                             <table class="table text-center">
                                 <thead class="text-uppercase bg-secondary">
@@ -63,18 +63,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         <td th:text="${item.locationName}"></td>
                                         <td th:text="${item.recieveNo}"></td>
                                         <td th:text="${item.qcAcceptQuantity}"></td>
-                                        <td th:if="${order.amount}>=${order.bookQty}">
+                                        <td th:if="${order.amount}>${order.bookQty}">
                                             <input class="form-control" th:id="${item.id}"/>
-                                        </td>
-                                         <td th:unless="${order.amount}>=${order.bookQty}">
-                                            <input class="form-control" th:id="${item.id}"/>
-                                        </td>
-                                        <td th:if="${order.amount}>=${order.bookQty}">
+                                        </td>                                     
+                                        <td th:if="${order.amount}>${order.bookQty}">
                                             <button class="btn btn-primary" th:onclick="pickList([[${order.orderCode}]],[[${item.id}]])">Pick List</button>
                                         </td>
-                                         <td th:unless="${order.amount}>=${order.bookQty}">
-                                            
-                                        </td>
+                                         
                                     </tr>
                                 </tbody>
                             </table>

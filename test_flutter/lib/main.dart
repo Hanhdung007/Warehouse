@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:test_flutter/Account.dart';
 import 'package:test_flutter/Import.dart';
 import 'package:test_flutter/Itemdata.dart';
-import 'package:test_flutter/Itemmaster.dart';
+import 'package:test_flutter/Inventory.dart';
 import 'package:test_flutter/Location.dart';
 import 'package:test_flutter/QC.dart';
+import 'package:test_flutter/service/inventory.dart';
 
 void main() {
   runApp(const MyApp());
@@ -66,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const Account(),
     const Import(),
     const Itemdata(),
-    const Itemmaster(),
+    const InventoryPage(),
     const Location(),
     const QC(),
   ];

@@ -118,6 +118,10 @@ public class ItemmasterService {
             imtDao.setRecieveNo(im.getRecieveNo());
             imtDao.setSupplierName(im.getSupId().getSupName());
              imtDao.setImage(im.getCodeItemdata().getImage());
+             imtDao.setPass(im.getPass());
+             imtDao.setDisable(im.getDisable());
+             imtDao.setQcInjectQuantity(im.getQcInjectQuantity());
+             imtDao.setCodeItemdata(im.getCodeItemdata().getCode());
             dao.add(imtDao);
         }
         return dao;
