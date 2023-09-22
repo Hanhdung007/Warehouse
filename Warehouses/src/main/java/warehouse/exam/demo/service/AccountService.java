@@ -108,9 +108,11 @@ public class AccountService implements UserDetailsService {
             case 2:
                 return "Sale Order";
             case 3:
-                return "Quantity Control";
+                return "Importer";
             case 4:
                 return "Warehouse Manager";
+            case 5:
+                return "Quantity Control";
             default:
                 return "Unknown Role";
         }

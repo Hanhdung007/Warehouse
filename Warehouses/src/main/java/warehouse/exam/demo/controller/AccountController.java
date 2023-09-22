@@ -77,7 +77,7 @@ public class AccountController{
                     session.setAttribute("message", message);
                
                     session.setAttribute("getName", getName);
-                return "redirect:/auth/index";
+                return "redirect:/warehouse/index";
             } else {
                 model.addAttribute("errorMessage", message);
                 return "login/login";
