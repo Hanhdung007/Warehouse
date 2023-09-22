@@ -11,10 +11,13 @@ import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +25,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import warehouse.exam.demo.DAL.PickListDAO;
+import warehouse.exam.demo.model.CustomUserDetails;
 import warehouse.exam.demo.model.IssueOrders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.model.Locations;
@@ -44,7 +49,6 @@ import warehouse.exam.demo.service.locationService;
 @Controller
 @RequestMapping("/issues")
 public class IssueOrderControllers {
-
     @Autowired
     ItemmasterRepository itemmasterReponsitory;
     @Autowired
@@ -71,7 +75,6 @@ public class IssueOrderControllers {
         IssueOrders issueOrder = issueService.findOne(id);
         Itemmasters item = itemmasterReponsitory.findById(issueOrder.getItemmasterId().getId()).get();
         Locations location = locReponsitory.findByCode(item.getLocationCode());
-
         issueOrder.setIssueActive(true);
         if (issueOrder.getQtyExport() > item.getQcAcceptQuantity()) {
             return ResponseEntity.ok(300);
@@ -81,6 +84,7 @@ public class IssueOrderControllers {
         orders.setShippedQty(issueOrder.getQtyExport());
         issueOrder.setQtyActualExport(issueOrder.getQtyExport());
         issueOrder.setAmout(orders.getAmount());
+        //issueOrder.setSubmitBy(submitBy);
         item.setQcAcceptQuantity(item.getQcAcceptQuantity() - issueOrder.getQtyExport());
         location.setRemain(location.getRemain() + issueOrder.getQtyActualExport());
         Log log = new Log();
@@ -101,12 +105,20 @@ public class IssueOrderControllers {
     }
 
     @PostMapping(value = "/confirmPickList")
-    public ResponseEntity confirmPickList(@RequestBody PickListDAO pickList) {
+    public ResponseEntity confirmPickList(@RequestBody PickListDAO pickList,  HttpSession session, Model model) {
+        // username = session.getAttribute("getName").toString()
+        String userName = session.getAttribute("getName").toString();
+        System.out.println("Username nè: "+userName);
         Itemmasters item = itemmasterReponsitory.findById(pickList.getItemMasterId()).get();
         Orders order = ordersRepository.findByOrderCode(pickList.orderCode());
+        //model.addAttribute("submitBy", submitBy);
         if (item.getQcAcceptQuantity() < pickList.getQty()) {
             return ResponseEntity.ok(300);
         }
+        if (order.getAmount()< pickList.getQty() + order.getBookQty() ) {
+            return ResponseEntity.ok(300);
+        }
+        
         order.setBookQty(pickList.getQty() + order.getBookQty());
         IssueOrders issueOrder = new IssueOrders();
         issueOrder.setIssueDated(Calendar.getInstance().getTime());
@@ -118,6 +130,7 @@ public class IssueOrderControllers {
         issueOrder.setItemmasterId(item);
         issueOrder.setOrderCode(pickList.orderCode());
         issueOrder.setAmout(order.getAmount());
+        issueOrder.setSubmitBy(userName);
         ordersRepository.save(order);
         issueService.saveIssue(issueOrder);
         return ResponseEntity.ok(200);

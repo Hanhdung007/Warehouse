@@ -26,7 +26,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <h4 th:text="${issue.itemCode}" class="text-center"></h4>
                             </div>
                             <div class="prc-list">
-                               <dl class="row">    
+                                <dl class="row">    
                                     <dt class="col-md-6">Number of requests: </dt>
                                     <dd class="col-md-6" th:text="${issue.amout}"></dd>
                                     <dt class="col-md-6">Quantity Export: </dt>
@@ -35,6 +35,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <dd class="col-md-6" th:text="${issue.issueDated}"></dd>
                                     <dt class="col-md-6">Reason: </dt>
                                     <dd class="col-md-6" th:text="${issue.issueReason}"></dd>
+                                    <dt class="col-md-6">Submit By: </dt>
+                                                                        <dd class="col-md-6" th:text="${session.getName}" name="submitBy"></dd>
                                 </dl>
                                 <div class="">                                    
                                     <button type="button" class="btn btn-primary outlined-line col-md-12 "  th:onclick="confirm([[${issue.id}]])">Submit</button>

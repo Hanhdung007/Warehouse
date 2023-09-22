@@ -52,8 +52,7 @@ public class QCController {
     public String AcceptedQuantity(@Nullable @RequestParam String accept,@Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy){
         if(accept != null){
             qcService.AcceptQuantity(id, quantityInput, qcBy);
-        }
-        else if(inject != null){
+        } else if (inject != null) {
             qcService.InjectQuantity(id, quantityInput, qcBy);
         }
         return "redirect:/qc/index";

@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="074cf3fa-8958-4139-9b30-837d36986e70" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/nbactions.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/IssueOrderControllers.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/IssueOrderControllers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/QCController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/controller/QCController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/model/AccountsRoles.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/java/warehouse/exam/demo/model/AccountsRoles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/inventory/checkStock.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/inventory/checkStock.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/issue/issueList.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/issue/issueList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/qc/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../Warehouses/src/main/resources/templates/qc/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +38,15 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
+    "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "account#3",
     "io.flutter.reload.alreadyRun": "true",
-    "last_opened_file_path": "D:/eProject4/Warehouses",
+    "last_opened_file_path": "D:/project4/test_flutter",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,5 +80,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

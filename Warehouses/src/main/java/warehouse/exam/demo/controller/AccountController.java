@@ -75,6 +75,7 @@ public class AccountController{
                     session.setAttribute("username", username);
                     session.setAttribute("loggedInUser", true);
                     session.setAttribute("message", message);
+               
                     session.setAttribute("getName", getName);
                 return "redirect:/auth/index";
             } else {
