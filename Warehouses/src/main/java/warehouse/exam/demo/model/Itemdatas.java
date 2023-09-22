@@ -59,8 +59,12 @@ public class Itemdatas implements Serializable {
     private String code;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
+    @OneToMany(mappedBy = "itemCode")
+    private List<Orders> ordersList;
     @OneToMany(mappedBy = "codeItemdata")
     private List<Itemmasters> itemmastersList;
+
     public Itemdatas() {
     }
 
@@ -85,6 +89,15 @@ public class Itemdatas implements Serializable {
     }
 
     @XmlTransient
+    public List<Orders> getOrdersList() {
+        return ordersList;
+    }
+
+    public void setOrdersList(List<Orders> ordersList) {
+        this.ordersList = ordersList;
+    }
+
+    @XmlTransient
     public List<Itemmasters> getItemmastersList() {
         return itemmastersList;
     }
@@ -104,6 +117,7 @@ public class Itemdatas implements Serializable {
     public String getColor() {
         return color;
     }
+
     public void setColor(String color) {
         this.color = color;
     }

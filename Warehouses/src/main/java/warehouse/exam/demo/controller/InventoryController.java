@@ -39,7 +39,7 @@ public class InventoryController {
     public String checkStock(Model model, @PathVariable(value = "code") String code) {
         Orders order = OrderReponsitory.findByOrderCode(code);
         model.addAttribute("order", order);
-        model.addAttribute("Itemmaster", ItemmasterService.checkStock(order.getItemname()));
+        model.addAttribute("Itemmaster", ItemmasterService.checkStock(order.getItemCode().getName()));
         return "inventory/checkStock";
     }
 }

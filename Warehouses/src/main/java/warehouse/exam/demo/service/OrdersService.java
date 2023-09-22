@@ -80,7 +80,7 @@ public class OrdersService {
             Orders currentOrder = existingOrder.get();
 
             // Cập nhật thông tin đơn hàng với thông tin từ updatedOrder
-            currentOrder.setName(updatedOrder.getName());
+            currentOrder.setItemCode(updatedOrder.getItemCode());
             currentOrder.setGroupID(updatedOrder.getGroupID());
             currentOrder.setUnitID(updatedOrder.getUnitID());
             currentOrder.setAmount(updatedOrder.getAmount());

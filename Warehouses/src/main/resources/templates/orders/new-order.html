@@ -58,9 +58,9 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="name" class="col-sm-2 col-form-label">Goods Name</label>
+                                    <label for="itemCode" class="col-sm-2 col-form-label">Goods Name</label>
                                     <div class="col-sm-4">
-                                       <select id="groupID" name="itemname" class="form-control select-custom-size">
+                                       <select id="itemCode" name="itemCode" class="form-control select-custom-size">
                                             <option value="">-- Select a item --</option>
                                             <option th:each="item : ${itemdata}" th:value="${item.code}">
                                             <span th:text="${item.name}"></span>
@@ -336,7 +336,7 @@
                     });
                 });
 
-                $('#name').on('input', function () {
+                $('#itemCode').on('input', function () {
                     $('#nameError').hide();
                 });
 
@@ -363,7 +363,7 @@
                     // Validate "Customer Name"
                     var customerName = $('#customerID').val();
                     if (customerName === '') {
-                        $('#customerIDError').text('Please select a customer.');
+                        $('#customerIDError').text('Customer is required.');
                         $('#customerIDError').show();
                         return;
                     } else {
@@ -371,9 +371,9 @@
                     }
 
                     // Validate "Goods Name"
-                    var goodsName = $('#name').val();
+                    var goodsName = $('#itemCode').val();
                     if (goodsName.trim() === '') {
-                        $('#nameError').text('Goods Name is required.');
+                        $('#nameError').text('Please select a Goods Name.');
                         $('#nameError').show();
                         return;
                     } else {
@@ -383,7 +383,7 @@
                     // Validate "Group"
                     var group = $('#groupID').val();
                     if (group === '') {
-                        $('#groupIDError').text('Please select a group.');
+                        $('#groupIDError').text('Please select a Group.');
                         $('#groupIDError').show();
                         return;
                     } else {
@@ -393,7 +393,7 @@
                     // Validate "Unit"
                     var unit = $('#unitID').val();
                     if (unit === '') {
-                        $('#unitIDError').text('Please select a unit.');
+                        $('#unitIDError').text('Please select a Unit.');
                         $('#unitIDError').show();
                         return;
                     } else {
