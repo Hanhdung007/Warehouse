@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ public class QCController {
     QCService qcService;
 
     @GetMapping("/index")
+    @PreAuthorize("hasRole('qc')")
     public String index(Model model) throws ParseException {
         List<itemmasterDAO> searchList = (List<itemmasterDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -38,6 +40,7 @@ public class QCController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasRole('qc')")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<itemmasterDAO> foundOrders = qcService.searchItem(keyword);
         redirectAttributes.addFlashAttribute("searchResults", foundOrders);
@@ -45,8 +48,9 @@ public class QCController {
     }
 
     @PostMapping("/accept/{id}")
-    public String AcceptedQuantity(@Nullable @RequestParam String accept, @Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy) {
-        if (accept != null) {
+    @PreAuthorize("hasRole('qc')")
+    public String AcceptedQuantity(@Nullable @RequestParam String accept,@Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy){
+        if(accept != null){
             qcService.AcceptQuantity(id, quantityInput, qcBy);
         } else if (inject != null) {
             qcService.InjectQuantity(id, quantityInput, qcBy);

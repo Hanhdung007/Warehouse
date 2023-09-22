@@ -7,6 +7,7 @@ package warehouse.exam.demo.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,30 +43,35 @@ public class WarehouseController {
     locationReponsitory locReponsitory;
 
     @GetMapping("/index")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String page(Model model) {
         model.addAttribute("list", service.getAll());
         return "warehouse/index";
     }
 
     @GetMapping("/details/{id}")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String details(Model model, @PathVariable("id") String id) {
         model.addAttribute("model", service.findbycode(id));
         return "warehouse/details";
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model) {
         model.addAttribute("warehouse", new Warehouses());
         return "warehouse/create";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model, @ModelAttribute warehouseDAO warehouse) {
         service.saveWarehouse(warehouse);
         return "redirect:/warehouse/index";
     }
 
     @GetMapping("/update/{code}")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String update(Model model, @PathVariable("code") String code) {
         Warehouses warehouse = whReponsitory.findByCode(code);
         model.addAttribute("warehouse", warehouse);
@@ -73,6 +79,7 @@ public class WarehouseController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String update(Model model, @ModelAttribute warehouseDAO warehouses) {
         warehouseDAO warehouse = service.findbycode(warehouses.getCode());
         service.saveWarehouse(warehouse);
@@ -80,6 +87,7 @@ public class WarehouseController {
     }
 
     @GetMapping("/addLocation/{code}") // NHư trên này mới xài PathVariable
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String addLocation(Model model, @PathVariable("code") String code) {
         locationDAO locDAO = new locationDAO();
         model.addAttribute("location", locDAO);
@@ -89,6 +97,7 @@ public class WarehouseController {
 
     //Không có xài PathVariable cho hàm post , trừ khi e add tham số vào url
     @RequestMapping(value = "/addLocation", method = RequestMethod.POST)
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String addLocation(Model model, String whCode, @ModelAttribute locationDAO locDAO) {
         Warehouses warehouse = whReponsitory.findByCode(whCode);
         Locations location = new Locations();

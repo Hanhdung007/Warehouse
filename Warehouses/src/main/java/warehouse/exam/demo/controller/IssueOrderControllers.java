@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,7 @@ public class IssueOrderControllers {
     logRepository logRepository;
 
     @GetMapping("/")
+    @PreAuthorize("hasRole('whManager')")
     public String index(Model model) {
         model.addAttribute("list", issueService.getAll());
 
@@ -68,6 +70,7 @@ public class IssueOrderControllers {
     }
 
     @GetMapping("/confirmIssues/{id}")
+    @PreAuthorize("hasRole('whManager')")
     public ResponseEntity confirmIssues(@PathVariable("id") int id) {
         IssueOrders issueOrder = issueService.findOne(id);
         Itemmasters item = itemmasterReponsitory.findById(issueOrder.getItemmasterId().getId()).get();

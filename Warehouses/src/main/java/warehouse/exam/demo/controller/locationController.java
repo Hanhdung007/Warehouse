@@ -5,6 +5,7 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,18 +32,21 @@ public class locationController {
     warehouseService whService;
 
     @RequestMapping("/index")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model) {
         model.addAttribute("list", locService.getAll());
         return "location/index";
     }
     
     @RequestMapping("/details/{id}")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String details(Model model,@PathVariable("id") String id) {
         model.addAttribute("model", locService.findByLocationCode(id));
         return "location/details";
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('whManager')")
     public String create(Model model) {
         model.addAttribute("location", new locationDAO());
         model.addAttribute("warehouse", whService.getAll());
@@ -50,12 +54,14 @@ public class locationController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('whManager')")
     public String create(Model model, @ModelAttribute locationDAO location) {
         model.addAttribute("warehouse", whService.getAll());
         locService.saveLocation(location);
         return "redirect:/location/index";
     }
     @GetMapping("/update/{code}")
+    @PreAuthorize("hasRole('whManager')")
     public String update(Model model, @PathVariable("code") String code) {
         Locations location = locService.findOne(code);
         model.addAttribute("location", location);
@@ -64,6 +70,7 @@ public class locationController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasRole('whManager')")
     public String update(Model model, @ModelAttribute locationDAO location) {
          model.addAttribute("location", locService.findOne(location.getCode()));
         model.addAttribute("warehouse", whService.getAll());

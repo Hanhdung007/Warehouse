@@ -6,6 +6,7 @@ package warehouse.exam.demo.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +31,14 @@ public class InventoryController {
     ItemmasterService ItemmasterService;
 
     @RequestMapping("")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model) {
         //model.addAttribute("attribute", "value");
         return "inventory/index";
     }
 
     @GetMapping("/checkStock/{code}")
+    @PreAuthorize("hasRole('sale')")
     public String checkStock(Model model, @PathVariable(value = "code") String code) {
         Orders order = OrderReponsitory.findByOrderCode(code);
         model.addAttribute("order", order);

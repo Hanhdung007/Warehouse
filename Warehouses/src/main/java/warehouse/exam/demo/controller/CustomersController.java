@@ -5,6 +5,7 @@
 package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class CustomersController {
     }
 
     @GetMapping("/list")
+    @PreAuthorize("hasRole('sale')")
     public String listCustomers(Model model) {
         Customers[] customersArray = rest.getForObject(url, Customers[].class);
         model.addAttribute("customers", customersArray);
