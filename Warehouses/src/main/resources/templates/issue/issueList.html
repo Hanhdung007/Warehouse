@@ -38,8 +38,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <dt class="col-md-6">Submit By: </dt>
                                                                         <dd class="col-md-6" th:text="${session.getName}" name="submitBy"></dd>
                                 </dl>
-                                <div class="">                                    
-                                    <button type="button" class="btn btn-primary outlined-line col-md-12 "  th:onclick="confirm([[${issue.id}]])">Submit</button>
+                                <div class="row">                                    
+                                    <button type="button" class="btn btn-primary outlined-line col-md-6"  th:onclick="confirm([[${issue.id}]])">Submit</button>
+                                    <button type="button" class="btn btn-danger outlined-line col-md-6 "  th:onclick="reject([[${issue.id}]])">Reject</button>
                                 </div>
                             </div>
                         </div>
@@ -61,6 +62,42 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             $.ajax({
                                 type: "GET",
                                 url: "/issues/confirmIssues/" + id,
+                                success: function (res) {
+                                    if (res === 200) {
+                                        Swal.fire(
+                                                'Good job!',
+                                                'Save change success',
+                                                'success'
+                                                ).then(function () {
+                                            window.location.reload();
+                                        });
+                                    } else if (res === 300) {
+                                        Swal.fire(
+                                                'Oops!',
+                                                'This item does not have enough remain quantity ',
+                                                'error'
+                                                );
+                                    }
+                                }
+                            });
+                        } else if (result.isDenied) {
+                            Swal.fire('Changes are not saved', '', 'info')
+                        }
+                    });
+                }
+                function reject(id) {
+                    Swal.fire({
+                        title: 'Do you want to reject the changes?',
+                        showDenyButton: true,
+                        showCancelButton: true,
+                        confirmButtonText: 'Save',
+                        denyButtonText: `Don't Save`,
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/issues/rejectIssue/" + id,
                                 success: function (res) {
                                     if (res === 200) {
                                         Swal.fire(

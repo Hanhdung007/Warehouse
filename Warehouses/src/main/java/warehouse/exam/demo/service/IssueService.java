@@ -52,4 +52,7 @@ public class IssueService {
     public IssueOrders findOne(int id) {
         return issueReponsitory.findById(id);
     }
+    public void delete(int id) {
+        issueReponsitory.deleteById(id);
+    }
 }

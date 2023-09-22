@@ -50,7 +50,7 @@ class _InventoryPageState extends State<InventoryPage> {
                     return Card(
                         child: ListTile(
                             leading: Text(u.id.toString()),
-                            title: Text('Code Item: ${u.itemName}'), // Hiển thị tên hàng
+                            title: Text('${u.itemName}'), // Hiển thị tên hàng
                             subtitle: Text('Location: ${u.locationName}    Import Date: ${u.dateImport}       Remain: ${u.qcAcceptQuantity.toString()}/${u.quantity.toString()}'),
                             trailing: Text(''),
                         )

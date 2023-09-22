@@ -135,5 +135,16 @@ public class IssueOrderControllers {
         issueService.saveIssue(issueOrder);
         return ResponseEntity.ok(200);
     }
-
+@GetMapping("/rejectIssue/{id}")
+ public ResponseEntity rejectIssue(@PathVariable("id") int id) {
+        IssueOrders issueOrder = issueService.findOne(id);
+        Orders orders = ordersRepository.findByOrderCode(issueOrder.getOrderCode());
+        orders.setBookQty(orders.getBookQty() - issueOrder.getQtyExport());
+        orders.setStatus("Pending");//save
+        issueService.delete(issueOrder.getId());
+        ordersRepository.save(orders);
+        return ResponseEntity.ok(200);
+ }
+    //lay issue theo id, order theo id
+    //
 }

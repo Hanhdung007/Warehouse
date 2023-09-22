@@ -1,4 +1,10 @@
-#Fri Sep 22 01:39:08 ICT 2023
+<<<<<<< HEAD
+#Fri Sep 22 02:17:54 ICT 2023
 base.0=D\:\\project4\\test_flutter\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
+=======
+#Fri Sep 22 14:57:00 ICT 2023
+base.0=D\:\\eProject4\\test_flutter\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+>>>>>>> 11587e53ef3926b4f4f425e28b4517bba52f99b2
 renamed.0=classes.dex
+path.0=classes.dex

@@ -85,16 +85,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <td th:text="${list.phone}"></td>
                                     <td style="font-weight: bold">
                                         <span th:if="${list.accountCode.contains('admin')}">
-                                            <span th:text="${'Admin' + (list.accountCode.contains('sale') || list.accountCode.contains('qc') || list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                            <span th:text="${'Admin' + (list.accountCode.contains('sale') || list.accountCode.contains('importer') || list.accountCode.contains('whManager') || list.accountCode.contains('qc') ? ' | ' : '')}"></span>
                                         </span>
                                         <span th:if="${list.accountCode.contains('sale')}">
-                                            <span th:text="${'Sale Order' + (list.accountCode.contains('qc') || list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                            <span th:text="${'Sale Order' + (list.accountCode.contains('importer') || list.accountCode.contains('whManager') || list.accountCode.contains('qc') ? ' | ' : '')}"></span>
                                         </span>
-                                        <span th:if="${list.accountCode.contains('qc')}">
-                                            <span th:text="${'Quantity Control' + (list.accountCode.contains('whManager') ? ' | ' : '')}"></span>
+                                        <span th:if="${list.accountCode.contains('importer')}">
+                                            <span th:text="${'Importer' + (list.accountCode.contains('whManager') || (list.accountCode.contains('qc')) ? ' | ' : '')}"></span>
                                         </span>
                                         <span th:if="${list.accountCode.contains('whManager')}">
-                                            <span th:text="${'Warehouse Manager'}"></span>
+                                            <span th:text="${'Warehouse Manager' + (list.accountCode.contains('qc') ? ' | ' : '')}"></span>
+                                        </span>
+                                        <span th:if="${list.accountCode.contains('qc')}">
+                                            <span th:text="${'Quantity Control'}"></span>
                                         </span>
                                     </td>
                                     <td th:text="${list.isActive}"
