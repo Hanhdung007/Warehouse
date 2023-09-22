@@ -64,11 +64,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <label for="exampleInputPassword1">Role</label>
                                 <div class="row d-flex justify-content-left" style="border-radius: 8px">
                                     <div class="col-md-6">
-<!--                                        <select name="roleIds" id="choices-multiple-remove-button"-->
-<!--                                                placeholder="Select roles..." multiple>-->
-<!--                                            <option th:each="role : ${rList}" th:value="${role.id}"-->
-<!--                                                    th:text="${role.roleName}"></option>-->
-<!--                                        </select>-->
                                         <select name="roleIds" th:object="${selectedRoleIds}" id="choices-multiple-remove-button" placeholder="Select roles..." multiple>
                                             <option th:each="role : ${rList}" th:value="${role.id}">
                                                 <span th:text="${@accountService.getRoleNameById(role.id)}"></span>
