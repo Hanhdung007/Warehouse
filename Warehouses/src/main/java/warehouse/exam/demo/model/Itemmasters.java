@@ -5,6 +5,7 @@
 package warehouse.exam.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -86,12 +87,15 @@ public class Itemmasters implements Serializable {
     @Column(name = "pass")
     private Boolean pass;
     @JoinColumn(name = "id_import", referencedColumnName = "id")
+    @JsonIgnore
     @ManyToOne
     private Importorders idImport;
     @JoinColumn(name = "code_itemdata", referencedColumnName = "code")
+    @JsonIgnore
     @ManyToOne
     private Itemdatas codeItemdata;
     @JoinColumn(name = "sup_id", referencedColumnName = "sup_id")
+    @JsonIgnore
     @ManyToOne
     private Supplier supId;
 
@@ -213,32 +217,6 @@ public class Itemmasters implements Serializable {
     public void setPass(Boolean pass) {
         this.pass = pass;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Itemmasters)) {
-            return false;
-        }
-        Itemmasters other = (Itemmasters) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Itemmasters[ id=" + id + " ]";
-    }
-
  
     public String getNote() {
         return note;

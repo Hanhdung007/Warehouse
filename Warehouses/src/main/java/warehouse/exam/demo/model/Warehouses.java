@@ -87,30 +87,4 @@ public class Warehouses implements Serializable {
     public void setLocationsList(List<Locations> locationsList) {
         this.locationsList = locationsList;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Warehouses)) {
-            return false;
-        }
-        Warehouses other = (Warehouses) object;
-        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Warehouses[ code=" + code + " ]";
-    }
-    
 }

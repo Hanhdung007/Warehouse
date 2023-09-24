@@ -4,20 +4,15 @@
  */
 package warehouse.exam.demo.controller;
 
-import static java.lang.Boolean.FALSE;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import warehouse.exam.demo.DAL.PickListDAO;
-import warehouse.exam.demo.model.CustomUserDetails;
 import warehouse.exam.demo.model.IssueOrders;
 import warehouse.exam.demo.model.Itemmasters;
 import warehouse.exam.demo.model.Locations;
@@ -35,12 +28,11 @@ import warehouse.exam.demo.model.Log;
 import warehouse.exam.demo.model.Orders;
 import warehouse.exam.demo.reponsitory.ItemmasterRepository;
 import warehouse.exam.demo.reponsitory.OrdersRepository;
+import warehouse.exam.demo.reponsitory.allocateRepository;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
 import warehouse.exam.demo.reponsitory.logRepository;
 import warehouse.exam.demo.service.IssueService;
-import warehouse.exam.demo.service.ItemmasterService;
-import warehouse.exam.demo.service.OrdersService;
-import warehouse.exam.demo.service.locationService;
+
 
 /**
  *
@@ -49,6 +41,7 @@ import warehouse.exam.demo.service.locationService;
 @Controller
 @RequestMapping("/issues")
 public class IssueOrderControllers {
+
     @Autowired
     ItemmasterRepository itemmasterReponsitory;
     @Autowired
@@ -59,6 +52,8 @@ public class IssueOrderControllers {
     locationReponsitory locReponsitory;
     @Autowired
     logRepository logRepository;
+    @Autowired
+    allocateRepository alloReponsitory;
 
     @GetMapping("/")
     @PreAuthorize("hasRole('whManager')")
@@ -105,20 +100,20 @@ public class IssueOrderControllers {
     }
 
     @PostMapping(value = "/confirmPickList")
-    public ResponseEntity confirmPickList(@RequestBody PickListDAO pickList,  HttpSession session, Model model) {
+    public ResponseEntity confirmPickList(@RequestBody PickListDAO pickList, HttpSession session, Model model) {
         // username = session.getAttribute("getName").toString()
         String userName = session.getAttribute("getName").toString();
-        System.out.println("Username nè: "+userName);
+        System.out.println("Username nè: " + userName);
         Itemmasters item = itemmasterReponsitory.findById(pickList.getItemMasterId()).get();
         Orders order = ordersRepository.findByOrderCode(pickList.orderCode());
         //model.addAttribute("submitBy", submitBy);
         if (item.getQcAcceptQuantity() < pickList.getQty()) {
             return ResponseEntity.ok(300);
         }
-        if (order.getAmount()< pickList.getQty() + order.getBookQty() ) {
+        if (order.getAmount() < pickList.getQty() + order.getBookQty()) {
             return ResponseEntity.ok(300);
         }
-        
+
         order.setBookQty(pickList.getQty() + order.getBookQty());
         IssueOrders issueOrder = new IssueOrders();
         issueOrder.setIssueDated(Calendar.getInstance().getTime());
@@ -135,16 +130,19 @@ public class IssueOrderControllers {
         issueService.saveIssue(issueOrder);
         return ResponseEntity.ok(200);
     }
-@GetMapping("/rejectIssue/{id}")
- public ResponseEntity rejectIssue(@PathVariable("id") int id) {
+
+    @GetMapping("/rejectIssue/{id}")
+    public ResponseEntity rejectIssue(@PathVariable("id") int id) {
         IssueOrders issueOrder = issueService.findOne(id);
         Orders orders = ordersRepository.findByOrderCode(issueOrder.getOrderCode());
+        
         orders.setBookQty(orders.getBookQty() - issueOrder.getQtyExport());
         orders.setStatus("Pending");//save
         issueService.delete(issueOrder.getId());
+        
         ordersRepository.save(orders);
         return ResponseEntity.ok(200);
- }
+    }
     //lay issue theo id, order theo id
     //
 }

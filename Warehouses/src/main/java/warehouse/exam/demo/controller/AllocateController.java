@@ -29,6 +29,8 @@ import warehouse.exam.demo.reponsitory.logRepository;
 import warehouse.exam.demo.service.AllocateService;
 import warehouse.exam.demo.service.ItemmasterService;
 import warehouse.exam.demo.service.locationService;
+import warehouse.exam.demo.service.ItemmasterService;
+import warehouse.exam.demo.service.OrdersService;
 
 /**
  *
@@ -48,6 +50,8 @@ public class AllocateController {
     allocateRepository allocateRepository;
     @Autowired
     logRepository logRepository;
+    @Autowired
+    allocateRepository alloReponsitory;
 
     @GetMapping("/requests")
     @PreAuthorize("hasRole('whManager')")
@@ -98,11 +102,11 @@ public class AllocateController {
             item.setBookQty(allocate.getQuantity());
             log.setItemmasterId(item);
         }
-        
+
         log.setLocationName(location.getName());
         log.setMethod("Allocate");
         log.setQuantity(allocate.getQuantity());
-         LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime ldt = LocalDateTime.now();
         Instant instant = ldt.toInstant(ZoneOffset.UTC);
         Date date = Date.from(instant);
         log.setSaveDate(date);
@@ -114,4 +118,13 @@ public class AllocateController {
         return ResponseEntity.ok(200);
     }
 
+    @GetMapping("/rejectAllocate/{id}")
+    public ResponseEntity rejectAllocate(@PathVariable("id") int id) {
+        AllocateOrder allocate = alloReponsitory.findById(id);
+        Itemmasters item = itemMasterReponsitory.findById(allocate.getItemMasterId()).get();
+        item.setBookQty(item.getBookQty() - allocate.getQuantity());
+        alloReponsitory.deleteById(id);
+        itemMasterReponsitory.save(item);
+        return ResponseEntity.ok(200);
+    }
 }

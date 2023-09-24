@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -69,6 +70,7 @@ public class Importorders implements Serializable {
     @OneToMany(mappedBy = "idImport")
     private List<Itemmasters> itemmastersList;
     @JoinColumn(name = "sup_id", referencedColumnName = "sup_id")
+    @JsonIgnore
     @ManyToOne
     private Supplier supId;
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/Account.dart';
-import 'package:test_flutter/Import.dart';
-import 'package:test_flutter/Itemdata.dart';
-import 'package:test_flutter/Inventory.dart';
-import 'package:test_flutter/Location.dart';
-import 'package:test_flutter/QC.dart';
-import 'package:test_flutter/service/inventory.dart';
+import 'package:test_flutter/screnn/Account.dart';
+import 'package:test_flutter/screnn/Import.dart';
+import 'package:test_flutter/screnn/Inventory.dart';
+import 'package:test_flutter/screnn/Itemdata.dart';
+
+import 'package:test_flutter/screnn/QC.dart';
+import 'package:test_flutter/screnn/WarehousePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "Import Item",
     "Item Data",
     "Item Master",
-    "Location",
+    "Warehouse",
     "QC",
   ];
 
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const Import(),
     const Itemdata(),
     const InventoryPage(),
-    const Location(),
+    const WarehousePage(),
     const QC(),
   ];
 

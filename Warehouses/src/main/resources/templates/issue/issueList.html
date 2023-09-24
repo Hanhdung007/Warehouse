@@ -36,11 +36,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <dt class="col-md-6">Reason: </dt>
                                     <dd class="col-md-6" th:text="${issue.issueReason}"></dd>
                                     <dt class="col-md-6">Submit By: </dt>
-                                                                        <dd class="col-md-6" th:text="${session.getName}" name="submitBy"></dd>
+                                    <dd class="col-md-6" th:text="${session.getName}" name="submitBy"></dd>
                                 </dl>
                                 <div class="row">                                    
-                                    <button type="button" class="btn btn-primary outlined-line col-md-6"  th:onclick="confirm([[${issue.id}]])">Submit</button>
-                                    <button type="button" class="btn btn-danger outlined-line col-md-6 "  th:onclick="reject([[${issue.id}]])">Reject</button>
+                                    <button type="button" class="btn btn-outline-primary outlined-line col-md-4"  th:onclick="confirm([[${issue.id}]])">Submit</button>
+                                    <p class="col-md-4"></p>
+                                    <button type="button" class="btn btn-outline-danger outlined-line col-md-4"  th:onclick="reject([[${issue.id}]])">Reject</button>
                                 </div>
                             </div>
                         </div>
