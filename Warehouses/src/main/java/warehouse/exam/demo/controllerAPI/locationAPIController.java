@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import warehouse.exam.demo.DAL.locationDAO;
 import warehouse.exam.demo.model.Locations;
@@ -49,5 +50,11 @@ public class locationAPIController {
     @ResponseStatus(HttpStatus.OK)
     public Locations updateLocation(@RequestBody locationDAO warehouses) {
         return locService.updateLocation(warehouses.getCode(), warehouses);
+    }
+    @RequestMapping(value="/details/{warehouseCode}",method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public  List<Locations> getLocationByWarehouse(@PathVariable(value = "warehouseCode") String warehouseCode) {
+        List<Locations> loc = locService.findLocationByWarehouse(warehouseCode);
+        return loc;
     }
 }

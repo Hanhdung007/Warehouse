@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -37,10 +38,10 @@ public class locationController {
         model.addAttribute("list", locService.getAll());
         return "location/index";
     }
-    
+
     @RequestMapping("/details/{id}")
     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
-    public String details(Model model,@PathVariable("id") String id) {
+    public String details(Model model, @PathVariable("id") String id) {
         model.addAttribute("model", locService.findByLocationCode(id));
         return "location/details";
     }
@@ -60,6 +61,7 @@ public class locationController {
         locService.saveLocation(location);
         return "redirect:/location/index";
     }
+
     @GetMapping("/update/{code}")
     @PreAuthorize("hasRole('whManager')")
     public String update(Model model, @PathVariable("code") String code) {
@@ -72,7 +74,7 @@ public class locationController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('whManager')")
     public String update(Model model, @ModelAttribute locationDAO location) {
-         model.addAttribute("location", locService.findOne(location.getCode()));
+        model.addAttribute("location", locService.findOne(location.getCode()));
         model.addAttribute("warehouse", whService.getAll());
         locService.saveLocation(location);
         return "redirect:/location/index";

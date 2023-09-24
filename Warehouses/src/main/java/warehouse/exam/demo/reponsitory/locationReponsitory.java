@@ -14,8 +14,14 @@ import warehouse.exam.demo.model.Locations;
  * @author DUNG
  */
 public interface locationReponsitory extends JpaRepository<Locations, String> {
+
     Locations findByCode(String code);
-    Locations findByName (String name);
+
+    Locations findByName(String name);
+
     @Query("SELECT l FROM Locations l WHERE l.remain > 0")
     List<Locations> getRemainLocation();
+
+    @Query("SELECT c FROM Locations c WHERE c.warehouseCode.code = :warehouseCode")
+    List<Locations> getLocationByWarehouseCode(String warehouseCode);
 }

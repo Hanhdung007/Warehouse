@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -51,6 +52,7 @@ public class Locations implements Serializable {
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "warehouse_code", referencedColumnName = "code")
+    @JsonIgnore
     @ManyToOne
     private Warehouses warehouseCode;
 
@@ -108,29 +110,4 @@ public class Locations implements Serializable {
     public void setWarehouseCode(Warehouses warehouseCode) {
         this.warehouseCode = warehouseCode;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (code != null ? code.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Locations)) {
-            return false;
-        }
-        Locations other = (Locations) object;
-        if ((this.code == null && other.code != null) || (this.code != null && !this.code.equals(other.code))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Locations[ code=" + code + " ]";
-    }
-
 }
