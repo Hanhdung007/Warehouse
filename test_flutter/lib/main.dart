@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:test_flutter/Account.dart';
+import 'package:test_flutter/Import.dart';
+import 'package:test_flutter/Itemdata.dart';
+import 'package:test_flutter/Inventory.dart';
+import 'package:test_flutter/Location.dart';
+import 'package:test_flutter/QC.dart';
+import 'package:test_flutter/service/inventory.dart';
+import 'package:test_flutter/Customer_Management/CustomerUI.dart';
 import 'package:test_flutter/screnn/Account.dart';
 import 'package:test_flutter/screnn/Import.dart';
 import 'package:test_flutter/screnn/Inventory.dart';
 import 'package:test_flutter/screnn/Itemdata.dart';
-
 import 'package:test_flutter/screnn/QC.dart';
 import 'package:test_flutter/screnn/WarehousePage.dart';
 
@@ -36,6 +43,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   List dataFake = [
     "Accounts",
     "Import Item",
@@ -43,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "Item Master",
     "Warehouse",
     "QC",
+    "Customers"
   ];
 
   List<Color> dataFakeColor = [
@@ -52,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Color(0xfffc7f7f),
     Color(0xffc884fb),
     Color(0xff78e667),
+    Color(0xff867f7f)
   ];
 
   List<Icon> dataFakeIcon = [
@@ -61,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Icon(Icons.mark_as_unread, color: Colors.white, size: 30),
     Icon(Icons.location_on, color: Colors.white, size: 30),
     Icon(Icons.check_box_rounded, color: Colors.white, size: 30),
+    Icon(Icons.person, color: Colors.white, size: 30),
   ];
 
   List<Widget> pages = [
@@ -70,21 +81,33 @@ class _MyHomePageState extends State<MyHomePage> {
     const InventoryPage(),
     const WarehousePage(),
     const QC(),
+    const CustomerUI(),
+  ];
+
+  List<Widget> correspondingPages = [
+    const Account(),
+    const Import(),
+    const Itemdata(),
+    const Itemmaster(),
+    const Location(),
+    const QC(),
+    const CustomerUI(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
+      body: Column(
         children: [
           Container(
             padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
             decoration: BoxDecoration(
-                color: Color(0xff674AEF),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                )),
+              color: Color(0xff674AEF),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -132,15 +155,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search here...",
-                        hintStyle: TextStyle(
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          size: 25,
-                        ),
+                      border: InputBorder.none,
+                      hintText: "Search here...",
+                      hintStyle: TextStyle(
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        size: 25,
+                      ),
                     ),
                   ),
                 )
@@ -155,49 +178,64 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Column(
               children: [
-                GridView.builder(
-                  itemCount: dataFake.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1.1,
+                Container(
+                  height: 250,
+                  child: PageView.builder(
+                    itemCount: (dataFake.length / 6).ceil(),
+                    itemBuilder: (context, pageIndex) {
+                      final startIndex = pageIndex * 6;
+                      final endIndex = (pageIndex + 1) * 6;
+
+                      return GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 1.1,
+                        ),
+                        itemCount: endIndex <= dataFake.length
+                            ? 6
+                            : dataFake.length - startIndex,
+                        itemBuilder: (context, index) {
+                          final dataIndex = startIndex + index;
+
+                          return GestureDetector(
+                            onTap: () {
+                              final selectedPage = correspondingPages[dataIndex];
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => selectedPage),
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    color: dataFakeColor[dataIndex],
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Center(
+                                      child: dataFakeIcon[dataIndex],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  dataFake[dataIndex],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => pages[index]),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                color: dataFakeColor[index],
-                                shape: BoxShape.circle),
-                            child: Center(
-                              child: Center(
-                                child: dataFakeIcon[index],
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            dataFake[index],
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black.withOpacity(0.7),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -222,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
       drawer: Drawer(
@@ -266,8 +304,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ListTile(
                 title: const Text("Logout"),
                 leading: const Icon(Icons.logout_sharp),
-                onTap: () {
-                },
+                onTap: () {},
               ),
             ],
           ),
