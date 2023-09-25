@@ -41,6 +41,7 @@ public class warehouseService {
             }
             whdao.setTotalCapacity(totalCapacity);
             whdao.setTotalRemain(totalRemain);
+            whdao.setLocations(wh.getLocationsList());
             dao.add(whdao);
         }
         return dao;

@@ -27,8 +27,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             <div class="single-table">
                                 <div class="table-responsive">
                                     <table class="table text-center">
-                                        <thead class="text-uppercase bg-secondary">
-                                            <tr class="text-white">
+                                        <thead class="text-uppercase bg-light">
+                                            <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Item's Name</th>
                                                 <th scope="col">Quantity</th>
@@ -41,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                         </thead>
                                         <tbody>                                                                                         
                                             <tr th:each="item:${list}">
-                                                <td><a th:href="'/itemmaster/picklist/'+${item.id}">Edit</a></td>
+                                                <td><a th:href="'/itemmaster/picklist/'+${item.id}" class="btn btn-outline-primary">Pick List</a></td>
                                                 <td th:text="${item.itemName}"></td>
                                                 <td th:text="${item.quantity}"></td>
                                                 <td th:text="${item.recieveNo}"></td>

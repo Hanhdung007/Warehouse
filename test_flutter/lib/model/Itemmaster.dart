@@ -1,6 +1,6 @@
 class Itemmaster {
   Itemmaster({
-   required this.id,
+    required this.id,
     required this.locationName,
     required this.quantity,
     required this.recieveNo,
@@ -15,26 +15,27 @@ class Itemmaster {
     required this.supplierName,
     required this.image,
     required this.disable,
-    required this.pass,});
+    required this.pass,
+  });
 
   factory Itemmaster.fromJson(Map<String, dynamic> json) {
     return Itemmaster(
-        id: json['id'],
-        locationName : json['locationName'],
-        quantity : json['quantity'],
-        recieveNo : json['recieveNo'],
-        dateImport : json['dateImport'],
-        note : json['note'],
-        qcAcceptQuantity : json['qcAcceptQuantity'],
-        qcInjectQuantity : json['qcInjectQuantity'],
-        qcBy : json['qcBy'],
-        idImport : json['idImport'],
-        itemName : json['itemName'],
-        codeItemdata : json['codeItemdata'],
-        supplierName : json['supplierName'],
-    image : json['image'],
-    disable : json['disable'],
-    pass : json['pass'],
+      id: json['id'],
+      locationName: json['locationName'],
+      quantity: json['quantity'],
+      recieveNo: json['recieveNo'],
+      dateImport: json['dateImport'],
+      note: json['note'],
+      qcAcceptQuantity: json['qcAcceptQuantity'],
+      qcInjectQuantity: json['qcInjectQuantity'],
+      qcBy: json['qcBy'],
+      idImport: json['idImport'],
+      itemName: json['itemName'],
+      codeItemdata: json['codeItemdata'],
+      supplierName: json['supplierName'],
+      image: json['image'],
+      disable: json['disable'],
+      pass: json['pass']
     );
   }
 
@@ -54,6 +55,7 @@ class Itemmaster {
   String image;
   bool disable;
   bool pass;
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -75,5 +77,4 @@ class Itemmaster {
     map['pass'] = pass;
     return map;
   }
-
 }
