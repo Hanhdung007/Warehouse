@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'Customer.dart';
+import 'package:test_flutter/main.dart';
+import '../model/Customer.dart';
+import '../service/CustomerService.dart';
 import 'CustomerDetailDialog.dart';
-import 'CustomerService.dart';
+import 'CreateCustomerPage.dart';
 
 class CustomerUI extends StatefulWidget {
-  const CustomerUI({super.key});
+  const CustomerUI({Key? key}) : super(key: key);
 
   @override
-  _CustomerUI createState() => _CustomerUI();
+  _CustomerUIState createState() => _CustomerUIState();
 }
 
-class _CustomerUI extends State<CustomerUI> {
+class _CustomerUIState extends State<CustomerUI> {
   final CustomerService _customerService = CustomerService();
   List<Customer> _customers = [];
   bool _isSearching = false;
@@ -52,6 +54,14 @@ class _CustomerUI extends State<CustomerUI> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Customer List'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => const MyApp()));
+          },
+        ),
+
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -70,7 +80,12 @@ class _CustomerUI extends State<CustomerUI> {
       body: _buildCustomerList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showCreateCustomerDialog(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateCustomerPage(customers: _customers),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
@@ -134,113 +149,10 @@ class _CustomerUI extends State<CustomerUI> {
                 },
               );
             },
-            enabled: !customer.disable,
             tileColor: customer.disable ? Colors.grey : null,
           );
         },
       );
     }
-  }
-
-  void _showCreateCustomerDialog(BuildContext context) {
-    String name = '';
-    String email = '';
-    String phone = '';
-    String address = '';
-    String fax = '';
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Create New Customer'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  decoration: InputDecoration(labelText: 'Name'),
-                  onChanged: (value) {
-                    setState(() {
-                      name = value;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Email'),
-                  onChanged: (value) {
-                    setState(() {
-                      email = value;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Phone'),
-                  onChanged: (value) {
-                    setState(() {
-                      phone = value;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Address'),
-                  onChanged: (value) {
-                    setState(() {
-                      address = value;
-                    });
-                  },
-                ),
-                TextField(
-                  decoration: InputDecoration(labelText: 'Tax'),
-                  onChanged: (value) {
-                    setState(() {
-                      fax = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () async {
-                try {
-                  final newCustomer = Customer(
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    address: address,
-                    fax: fax,
-                    disable: false,
-                  );
-
-                  final addedCustomer = await _customerService.addCustomer(newCustomer);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Customer added successfully: ${addedCustomer.name}'),
-                    ),
-                  );
-
-                  _loadCustomers();
-
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  debugPrint('Error adding customer: $e');
-                }
-              },
-              child: Text('Save'),
-            ),
-
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

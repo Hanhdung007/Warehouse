@@ -62,7 +62,7 @@ public class OrdersService {
 
         // Đặt status thành "New Order"
         order.setStatus("New Order");
-
+        
         // Đặt disabled thành "false"
         order.setDisabled(false);
         
@@ -80,7 +80,7 @@ public class OrdersService {
             Orders currentOrder = existingOrder.get();
 
             // Cập nhật thông tin đơn hàng với thông tin từ updatedOrder
-            currentOrder.setItemname(updatedOrder.getItemname());
+            currentOrder.setItemCode(updatedOrder.getItemCode());
             currentOrder.setGroupID(updatedOrder.getGroupID());
             currentOrder.setUnitID(updatedOrder.getUnitID());
             currentOrder.setAmount(updatedOrder.getAmount());
@@ -105,7 +105,7 @@ public class OrdersService {
         Optional<Orders> order = ordersRepository.findById(orderCode);
         return order.orElse(null);
     }
-
+    
     public void confirmOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);
@@ -122,7 +122,7 @@ public class OrdersService {
             }
         }
     }
-
+    
     public void completeOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);
@@ -139,7 +139,7 @@ public class OrdersService {
             }
         }
     }
-
+    
     public void cancelOrder(String orderCode) {
         // Tìm đơn hàng theo mã đơn hàng
         Optional<Orders> optionalOrder = ordersRepository.findById(orderCode);

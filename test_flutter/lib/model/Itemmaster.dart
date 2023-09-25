@@ -35,7 +35,8 @@ class Itemmaster {
       supplierName: json['supplierName'],
       image: json['image'],
       disable: json['disable'],
-      pass: json['pass']
+      pass: json['pass'],
+
     );
   }
 
@@ -55,7 +56,6 @@ class Itemmaster {
   String image;
   bool disable;
   bool pass;
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

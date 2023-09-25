@@ -31,7 +31,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
     @NamedQuery(name = "Orders.findByOrderCode", query = "SELECT o FROM Orders o WHERE o.orderCode = :orderCode"),
-    @NamedQuery(name = "Orders.findByItemname", query = "SELECT o FROM Orders o WHERE o.itemname = :itemname"),
     @NamedQuery(name = "Orders.findByDescription", query = "SELECT o FROM Orders o WHERE o.description = :description"),
     @NamedQuery(name = "Orders.findByCreatedDate", query = "SELECT o FROM Orders o WHERE o.createdDate = :createdDate"),
     @NamedQuery(name = "Orders.findByAmount", query = "SELECT o FROM Orders o WHERE o.amount = :amount"),
@@ -46,9 +45,6 @@ public class Orders implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "Order_Code")
     private String orderCode;
-    @Size(max = 200)
-    @Column(name = "itemname")
-    private String itemname;
     @Size(max = 2147483647)
     @Column(name = "Description")
     private String description;
@@ -68,6 +64,9 @@ public class Orders implements Serializable {
     @JoinColumn(name = "GroupID", referencedColumnName = "GroupID")
     @ManyToOne
     private Groups groupID;
+    @JoinColumn(name = "Item_Code", referencedColumnName = "code")
+    @ManyToOne
+    private Itemdatas itemCode;
     @JoinColumn(name = "UnitID", referencedColumnName = "UnitID")
     @ManyToOne
     private Unit unitID;
@@ -89,14 +88,6 @@ public class Orders implements Serializable {
 
     public void setOrderCode(String orderCode) {
         this.orderCode = orderCode;
-    }
-
-    public String getItemname() {
-        return itemname;
-    }
-
-    public void setItemname(String itemname) {
-        this.itemname = itemname;
     }
 
     public String getDescription() {
@@ -169,6 +160,14 @@ public class Orders implements Serializable {
 
     public void setGroupID(Groups groupID) {
         this.groupID = groupID;
+    }
+
+    public Itemdatas getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(Itemdatas itemCode) {
+        this.itemCode = itemCode;
     }
 
     public Unit getUnitID() {
