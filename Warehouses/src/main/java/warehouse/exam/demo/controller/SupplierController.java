@@ -6,6 +6,7 @@ package warehouse.exam.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,18 +35,21 @@ public class SupplierController {
     supplierRepository supRepo;
 
     @RequestMapping("/index")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String index(Model model) {
         model.addAttribute("list", service.getAll());
         return "supplier/supIndex";
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String create(Model model) {
         model.addAttribute("supplier", new Supplier());
         return "supplier/createSup";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String create(Model model, @ModelAttribute supplierDAO dao) {
         dao.setActive(false);
         service.saveSupplier(dao);
@@ -53,6 +57,7 @@ public class SupplierController {
     }
 
     @GetMapping("/update/{code}")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String findOne(Model model, @PathVariable("code") String code) {
         Supplier sup = service.findbycode(code);
         model.addAttribute("supplier", sup);
@@ -60,6 +65,7 @@ public class SupplierController {
     }
     
     @GetMapping("/updateStatus/{code}")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public ResponseEntity updateStatus(@PathVariable("code") String code){
         Supplier sup = service.findbycode(code);
         sup.setActive(!sup.getActive());
@@ -68,12 +74,14 @@ public class SupplierController {
     }
 
     @PostMapping("/update")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String update(Model model, @ModelAttribute supplierDAO dao) {
         service.saveSupplier(dao);
         return "redirect:/supplier/index";
     }
 
     @PostMapping("/updateStatus")
+    @PreAuthorize("hasAnyRole('sale','importer')")
     public String updateStatus(Model model, @ModelAttribute supplierDAO dao) {
         service.updateStatusSupplier(dao);
         return "redirect:/supplier/index";

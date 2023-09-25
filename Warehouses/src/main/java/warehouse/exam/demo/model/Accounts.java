@@ -3,15 +3,15 @@ package warehouse.exam.demo.model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Entity
 @NoArgsConstructor
@@ -33,9 +33,14 @@ public class Accounts implements UserDetails {
     @Basic
     @Column(name = "phone")
     private String phone;
-//    @Basic
-//    @Column(name = "isActive")
-//    private String isActive;
+    @Basic
+    @Column(name = "is_active")
+    private Boolean isActive;
+    @lombok.Setter
+    @lombok.Getter
+    @OneToMany(mappedBy = "accountsByAccountCode")
+    private Collection<AccountsRoles> accountsRolesById;
+
 
     public String getCode() {
         return code;
@@ -53,13 +58,29 @@ public class Accounts implements UserDetails {
         this.name = name;
     }
 
+    @ManyToMany(fetch = FetchType.EAGER)  // Eager fetch to load roles eagerly
+    @JoinTable(
+            name = "accounts_roles",
+            joinColumns = @JoinColumn(name = "account_code"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+
+    private Set<Roles> roles = new HashSet<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (Roles role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+        }
+        return authorities;
     }
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -103,12 +124,11 @@ public class Accounts implements UserDetails {
         this.phone = phone;
     }
 
-//    public String getIsActive() {
-//        return isActive;
-//    }
-//
-//    public void setIsActive(String isActive) {
-//        this.isActive = isActive;
-//    }
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 }

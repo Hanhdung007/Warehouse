@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -57,6 +58,7 @@ public class Log implements Serializable {
     @Column(name = "method")
     private String method;
     @JoinColumn(name = "itemmaster_id", referencedColumnName = "id")
+    @JsonIgnore
     @ManyToOne
     private Itemmasters itemmasterId;
 
@@ -113,31 +115,6 @@ public class Log implements Serializable {
 
     public void setItemmasterId(Itemmasters itemmasterId) {
         this.itemmasterId = itemmasterId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Log)) {
-            return false;
-        }
-        Log other = (Log) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Log[ id=" + id + " ]";
     }
     
 }

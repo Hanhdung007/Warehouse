@@ -21,6 +21,7 @@ public class issueOrderDAO {
     private Double qtyExport;
     private Double qtyActualExport;
     private Integer itemmassterId;
+    private Integer amout;
 
     public issueOrderDAO() {
     }
@@ -47,6 +48,14 @@ public class issueOrderDAO {
 
     public void setIssueReason(String issueReason) {
         this.issueReason = issueReason;
+    }
+
+    public Integer getAmout() {
+        return amout;
+    }
+
+    public void setAmout(Integer amout) {
+        this.amout = amout;
     }
 
     public String getSubmitBy() {
@@ -96,6 +105,5 @@ public class issueOrderDAO {
     public void setItemMasterId(Integer itemmassterId) {
         this.itemmassterId = itemmassterId;
     }
-    
-    
+
 }

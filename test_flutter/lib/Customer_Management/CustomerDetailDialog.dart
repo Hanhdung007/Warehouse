@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../model/Customer.dart';
 
+
 class CustomerDetailDialog extends StatelessWidget {
   final Customer customer;
+ const CustomerDetailDialog({super.key, required this.customer});
 
-  const CustomerDetailDialog({super.key, required this.customer});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,9 @@
  */
 package warehouse.exam.demo.reponsitory;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import warehouse.exam.demo.model.IssueOrders;
 
 /**
@@ -14,4 +16,6 @@ import warehouse.exam.demo.model.IssueOrders;
 public interface IssueRepository extends JpaRepository<IssueOrders, Integer> {
 
     IssueOrders findById(int id);
+    @Query("SELECT o From IssueOrders o where o.issueActive = false")
+    List<IssueOrders> GetIssueList();
 }

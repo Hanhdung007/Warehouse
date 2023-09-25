@@ -114,10 +114,14 @@ public class ItemmasterService {
             imtDao.setNote(im.getNote());
             imtDao.setQcAcceptQuantity(im.getQcAcceptQuantity());
             imtDao.setQcBy(im.getQcBy());
-            imtDao.setQuantity(im.getQcAcceptQuantity());
+            imtDao.setQuantity(im.getQuantity());
             imtDao.setRecieveNo(im.getRecieveNo());
             imtDao.setSupplierName(im.getSupId().getSupName());
              imtDao.setImage(im.getCodeItemdata().getImage());
+             imtDao.setPass(im.getPass());
+             imtDao.setDisable(im.getDisable());
+             imtDao.setQcInjectQuantity(im.getQcInjectQuantity());
+             imtDao.setCodeItemdata(im.getCodeItemdata().getCode());
             dao.add(imtDao);
         }
         return dao;
@@ -190,4 +194,22 @@ public class ItemmasterService {
         item.setDisable(newDisable);
         return imMasterRepositoty.save(item);
     }
+//    public warehouseDAO findSingItem(String code) {
+//        Warehouses wh =  whReponsitory.findByCode(code);
+//        warehouseDAO whdao = new warehouseDAO();
+//            whdao.setCode(wh.getCode());
+//            whdao.setName(wh.getName());
+//            whdao.setActive(wh.getActive());
+//            whdao.setTotalLocation(wh.getLocationsList().size());
+//            double totalCapacity = 0;
+//            double totalRemain = 0;
+//            for(Locations loc: wh.getLocationsList()){
+//                totalCapacity += loc.getCapacity();
+//                totalRemain += loc.getRemain();
+//            }
+//            whdao.setTotalCapacity(totalCapacity);
+//            whdao.setTotalRemain(totalRemain);
+//            whdao.setLocations(wh.getLocationsList());
+//            return whdao;
+//    }
 }

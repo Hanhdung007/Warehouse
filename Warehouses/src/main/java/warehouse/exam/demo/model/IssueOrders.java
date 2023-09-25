@@ -62,11 +62,16 @@ public class IssueOrders implements Serializable {
     @Size(max = 255)
     @Column(name = "item_code")
     private String itemCode;
+    @Size(max = 20)
+    @Column(name = "order_code")
+    private String orderCode;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "qty_export")
     private Double qtyExport;
     @Column(name = "qty_actual_export")
     private Double qtyActualExport;
+    @Column(name = "amout")
+    private Integer amout;
     @JoinColumn(name = "itemmaster_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Itemmasters itemmasterId;
@@ -126,12 +131,28 @@ public class IssueOrders implements Serializable {
         this.itemCode = itemCode;
     }
 
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
     public Double getQtyExport() {
         return qtyExport;
     }
 
     public void setQtyExport(Double qtyExport) {
         this.qtyExport = qtyExport;
+    }
+
+    public Integer getAmout() {
+        return amout;
+    }
+
+    public void setAmout(Integer amout) {
+        this.amout = amout;
     }
 
     public Double getQtyActualExport() {
@@ -150,29 +171,4 @@ public class IssueOrders implements Serializable {
         this.itemmasterId = itemmasterId;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof IssueOrders)) {
-            return false;
-        }
-        IssueOrders other = (IssueOrders) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.IssueOrders[ id=" + id + " ]";
-    }
-    
 }

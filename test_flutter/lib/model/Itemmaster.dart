@@ -36,6 +36,7 @@ class Itemmaster {
       image: json['image'],
       disable: json['disable'],
       pass: json['pass'],
+
     );
   }
 

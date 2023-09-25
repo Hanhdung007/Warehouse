@@ -149,29 +149,4 @@ public class Supplier implements Serializable {
         this.importordersList = importordersList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (supId != null ? supId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Supplier)) {
-            return false;
-        }
-        Supplier other = (Supplier) object;
-        if ((this.supId == null && other.supId != null) || (this.supId != null && !this.supId.equals(other.supId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "warehouse.exam.demo.model.Supplier[ supId=" + supId + " ]";
-    }
-
 }

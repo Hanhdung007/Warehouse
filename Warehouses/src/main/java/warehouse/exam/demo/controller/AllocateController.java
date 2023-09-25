@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,8 @@ import warehouse.exam.demo.reponsitory.logRepository;
 import warehouse.exam.demo.service.AllocateService;
 import warehouse.exam.demo.service.ItemmasterService;
 import warehouse.exam.demo.service.locationService;
+import warehouse.exam.demo.service.ItemmasterService;
+import warehouse.exam.demo.service.OrdersService;
 
 /**
  *
@@ -47,26 +50,20 @@ public class AllocateController {
     allocateRepository allocateRepository;
     @Autowired
     logRepository logRepository;
+    @Autowired
+    allocateRepository alloReponsitory;
 
     @GetMapping("/requests")
+    @PreAuthorize("hasRole('whManager')")
     public String allocateRequest(Model model) {
         model.addAttribute("list", service.getAllocateOrder());
         return "/itemmaster/allocateRequest";
     }
 
     @GetMapping("/confirmAllocate/{id}")
+    @PreAuthorize("hasRole('whManager')")
     public ResponseEntity confirmAllocate(@PathVariable("id") int id) {
-        /*
-            1. Lấy ra AllocateOrder theo id truyền về
-            2. Lấy ra ItemMaster dựa trên itemMasterId AllocateOrder 
-            3. Cập nhật location code cho ItemMaster đó = location code của Allocate Order
-            4. Lấy location dựa vào location code của AllocateOrder
-            5. Lấy quantity của allocate order trừ vào remain của location 
-        vd: location.setRemain(location.getRemain - qty)
-            6. Cập nhật Allocate Order Confirm = true
-           7. Gọi hàm save cho Allocate Order , ItemMaster , Location
-         */
-        //Check capcity 
+
         AllocateOrder allocate = allocateRepository.findById(id);
         Locations location = locationReponsitory.findByCode(allocate.getLocationCode());
         if (location.getRemain() < allocate.getQuantity()) {
@@ -92,6 +89,9 @@ public class AllocateController {
             newItem.setQcAcceptQuantity(allocate.getQuantity());
             newItem.setRecieveNo(item.getRecieveNo());
             newItem.setSupId(item.getSupId());
+            newItem.setQcInjectQuantity(0.0);
+            newItem.setPass(item.getPass());
+            newItem.setDisable(item.getDisable());
             newItem.setLocationCode(allocate.getLocationCode());
             itemMasterReponsitory.save(newItem);
             log.setItemmasterId(newItem);
@@ -102,11 +102,11 @@ public class AllocateController {
             item.setBookQty(allocate.getQuantity());
             log.setItemmasterId(item);
         }
-        
+
         log.setLocationName(location.getName());
         log.setMethod("Allocate");
         log.setQuantity(allocate.getQuantity());
-         LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime ldt = LocalDateTime.now();
         Instant instant = ldt.toInstant(ZoneOffset.UTC);
         Date date = Date.from(instant);
         log.setSaveDate(date);
@@ -118,4 +118,13 @@ public class AllocateController {
         return ResponseEntity.ok(200);
     }
 
+    @GetMapping("/rejectAllocate/{id}")
+    public ResponseEntity rejectAllocate(@PathVariable("id") int id) {
+        AllocateOrder allocate = alloReponsitory.findById(id);
+        Itemmasters item = itemMasterReponsitory.findById(allocate.getItemMasterId()).get();
+        item.setBookQty(item.getBookQty() - allocate.getQuantity());
+        alloReponsitory.deleteById(id);
+        itemMasterReponsitory.save(item);
+        return ResponseEntity.ok(200);
+    }
 }

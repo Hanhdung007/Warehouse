@@ -35,4 +35,6 @@ public interface ItemmasterRepository extends JpaRepository<Itemmasters, Integer
 
     @Query("SELECT o FROM Itemmasters o WHERE o.codeItemdata.code = :itemName AND o.locationCode != '' AND o.qcAcceptQuantity > 0")
     List<Itemmasters> checkStock(String itemName);
+    @Query("Select o FROM Itemmasters o where o.locationCode ='' and o.disable = true")
+    List<Itemmasters> findItemQC();
 }

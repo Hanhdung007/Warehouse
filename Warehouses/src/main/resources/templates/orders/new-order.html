@@ -91,6 +91,8 @@
                                             </option>
                                         </select>
                                         <div id="unitIDError" class="text-danger" style="display: none;"></div>
+                                        <label>1 LII = 200 SET</label> <br/>
+                                        <label>1 OII = 2000 SET</label>
                                     </div>
 
                                     <label for="amount" class="col-sm-2 col-form-label">Amount</label>
@@ -103,9 +105,11 @@
                                     <label for="description">Description</label>
                                     <textarea id="description" name="description" class="form-control" rows="4" th:text="${order.description}"></textarea>
                                 </div>
+
                                 <button type="submit" id="saveButton" class="btn btn-primary">Save</button>
                                 <a th:href="@{/orders/list}" class="btn btn-secondary">Cancel</a>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -171,32 +175,26 @@
                 $('#openDialogButton').click(function () {
                     $('#customerModal').modal('show');
                 });
-
                 // Hide the error message when the user starts entering Customer Name
                 $('#customerName').on('input', function () {
                     $('#customerNameError').hide();
                 });
-
                 // Hide the error message when the user starts entering Email
                 $('#email').on('input', function () {
                     $('#emailError').hide();
                 });
-
                 // Hide the error message when the user starts entering Phone
                 $('#phone').on('input', function () {
                     $('#phoneError').hide();
                 });
-
                 // Hide the error message when the user starts entering Tax
                 $('#fax').on('input', function () {
                     $('#faxError').hide();
                 });
-
                 // Hide the error message when the user starts entering Address
                 $('#address').on('input', function () {
                     $('#addressError').hide();
                 });
-
                 function isValidEmail(email) {
                     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                     return emailPattern.test(email);
@@ -220,7 +218,6 @@
                     var fax = $('#fax').val();
                     var address = $('#address').val();
                     var disableCustomer = $('#disableCustomer').prop('checked');
-
                     // Check Customer Name is not empty
                     if (customerName.trim() === '') {
                         $('#customerNameError').text('Please enter a customer name.');
@@ -287,7 +284,6 @@
                         address: address,
                         disable: disableCustomer
                     };
-
                     $.ajax({
                         url: '/api/customers',
                         type: 'POST',
@@ -295,17 +291,13 @@
                         contentType: 'application/json',
                         success: function (data) {
                             console.log('Thêm khách hàng thành công:', data);
-
                             // Hiển thị thông báo thành công
                             $('#successMessage').show();
-
                             setTimeout(function () {
                                 $('#successMessage').hide();
                             }, 3000);
-
                             // Đóng dialog
                             $('#customerModal').modal('hide');
-
                             // Xóa dữ liệu đã nhập trong modal
                             $('#customerName').val('');
                             $('#email').val('');
@@ -313,14 +305,12 @@
                             $('#fax').val('');
                             $('#address').val('');
                             $('#disableCustomer').prop('checked', false);
-
                             // Cập nhật danh sách khách hàng trong phần tử <select>
                             var customerSelect = $('#customerID');
                             var newOption = $('<option>', {
                                 value: data.customerID,
                                 text: data.name
                             });
-
                             // Kiểm tra thuộc tính 'disable' của khách hàng mới
                             if (!data.disable) {
                                 // Nếu 'disable' không là true, thì mới thêm phần tử <option> mới vào danh sách
@@ -337,25 +327,21 @@
                 });
 
                 $('#itemCode').on('input', function () {
+
                     $('#nameError').hide();
                 });
-
                 $('#customerID').on('input', function () {
                     $('#customerIDError').hide();
                 });
-
                 $('#groupID').on('input', function () {
                     $('#groupIDError').hide();
                 });
-
                 $('#unitID').on('input', function () {
                     $('#unitIDError').hide();
                 });
-
                 $('#amount').on('input', function () {
                     $('#amountError').hide();
                 });
-
                 $('#saveButton').click(function (event) {
                     // Prevent the default form submission
                     event.preventDefault();
@@ -369,9 +355,9 @@
                     } else {
                         $('#customerIDError').hide();
                     }
-
                     // Validate "Goods Name"
                     var goodsName = $('#itemCode').val();
+
                     if (goodsName.trim() === '') {
                         $('#nameError').text('Please select a Goods Name.');
                         $('#nameError').show();
@@ -379,8 +365,7 @@
                     } else {
                         $('#nameError').hide();
                     }
-
-                    // Validate "Group"
+                    //Validate "Group"                 
                     var group = $('#groupID').val();
                     if (group === '') {
                         $('#groupIDError').text('Please select a Group.');

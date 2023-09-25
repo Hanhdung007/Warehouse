@@ -1,18 +1,23 @@
 package warehouse.exam.demo.model;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Roles {
-    @Basic
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "id")
     private int id;
     @Basic
     @Column(name = "role_name")
     private String roleName;
+    @OneToMany(mappedBy = "roleId") // Sử dụng tên thuộc tính chính xác trong AccountsRoles
+    private Collection<AccountsRoles> accountsRolesById;
+
 
     public int getId() {
         return id;
@@ -41,5 +46,13 @@ public class Roles {
     @Override
     public int hashCode() {
         return Objects.hash(id, roleName);
+    }
+
+    public Collection<AccountsRoles> getAccountsRolesById() {
+        return accountsRolesById;
+    }
+
+    public void setAccountsRolesById(Collection<AccountsRoles> accountsRolesById) {
+        this.accountsRolesById = accountsRolesById;
     }
 }
