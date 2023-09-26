@@ -4,27 +4,24 @@
  */
 package warehouse.exam.demo.controller;
 
-import java.util.List;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
 import warehouse.exam.demo.DAL.locationDAO;
 import warehouse.exam.demo.DAL.warehouseDAO;
 import warehouse.exam.demo.model.Locations;
 import warehouse.exam.demo.model.Warehouses;
 import warehouse.exam.demo.reponsitory.locationReponsitory;
 import warehouse.exam.demo.reponsitory.warehouseRepository;
-import warehouse.exam.demo.service.locationService;
 import warehouse.exam.demo.service.warehouseService;
 
 /**
@@ -59,6 +56,7 @@ public class WarehouseController {
     @GetMapping("/create")
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model) {
+        
         model.addAttribute("warehouse", new Warehouses());
         return "warehouse/create";
     }
@@ -66,6 +64,18 @@ public class WarehouseController {
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model, @ModelAttribute warehouseDAO warehouse) {
+        Warehouses warehouses = whReponsitory.findByCode(warehouse.getCode());
+        Warehouses warehousesName = whReponsitory.findByName(warehouse.getName());
+         if (warehouses != null) {
+//            model.addAttribute("location", locDAO);
+            model.addAttribute("message", "Location Code have existed");
+            return "redirect:warehouse/create";
+        }
+         if (warehousesName != null) {
+//            model.addAttribute("location", locDAO);
+            model.addAttribute("message", "Location Code have existed");
+            return "redirect:warehouse/create";
+        }
         service.saveWarehouse(warehouse);
         return "redirect:/warehouse/index";
     }
@@ -98,9 +108,24 @@ public class WarehouseController {
     //Không có xài PathVariable cho hàm post , trừ khi e add tham số vào url
     @RequestMapping(value = "/addLocation", method = RequestMethod.POST)
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
-    public String addLocation(Model model, String whCode, @ModelAttribute locationDAO locDAO) {
+    public String addLocation(Model model, String whCode, @ModelAttribute locationDAO locDAO, BindingResult bingdingResult) throws IOException {
         Warehouses warehouse = whReponsitory.findByCode(whCode);
+        Locations loc = locReponsitory.findByCode(locDAO.getCode());
+        Locations locName = locReponsitory.findByName(locDAO.getName());
+        if (loc != null) {
+//            model.addAttribute("location", locDAO);
+            model.addAttribute("message", "Location Code have existed");
+            return "redirect:/warehouse/addLocation/" + loc.getWarehouseCode().getCode();
+        }
+        if (locName != null) {
+//            model.addAttribute("location", locDAO);
+            model.addAttribute("errormessage", "Location Code have existed");
+            return "redirect:/warehouse/addLocation/" + locName.getWarehouseCode().getCode();
+        }
         Locations location = new Locations();
+//        if (bingdingResult.hasErrors()) {
+//            return "redirect:/warehouse/addLocation";
+//        }
         location.setActive(locDAO.isActive());
         location.setCode(locDAO.getCode());
         location.setCapacity(locDAO.getCapacity());

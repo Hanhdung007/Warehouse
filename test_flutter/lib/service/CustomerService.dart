@@ -5,7 +5,7 @@ import '../model/Customer.dart';
 
 
 class CustomerService {
-  final String baseUrl = 'http://192.168.1.6:9999/api/customers';
+  final String baseUrl = 'http://192.168.1.11:9999/api/customers';
 
   static final CustomerService _instance = CustomerService._internal();
 

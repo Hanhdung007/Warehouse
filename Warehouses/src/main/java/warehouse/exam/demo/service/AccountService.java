@@ -108,7 +108,7 @@ public class AccountService implements UserDetailsService {
             case 2:
                 return "Sale Order";
             case 3:
-                return "Importer";
+                return "Receive Inventory";
             case 4:
                 return "Warehouse Manager";
             case 5:

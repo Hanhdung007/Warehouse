@@ -22,8 +22,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                 <div class="col-12 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title">Data Table Dark</h4>
-                            <div class="data-tables datatable-dark">
+                            <a th:href="@{/location/create}">
+                                <button type="button" class="btn btn-outline-success mb-3">Add new Location</button>
+                            </a>
+                            <h4 class="header-title">Locations List</h4>
+                            <div class="data-tables datatable-header">
                                 <table id="locationtable" class="text-center">
                                     <thead class="text-capitalize">
                                         <tr>
@@ -54,7 +57,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                                 <span th:unless="${location.active}" class="badge badge-pill badge-danger">Inactive</span>
                                             </td>
                                             <td>
-                                                <a th:href="'/location/update/'+${location.code}">Edit</a>
+                                                <a class="btn btn-outline-primary" th:href="'/location/update/'+${location.code}">Edit</a>
+                                                <a class="btn btn-outline-secondary" th:href="'/location/details/'+${location.code}">Details</a>
                                             </td>
                                         </tr>
                                     </tbody>

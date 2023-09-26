@@ -54,7 +54,7 @@ public class ImportOrderController {
     ImportRepository impRepository;
 
     @RequestMapping("/index")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model) {
         List<importDAO> searchList = (List<importDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -66,7 +66,7 @@ public class ImportOrderController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<importDAO> foundOrders = service.searchImports(keyword);
         redirectAttributes.addFlashAttribute("searchResults", foundOrders);
@@ -74,7 +74,7 @@ public class ImportOrderController {
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String create(Model model) {
         model.addAttribute("import", new importDAO());
         model.addAttribute("supplier", supService.getAll());
@@ -82,7 +82,7 @@ public class ImportOrderController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String create(Model model, @ModelAttribute importDAO imp) {
         model.addAttribute("supplier", supService.getAll());
         imp.setStatus(false);
@@ -91,14 +91,14 @@ public class ImportOrderController {
     }
 
     @GetMapping("details/{id}")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String details(Model model, @PathVariable("id") int id) {
         model.addAttribute("import", service.findOne(id));
         return "import/detail";
     }
 
     @PostMapping("/details/{idImport}")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String updateDisable(@PathVariable int idImport, @RequestParam int id){
         Boolean newDisable = true;
         itemmasterService.updateDisable(id, newDisable);
@@ -106,7 +106,7 @@ public class ImportOrderController {
     }
 
     @GetMapping("edit/{id}")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String update(Model model, @PathVariable("id") int id) {
         model.addAttribute("import", service.findOne(id));
         model.addAttribute("supplier", supService.getAll());
@@ -114,7 +114,7 @@ public class ImportOrderController {
     }
 
     @PostMapping("/edit")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String update(importDAO imp, BindingResult binding) {
         if (binding.hasErrors()) {
             return "/error/error404";
@@ -125,7 +125,7 @@ public class ImportOrderController {
     }
 
     @GetMapping("/createItem/{id}")
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String createItem(Model model, @PathVariable("id") int id) {
         itemmasterDAO itemDAO = new itemmasterDAO();
         model.addAttribute("itemmasterDAO", itemDAO);
@@ -137,7 +137,7 @@ public class ImportOrderController {
 
 
     @RequestMapping(value="/createItemMaster", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('importer')")
+    @PreAuthorize("hasAnyRole('admin','importer')")
     public String createItemMaster(Model model, @RequestParam("idImp") int idImp, @ModelAttribute itemmasterDAO itemmasterDAO) {
         Importorders imp = impRepository.findById(idImp);
         Itemmasters item = new Itemmasters();

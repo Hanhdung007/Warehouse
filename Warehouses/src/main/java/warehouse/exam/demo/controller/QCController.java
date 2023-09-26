@@ -28,7 +28,7 @@ public class QCController {
     QCService qcService;
 
     @GetMapping("/index")
-    @PreAuthorize("hasRole('qc')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model) throws ParseException {
         List<itemmasterDAO> searchList = (List<itemmasterDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -40,7 +40,7 @@ public class QCController {
     }
 
     @GetMapping("/search")
-    @PreAuthorize("hasRole('qc')")
+    @PreAuthorize("hasAnyRole('admin', 'qc')")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<itemmasterDAO> foundOrders = qcService.searchItem(keyword);
         redirectAttributes.addFlashAttribute("searchResults", foundOrders);
@@ -48,7 +48,7 @@ public class QCController {
     }
 
     @PostMapping("/accept/{id}")
-    @PreAuthorize("hasRole('qc')")
+    @PreAuthorize("hasAnyRole('admin', 'qc')")
     public String AcceptedQuantity(@Nullable @RequestParam String accept,@Nullable @RequestParam String inject, @RequestParam int id, @RequestParam int quantityInput, @RequestParam String qcBy){
         if(accept != null){
             qcService.AcceptQuantity(id, quantityInput, qcBy);

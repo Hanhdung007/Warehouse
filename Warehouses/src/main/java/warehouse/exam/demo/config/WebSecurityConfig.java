@@ -62,9 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 // Quyền truy cập cho các trang MVC
-                .antMatchers("/auth/login", "/auth/logout",  "/auth/index").permitAll()
+                .antMatchers("/auth/login", "/auth/logout").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
                 .authenticationEntryPoint(authenticationEntryPoint());
     }
 }
+

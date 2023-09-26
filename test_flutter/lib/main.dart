@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/Account.dart';
-import 'package:test_flutter/Import.dart';
-import 'package:test_flutter/Itemdata.dart';
-import 'package:test_flutter/Inventory.dart';
-import 'package:test_flutter/Location.dart';
-import 'package:test_flutter/QC.dart';
-import 'package:test_flutter/service/inventory.dart';
 import 'package:test_flutter/Customer_Management/CustomerUI.dart';
 import 'package:test_flutter/screnn/Account.dart';
 import 'package:test_flutter/screnn/Import.dart';
 import 'package:test_flutter/screnn/Inventory.dart';
 import 'package:test_flutter/screnn/Itemdata.dart';
 import 'package:test_flutter/screnn/QC.dart';
-import 'package:test_flutter/screnn/WarehousePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,15 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   List dataFake = [
     "Accounts",
     "Import Item",
     "Item Data",
-    "Item Master",
-    "Warehouse",
+    "Inventory",
     "QC",
-    "Customers"
+    "Customers",
   ];
 
   List<Color> dataFakeColor = [
@@ -59,8 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Color(0xff61bdfd),
     Color(0xfffc7f7f),
     Color(0xffc884fb),
-    Color(0xff78e667),
-    Color(0xff867f7f)
+    Color(0xff867f7f),
   ];
 
   List<Icon> dataFakeIcon = [
@@ -69,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
     Icon(Icons.data_thresholding, color: Colors.white, size: 30),
     Icon(Icons.mark_as_unread, color: Colors.white, size: 30),
     Icon(Icons.location_on, color: Colors.white, size: 30),
-    Icon(Icons.check_box_rounded, color: Colors.white, size: 30),
     Icon(Icons.person, color: Colors.white, size: 30),
   ];
 
@@ -78,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
     const Import(),
     const Itemdata(),
     const InventoryPage(),
-    const WarehousePage(),
     const QC(),
     const CustomerUI(),
   ];
@@ -87,8 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const Account(),
     const Import(),
     const Itemdata(),
-    const Itemmaster(),
-    const Location(),
+    const InventoryPage(),
     const QC(),
     const CustomerUI(),
   ];

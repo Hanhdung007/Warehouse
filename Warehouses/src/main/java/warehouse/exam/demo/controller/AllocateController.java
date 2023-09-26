@@ -54,14 +54,14 @@ public class AllocateController {
     allocateRepository alloReponsitory;
 
     @GetMapping("/requests")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public String allocateRequest(Model model) {
         model.addAttribute("list", service.getAllocateOrder());
         return "/itemmaster/allocateRequest";
     }
 
     @GetMapping("/confirmAllocate/{id}")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public ResponseEntity confirmAllocate(@PathVariable("id") int id) {
 
         AllocateOrder allocate = allocateRepository.findById(id);
@@ -119,12 +119,35 @@ public class AllocateController {
     }
 
     @GetMapping("/rejectAllocate/{id}")
+//    @PreAuthorize("hasAnyRole('admin','whManager')")
     public ResponseEntity rejectAllocate(@PathVariable("id") int id) {
         AllocateOrder allocate = alloReponsitory.findById(id);
         Itemmasters item = itemMasterReponsitory.findById(allocate.getItemMasterId()).get();
-        item.setBookQty(item.getBookQty() - allocate.getQuantity());
+        if(item.getLocationCode().isEmpty() || item.getLocationCode() ==null ){
+              item.setBookQty(item.getBookQty() - allocate.getQuantity());
+               itemMasterReponsitory.save(item);
+        }else{
+            // Create new item master
+            Itemmasters newItem = new Itemmasters();
+            newItem.setCodeItemdata(item.getCodeItemdata());
+            newItem.setDateImport(item.getDateImport());
+            newItem.setIdImport(item.getIdImport());
+            newItem.setNote(item.getNote());
+            newItem.setQcBy(item.getQcBy());
+            newItem.setBookQty(0.0);
+            newItem.setQuantity(allocate.getQuantity());
+            newItem.setQcAcceptQuantity(allocate.getQuantity());
+            newItem.setRecieveNo(item.getRecieveNo());
+            newItem.setSupId(item.getSupId());
+            newItem.setQcInjectQuantity(0.0);
+            newItem.setPass(item.getPass());
+            newItem.setDisable(item.getDisable());
+            newItem.setLocationCode("");
+            itemMasterReponsitory.save(newItem);
+        }
+      
         alloReponsitory.deleteById(id);
-        itemMasterReponsitory.save(item);
+       
         return ResponseEntity.ok(200);
     }
 }

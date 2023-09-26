@@ -38,7 +38,7 @@ public class Locations implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(min = 1, max = 50, message = "code can not be null")
     @Column(name = "code")
     private String code;
     @Size(max = 100)

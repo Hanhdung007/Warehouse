@@ -30,7 +30,7 @@ public class CustomersController {
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasRole('sale')")
+    @PreAuthorize("hasAnyRole('admin','sale')")
     public String listCustomers(Model model) {
         Customers[] customersArray = rest.getForObject(url, Customers[].class);
         model.addAttribute("customers", customersArray);
