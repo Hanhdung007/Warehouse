@@ -1,45 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../constaints/urlAPI.dart';
 import '../model/Itemmaster.dart';
 
-class Inventory {
-  static Future<List<Itemmaster>> getInventory() async {
+class Inventory with ChangeNotifier {
+  late List<Itemmaster> _inventory = [];
+  late List<Itemmaster> _filteredInventory = [];
 
-    String url = "http://192.168.1.11:9999/api/inventory/getdata";
-    final response = await http.get(Uri.parse(url));
-    var data = json.decode(response.body);
-    List<Itemmaster> iList = [];
-    for (var c in data) {
-      Itemmaster item = Itemmaster(
-        id: c['id'],
-        locationName: c['locationName'],
-        quantity: c['quantity'],
-        recieveNo: c['recieveNo'],
-        dateImport: c['dateImport'],
-        note: c['note'],
-        qcAcceptQuantity: c['qcAcceptQuantity'],
-        qcInjectQuantity: c['qcInjectQuantity'],
-        qcBy: c['qcBy'],
-        idImport: c['idImport'],
-        itemName: c['itemName'],
-        codeItemdata: c['codeItemdata'],
-        supplierName: c['supplierName'],
-        image: c['image'],
-        disable: c['disable'],
-        pass: c['pass'],
-      );
+  List<Itemmaster> get inventory => _filteredInventory.isNotEmpty ? _filteredInventory : _inventory;
 
-      iList.add(item);
+  Future<void> getInventory() async {
+    final response = await http.get(Uri.parse(inventoryAPI));
+    if (response.statusCode == 200) {
+      final jsonData = await json.decode(response.body);
+      _inventory = List<Itemmaster>.from(jsonData.map((data) => Itemmaster.fromJson(data)));
+
+      _filteredInventory = _inventory;
+      notifyListeners();
+    } else {
+      throw Exception('Failed To Load Import Item!');
     }
-    return iList;
+  }
+
+  void searchInventory(String searchImport) {
+    if (searchImport.isNotEmpty) {
+      _filteredInventory = inventory.where((inventory) {
+        return inventory.id!.toString().contains(searchImport.toLowerCase()) ||
+            inventory.itemName!.toLowerCase().contains(searchImport.toLowerCase()) ||
+            inventory.locationName!.toLowerCase().contains(searchImport.toLowerCase()) ||
+            inventory.dateImport!.toLowerCase().contains(searchImport.toLowerCase()) ||
+            inventory.qcAcceptQuantity!.toString().contains(searchImport.toLowerCase()) ||
+            inventory.quantity!.toString().contains(searchImport.toLowerCase());
+      }).toList();
+    } else {
+      _filteredInventory = [];
+    }
+    notifyListeners();
   }
 
   static Future<List<Itemmaster>> getSingleItemInventory(int id) async {
-    String url = "http://192.168.1.11:9999/api/inventory/id";
     var singleItemModel;
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(Uri.parse(inventoryAPI));
       print(response.statusCode);
       if (response.statusCode == 200) {
         var jsonString = response.body;

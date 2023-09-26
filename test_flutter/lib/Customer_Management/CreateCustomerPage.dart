@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_flutter/Customer_Management/CustomerUI.dart';
+import 'package:test_flutter/screnn/CustomerUI.dart';
 import '../model/Customer.dart';
 import '../service/CustomerService.dart';
 
