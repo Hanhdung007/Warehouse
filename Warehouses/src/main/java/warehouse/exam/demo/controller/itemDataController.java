@@ -6,6 +6,7 @@ package warehouse.exam.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,9 +60,9 @@ public class itemDataController {
     @PostMapping("/create")
      @PreAuthorize("hasAnyRole('admin', 'sale', 'importer')")
     public String create(Model model, @ModelAttribute itemdataDAO itemData, @RequestParam("file") MultipartFile file) throws IOException {
-        Itemdatas loc = itemService.findOne(itemData.getCode());
+        Optional<Itemdatas> loc = itemreponsitory.findById(itemData.getCode());
         Itemdatas item = itemreponsitory.findByName(itemData.getName());
-        if(loc != null){
+        if(loc.isPresent()){
             return "redirect:/itemdata/create";
         }
         if(item != null){
