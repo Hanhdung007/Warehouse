@@ -4,6 +4,7 @@
  */
 package warehouse.exam.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -59,15 +60,19 @@ public class Orders implements Serializable {
     @Column(name = "Disabled")
     private Boolean disabled;
     @JoinColumn(name = "CustomerID", referencedColumnName = "CustomerID")
+    @JsonIgnore
     @ManyToOne
     private Customers customerID;
     @JoinColumn(name = "GroupID", referencedColumnName = "GroupID")
+    @JsonIgnore
     @ManyToOne
     private Groups groupID;
-    @JoinColumn(name = "Item_Code", referencedColumnName = "code")
+    @JoinColumn(name = "Item_code", referencedColumnName = "code")
+    @JsonIgnore
     @ManyToOne
     private Itemdatas itemCode;
     @JoinColumn(name = "UnitID", referencedColumnName = "UnitID")
+    @JsonIgnore
     @ManyToOne
     private Unit unitID;
     @Column(name = "booked_qty")

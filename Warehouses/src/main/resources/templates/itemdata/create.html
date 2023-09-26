@@ -22,7 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Add new Item</h4>
-                            <form th:action="@{create}" th:object="${itemdata}" method="post" enctype="multipart/form-data">
+                            <form th:action="@{/itemdata/create}" th:object="${itemdata}" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label>Item's code: </label>
                                     <input type="text" class="form-control" th:field="*{code}"/>

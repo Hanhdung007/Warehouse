@@ -15,6 +15,7 @@ import warehouse.exam.demo.model.Locations;
  */
 public interface locationReponsitory extends JpaRepository<Locations, String> {
 
+    @Query("SELECT o FROM Locations o WHERE o.code =:code")
     Locations findByCode(String code);
 
     Locations findByName(String name);

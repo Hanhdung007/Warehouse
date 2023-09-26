@@ -126,9 +126,9 @@ public class ItemmasterService {
         }
         return dao;
     }
-   public List<itemmasterDAO> checkStock(String itemName) {
+   public List<itemmasterDAO> checkStock(String itemCode) {
         List<itemmasterDAO> dao = new ArrayList<>();
-        List<Itemmasters> list = imMasterRepositoty.checkStock(itemName);
+        List<Itemmasters> list = imMasterRepositoty.checkStock(itemCode);
         for (Itemmasters im : list) {
             itemmasterDAO imtDao = new itemmasterDAO();
             imtDao.setDateImport(im.getDateImport());

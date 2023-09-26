@@ -94,7 +94,7 @@ public class AccountController{
     }
 
 @GetMapping("/index")
-@PreAuthorize("hasRole('admin')")
+@PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model, Authentication auth, HttpSession sesson) {
         List<AccountDAO> searchList = (List<AccountDAO>) model.asMap().get("searchResults");
         if (searchList != null) {
@@ -105,7 +105,7 @@ public class AccountController{
         return "account/index";
     }
 
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, RedirectAttributes redirectAttributes) {
         List<AccountDAO> foundOrders = accountService.searchAllAccount(keyword);

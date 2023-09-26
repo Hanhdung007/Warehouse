@@ -22,9 +22,10 @@ public class OrdersDAO {
     private Integer amount;
     private String status;
     private Boolean disabled;
-    private Integer customerID;
-    private Integer groupID;
-    private Integer unitID;
+    private String customerName;
+    private String groupName;
+    private String unitName;
+    private String phone;
 
     public OrdersDAO() {
     }
@@ -43,6 +44,14 @@ public class OrdersDAO {
 
     public void setItemname(String itemname) {
         this.itemname = itemname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getDescription() {
@@ -85,29 +94,30 @@ public class OrdersDAO {
         this.disabled = disabled;
     }
 
-    public Integer getCustomerID() {
-        return customerID;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomerID(Integer customerID) {
-        this.customerID = customerID;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public Integer getGroupID() {
-        return groupID;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroupID(Integer groupID) {
-        this.groupID = groupID;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public Integer getUnitID() {
-        return unitID;
+    public String getUnitName() {
+        return unitName;
     }
 
-    public void setUnitID(Integer unitID) {
-        this.unitID = unitID;
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
     }
+
     
     
 }

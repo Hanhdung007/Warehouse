@@ -21,7 +21,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             <div class="col-lg-12 mt-5">
                 <div class="card">
                     <div class="card-body">
-                            <h3 class="header-title">Warehouse history</h3>
+                        <h3 class="header-title">Warehouse history</h3>
                         <div class="card-body">
                             <div id="gridContainer"></div>
                         </div>
@@ -103,7 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 case "xlsx":
                                     const workbook = new ExcelJS.Workbook();
                                     const worksheet = workbook.addWorksheet("Log Transactions");
-                                     DevExpress.excelExporter.exportDataGrid({
+                                    DevExpress.excelExporter.exportDataGrid({
                                         component: e.component,
                                         worksheet: worksheet,
                                         autoFilterEnabled: true
@@ -120,6 +120,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                         },
                         headerFilter: {
                             visible: true,
+                        },
+                        columnChooser: {
+                            enabled: true,
+                            mode: 'select',
+                            position: {
+                                my: 'right top',
+                                at: 'right bottom',
+                                of: '.dx-datagrid-column-chooser-button',
+                            },
+                            search: {
+                                enabled: true,
+                                editorOptions: {placeholder: 'Search column'},
+                            },
+                            selection: {
+                                recursive: true,
+                                selectByClick: true,
+                                allowSelectAll: true,
+                            },
                         },
                         columns: [{
                                 dataField: 'id',

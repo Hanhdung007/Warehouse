@@ -5,6 +5,7 @@
 package warehouse.exam.demo.DAL;
 
 import java.util.List;
+import javax.validation.constraints.NotNull;
 import warehouse.exam.demo.model.Itemmasters;
 
 /**
@@ -12,9 +13,12 @@ import warehouse.exam.demo.model.Itemmasters;
  * @author DUNG
  */
 public class locationDAO {
+    @NotNull(message = "code can not be null")
     private String code;
+    @NotNull(message = "name can not be null")
     private String name;
     private String warehouseName;
+    @NotNull(message = "capacity can not be null")
     private double capacity;
     private double remain;
     private boolean active;

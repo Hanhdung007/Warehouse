@@ -91,7 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <span th:text="${'Sale Order' + (list.accountCode.contains('importer') || list.accountCode.contains('whManager') || list.accountCode.contains('qc') ? ' | ' : '')}"></span>
                                         </span>
                                         <span th:if="${list.accountCode.contains('importer')}">
-                                            <span th:text="${'Importer' + (list.accountCode.contains('whManager') || (list.accountCode.contains('qc')) ? ' | ' : '')}"></span>
+                                            <span th:text="${'Receive Inventory' + (list.accountCode.contains('whManager') || (list.accountCode.contains('qc')) ? ' | ' : '')}"></span>
                                         </span>
                                         <span th:if="${list.accountCode.contains('whManager')}">
                                             <span th:text="${'Warehouse Manager' + (list.accountCode.contains('qc') ? ' | ' : '')}"></span>
@@ -113,7 +113,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                            class="btn btn-outline-info mb-3"
                                            data-toggle="modal"
                                            th:data-target="'#myModal-'+${list.getCode()}">
-                                            Change Password
+                                            Forgot Password
                                         </a>
                                     </td>
                                     <!-- Modal -->

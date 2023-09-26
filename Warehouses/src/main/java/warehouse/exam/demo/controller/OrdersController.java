@@ -17,6 +17,10 @@ import warehouse.exam.demo.model.Groups;
 import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.model.Orders;
 import warehouse.exam.demo.model.Unit;
+import warehouse.exam.demo.reponsitory.CustomersRepository;
+import warehouse.exam.demo.reponsitory.GroupsRepository;
+import warehouse.exam.demo.reponsitory.UnitRepository;
+import warehouse.exam.demo.reponsitory.itemdataReponsitory;
 import warehouse.exam.demo.service.OrdersService;
 
 /**
@@ -26,71 +30,83 @@ import warehouse.exam.demo.service.OrdersService;
 @Controller
 @RequestMapping("/orders")
 public class OrdersController {
-
+    
     private final String url = "http://localhost:9999/api/orders/";
     private final RestTemplate rest;
     private final OrdersService ordersService;
+    private final CustomersRepository customerReponsitory;
+    private final GroupsRepository groupReonsitory;
+    private final UnitRepository unitRepository;
+    private final itemdataReponsitory ItemdataReponsitory;
 
     @Autowired
-    public OrdersController(RestTemplate restTemplate, OrdersService ordersService) {
+    public OrdersController(RestTemplate restTemplate, OrdersService ordersService, CustomersRepository customerReponsitory, GroupsRepository groupReonsitory, UnitRepository unitRepository, itemdataReponsitory ItemdataReponsitory) {
         this.rest = restTemplate;
         this.ordersService = ordersService;
+        this.customerReponsitory = customerReponsitory;
+        this.groupReonsitory = groupReonsitory;
+        this.unitRepository = unitRepository;
+        this.ItemdataReponsitory = ItemdataReponsitory;
     }
-
+    
     @GetMapping("/list")
-    @PreAuthorize("hasAnyRole('sale', 'importer')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String listOrders(Model model) {
-        Orders[] ordersArray = rest.getForObject(url, Orders[].class);
-        model.addAttribute("orders", ordersArray);
+//        Orders[] ordersArray = rest.getForObject(url, Orders[].class);
+//        model.addAttribute("orders", ordersArray);
+        model.addAttribute("orders", ordersService.getAllOrders());
         return "orders/list";
     }
-
+    
     @GetMapping("/new-order")
-    @PreAuthorize("hasAnyRole('sale', 'importer')")
+    @PreAuthorize("hasAnyRole('sale','admin')")
     public String showAddOrderForm(Model model) {
         Orders newOrder = new Orders();
 
-        Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
-        Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
-        Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
-        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
+//        Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
+//        Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
+//        Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
+//        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
         model.addAttribute("order", newOrder);
-        model.addAttribute("customers", customersArray);
-        model.addAttribute("groups", groupsArray);
-        model.addAttribute("units", unitsArray);
-        model.addAttribute("itemdata", itemdataArray);
+        model.addAttribute("customers", customerReponsitory.findAll());
+        model.addAttribute("groups", groupReonsitory.findAll());
+        model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute("itemdata", ItemdataReponsitory.findAll());
         return "orders/new-order";
     }
-
+    
     @PostMapping("/new-order")
-    @PreAuthorize("hasAnyRole('sale', 'importer')")
+    @PreAuthorize("hasAnyRole('sale','admin')")
     public String saveOrder(@ModelAttribute("order") Orders order) {
         Orders savedOrder = ordersService.saveOrder(order);
         return "redirect:/orders/list";
     }
-
+    
     @GetMapping("/edit-order/{orderCode}")
-    @PreAuthorize("hasAnyRole('sale', 'importer')")
+    @PreAuthorize("hasAnyRole('sale','admin')")
     public String showEditOrderForm(@PathVariable String orderCode, Model model) {
-        Orders orderToEdit = rest.getForObject(url + orderCode, Orders.class);
-
+        //Orders orderToEdit = rest.getForObject(url + orderCode, Orders.class);
+        Orders orderToEdit = ordersService.getOrderByOrderCode(orderCode);
         // Lấy danh sách khách hàng, nhóm và đơn vị từ API hoặc dịch vụ
-        Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
-        Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
-        Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
-        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
-
+//        Customers[] customersArray = rest.getForObject("http://localhost:9999/api/customers/", Customers[].class);
+//        Groups[] groupsArray = rest.getForObject("http://localhost:9999/api/groups/", Groups[].class);
+//        Unit[] unitsArray = rest.getForObject("http://localhost:9999/api/units/", Unit[].class);
+//        Itemdatas[] itemdataArray = rest.getForObject("http://localhost:9999/api/itemdata/", Itemdatas[].class);
+        
         model.addAttribute("order", orderToEdit);
-        model.addAttribute("customers", customersArray);
-        model.addAttribute("groups", groupsArray);
-        model.addAttribute("units", unitsArray);
-        model.addAttribute("itemdata", itemdataArray);
-
+//        model.addAttribute("customers", customersArray);
+//        model.addAttribute("groups", groupsArray);
+//        model.addAttribute("units", unitsArray);
+//        model.addAttribute("itemdata", itemdataArray);
+        model.addAttribute("customers", customerReponsitory.findAll());
+        model.addAttribute("groups", groupReonsitory.findAll());
+        model.addAttribute("units", unitRepository.findAll());
+        model.addAttribute("itemdata", ItemdataReponsitory.findAll());
         return "orders/edit-order";
     }
-
+    
     @PostMapping("/edit-order")
-    @PreAuthorize("hasAnyRole('sale', 'importer')")
+    @PreAuthorize("hasAnyRole('sale','admin')")
     public String updateOrder(@ModelAttribute("order") Orders updatedOrder) {
         Orders savedOrder = ordersService.updateOrder(updatedOrder);
         return "redirect:/orders/list";

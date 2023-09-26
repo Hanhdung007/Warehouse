@@ -6,6 +6,7 @@ package warehouse.exam.demo.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,7 @@ import warehouse.exam.demo.model.Itemdatas;
 import warehouse.exam.demo.service.itemdataService;
 
 import javax.servlet.http.HttpSession;
+import warehouse.exam.demo.reponsitory.itemdataReponsitory;
 
 /**
  *
@@ -35,11 +37,13 @@ public class itemDataController {
 
     @Autowired
     itemdataService itemService;
+    @Autowired
+    itemdataReponsitory itemreponsitory;
     @Value("${upload.path}")
     private String fileUpload;
 
     @GetMapping("/index")
-    @PreAuthorize("hasAnyRole('sale','importer')")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model, HttpSession session) {
         model.addAttribute("list", itemService.getAll());
         model.addAttribute("itemdata", new Itemdatas());
@@ -47,13 +51,23 @@ public class itemDataController {
     }
 
     @GetMapping("/create")
+     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer')")
     public String create(Model model, HttpSession session) {
         model.addAttribute("itemdata", new Itemdatas());
         return "itemdata/create";
     }
 
     @PostMapping("/create")
+     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer')")
     public String create(Model model, @ModelAttribute itemdataDAO itemData, @RequestParam("file") MultipartFile file) throws IOException {
+        Optional<Itemdatas> loc = itemreponsitory.findById(itemData.getCode());
+        Itemdatas item = itemreponsitory.findByName(itemData.getName());
+        if(loc.isPresent()){
+            return "redirect:/itemdata/create";
+        }
+        if(item != null){
+            return "redirect:/itemdata/create";
+        }
         String fileName = file.getOriginalFilename();
 //         Path pathToFile = Paths.get(filename);
         FileCopyUtils.copy(file.getBytes(), new File(fileUpload, fileName));
@@ -63,6 +77,7 @@ public class itemDataController {
     }
 
     @GetMapping("/update/{code}")
+     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer')")
     public String update(Model model, @PathVariable("code") String code) {
         Itemdatas item = itemService.findOne(code);
         model.addAttribute("itemdata", item);
@@ -70,6 +85,7 @@ public class itemDataController {
     }
 
     @PostMapping("/update")
+     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer')")
     public String update(Model model, @ModelAttribute itemdataDAO itemData, @RequestParam("file") MultipartFile file) throws IOException {
         if (file.getSize() > 0) {
             String fileName = file.getOriginalFilename();

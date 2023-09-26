@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import warehouse.exam.demo.DAL.locationDAO;
 import warehouse.exam.demo.model.Locations;
+import warehouse.exam.demo.reponsitory.locationReponsitory;
 import warehouse.exam.demo.service.locationService;
 import warehouse.exam.demo.service.warehouseService;
 
@@ -31,7 +32,8 @@ public class locationController {
     locationService locService;
     @Autowired
     warehouseService whService;
-
+    @Autowired
+    locationReponsitory locReponsitory;
     @RequestMapping("/index")
     @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String index(Model model) {
@@ -47,7 +49,7 @@ public class locationController {
     }
 
     @GetMapping("/create")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model) {
         model.addAttribute("location", new locationDAO());
         model.addAttribute("warehouse", whService.getAll());
@@ -55,15 +57,21 @@ public class locationController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model, @ModelAttribute locationDAO location) {
         model.addAttribute("warehouse", whService.getAll());
+        Locations loc = locReponsitory.findByCode(location.getCode());
+        if(loc != null){
+            model.addAttribute("location", location);
+            model.addAttribute("message", "Location Code have existed");
+            return "redirect:/location/create";
+        }
         locService.saveLocation(location);
         return "redirect:/location/index";
     }
 
     @GetMapping("/update/{code}")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String update(Model model, @PathVariable("code") String code) {
         Locations location = locService.findOne(code);
         model.addAttribute("location", location);
@@ -72,11 +80,11 @@ public class locationController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String update(Model model, @ModelAttribute locationDAO location) {
         model.addAttribute("location", locService.findOne(location.getCode()));
         model.addAttribute("warehouse", whService.getAll());
-        locService.saveLocation(location);
+        locService.updateLocation(location.getCode(), location);
         return "redirect:/location/index";
     }
 }

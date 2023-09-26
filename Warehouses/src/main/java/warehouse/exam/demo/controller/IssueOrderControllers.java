@@ -56,7 +56,7 @@ public class IssueOrderControllers {
     allocateRepository alloReponsitory;
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public String index(Model model) {
         model.addAttribute("list", issueService.getAll());
 
@@ -65,7 +65,7 @@ public class IssueOrderControllers {
     }
 
     @GetMapping("/confirmIssues/{id}")
-    @PreAuthorize("hasRole('whManager')")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public ResponseEntity confirmIssues(@PathVariable("id") int id) {
         IssueOrders issueOrder = issueService.findOne(id);
         Itemmasters item = itemmasterReponsitory.findById(issueOrder.getItemmasterId().getId()).get();
@@ -132,6 +132,7 @@ public class IssueOrderControllers {
     }
 
     @GetMapping("/rejectIssue/{id}")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public ResponseEntity rejectIssue(@PathVariable("id") int id) {
         IssueOrders issueOrder = issueService.findOne(id);
         Orders orders = ordersRepository.findByOrderCode(issueOrder.getOrderCode());

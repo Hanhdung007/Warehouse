@@ -28,6 +28,7 @@ import warehouse.exam.demo.service.locationService;
 // import warehouse.exam.demo.service.IetmmasterService;
 
 import java.text.ParseException;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 
 /**
@@ -51,12 +52,14 @@ public class ItemmasterController {
 
     
     @GetMapping("/unallocate")
+    @PreAuthorize("hasAnyRole('admin', 'sale', 'importer', 'whManager', 'qc')")
     public String unallocate(Model model) {
         model.addAttribute("list", service.unallocate());
         return "itemmaster/unallocate";
     }
 
     @GetMapping("/picklist/{id}")
+    @PreAuthorize("hasAnyRole('admin','whManager')")
     public String picklist(Model model, @PathVariable(value = "id") int id) {
 //        Optional<Itemmasters> item = service.findOne(id);
         Itemmasters item = service.findOne(id);
@@ -88,11 +91,5 @@ public class ItemmasterController {
         allocateOrder.setQuantity(pickList.getQty());
         AllocateOrderReponsitory.save(allocateOrder);
         return ResponseEntity.ok(200);
-    }
-    //IetmmasterService service;
-    @GetMapping("/index")
-    public String index(Model model) throws ParseException {
-        model.addAttribute("list", service.getAll());
-        return "itemaster/index";
     }
 }

@@ -159,9 +159,11 @@ public class locationService {
 
     public Locations updateLocation(String code, locationDAO newLocations) {
         Locations location = locReponsitory.findByCode(code);
+        Double current = location.getCapacity();
         location.setName(newLocations.getName());
         location.setActive(newLocations.isActive());
         location.setCapacity(newLocations.getCapacity());
+        location.setRemain(newLocations.getCapacity() - current);
         location.setWarehouseCode(whReponsitory.findByCode(newLocations.getWarehouseCode()));
         return locReponsitory.save(location);
     }

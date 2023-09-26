@@ -13,6 +13,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="/js/validateLocation.js"></script>
     </head>
 
     <body>
@@ -25,21 +26,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             <form th:action="@{/location/create}" th:object="${location}" method="post">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Location's Code</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" th:field="*{code}" placeholder="Enter code.....">
+                                    <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Enter code.....">
+                                    <div style="color: #ff3333" id="errorCode"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Location's name</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{name}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name.....">
+                                    <div style="color: #ff3333" id="errorName"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Capacity</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{capacity}" placeholder="Enter name.....">
+                                    <input type="text" class="form-control" id="capacity" th:field="*{capacity}" placeholder="Enter name.....">
+                                    <div style="color: #ff3333" id="errorCapacity"></div>
                                 </div>
                                 <div class="form-group">
                                     <label>Warehouse's</label>
-                                    <select th:field="*{warehouseCode}" class="form-control">
+                                    <select th:field="*{warehouseCode}" class="form-control" id="warehouse" required>
                                         <option th:each="wh: ${warehouse}" th:value="${wh.code}" th:text="${wh.name}"></option>
                                     </select>
+                                    <div style="color: #ff3333" id="errorWarehouse"></div>
                                 </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1" th:field="*{active}">

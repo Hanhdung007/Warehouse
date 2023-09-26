@@ -53,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                             <td th:text="${supplier.supEmail}"></td>
                                             <td th:text="${supplier.city}"></td>
                                             <td th:text="${supplier.taxCode}"></td>
-                                            <td th:if="${supplier.active}"                                              
+                                            <td th:if="${supplier.active}">                                      
                                                 <button type="submit" class="btn btn-success" th:onclick="setActive([[${supplier.supId}]])">Active</button>                   
                                             </td>
                                             <td th:unless="${supplier.active}">                                              

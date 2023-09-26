@@ -132,6 +132,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                           selection: {
                             mode: 'multiple',
                         },
+                        columnChooser: {
+                            enabled: true,
+                            mode: 'select',
+                            position: {
+                                my: 'right top',
+                                at: 'right bottom',
+                                of: '.dx-datagrid-column-chooser-button',
+                            },
+                            search: {
+                                enabled: true,
+                                editorOptions: {placeholder: 'Search column'},
+                            },
+                            selection: {
+                                recursive: true,
+                                selectByClick: true,
+                                allowSelectAll: true,
+                            },
+                        },
                         columns: [{
                                 dataField: 'id',
                                 caption: 'Id',
