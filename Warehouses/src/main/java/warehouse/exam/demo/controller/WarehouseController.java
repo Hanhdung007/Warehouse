@@ -71,10 +71,10 @@ public class WarehouseController {
             model.addAttribute("message", "Location Code have existed");
             return "redirect:warehouse/create";
         }
-         if (warehousesName != null) {
+         if (warehousesName!= null) {
 //            model.addAttribute("location", locDAO);
             model.addAttribute("message", "Location Code have existed");
-            return "redirect:warehouse/create";
+             return "redirect:warehouse/create";
         }
         service.saveWarehouse(warehouse);
         return "redirect:/warehouse/index";
@@ -118,14 +118,10 @@ public class WarehouseController {
             return "redirect:/warehouse/addLocation/" + loc.getWarehouseCode().getCode();
         }
         if (locName != null) {
-//            model.addAttribute("location", locDAO);
             model.addAttribute("errormessage", "Location Code have existed");
             return "redirect:/warehouse/addLocation/" + locName.getWarehouseCode().getCode();
         }
         Locations location = new Locations();
-//        if (bingdingResult.hasErrors()) {
-//            return "redirect:/warehouse/addLocation";
-//        }
         location.setActive(locDAO.isActive());
         location.setCode(locDAO.getCode());
         location.setCapacity(locDAO.getCapacity());

@@ -25,15 +25,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             <form th:action="@{/itemdata/create}" th:object="${itemdata}" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label>Item's code: </label>
-                                    <input type="text" class="form-control" th:field="*{code}"/>
+                                    <input type="text" class="form-control" th:field="*{code}" th:required="required"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Item's name: </label>
-                                    <input type="text" class="form-control" th:field="*{name}"/>
+                                    <input type="text" class="form-control" th:field="*{name}" th:required="required"/>
                                 </div>
                                 <div class="form-group">
                                     <label>Item's color: </label>
-                                    <input type="text" class="form-control" th:field="*{color}"/>
+                                    <input type="text" class="form-control" th:field="*{color}" th:required="required"/>
                                 </div>
                                 <!--                                                    <div class="form-group">-->
                                 <label>Item's type: </label>
@@ -49,7 +49,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 </div>
                                 <div class="form-group">
                                     <label>Choose image file: </label>
-                                    <input type="file" class="form-control" name="file">
+                                    <input type="file" class="form-control" name="file" th:required="required">
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
                             </form>
