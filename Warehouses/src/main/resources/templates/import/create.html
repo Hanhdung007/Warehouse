@@ -12,7 +12,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
     <head>
         <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script>
+            function validateDate(input) {
+                const enteredDate = new Date(input.value).setHours(0, 0, 0, 0);
+                const currentDate = new Date().setHours(0, 0, 0, 0);
+                const checkCreate = document.querySelector('.checkCreate');
+                checkCreate.disabled = false;
+                checkCreate.style.opacity = '1';
+
+                if (enteredDate > currentDate) {
+                    document.getElementById('dateValidationError').style.display = 'block';
+                    checkCreate.disabled = true;
+                    checkCreate.style.opacity = '0.5';
+                } else {
+                    document.getElementById('dateValidationError').style.display = 'none';
+                    checkCreate.disabled = false;
+                    checkCreate.style.opacity = '1';
+                }
+            }
+        </script>
+        <script src="/js/checkCreateImport.js"></script>
     </head>
 
     <body>
@@ -26,11 +46,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 <form th:action="@{/import/create}" th:object="${import}" method="post">
                                   <div class="form-group">
                                         <label for="exampleInputPassword1">Driver's name</label>
-                                        <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name.....">
+                                      <small class="form-text text-danger showNameError"
+                                             style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                      <small class="form-text text-success showNameSuccess"
+                                             style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                        <input type="text" class="form-control name" id="exampleInputPassword1" th:field="*{driver}" placeholder="Enter name....." required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Driver's phone</label>
-                                        <input type="text" class="form-control" id="exampleInputPassword1" th:field="*{driversPhone}" placeholder="Enter name.....">
+                                        <small class="form-text text-danger showPhoneError"
+                                               style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                        <small class="form-text text-success showPhoneSuccess"
+                                               style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                        <input type="text" class="form-control phone" id="exampleInputPassword1" th:field="*{driversPhone}" placeholder="Enter phone....." required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">From</label>
@@ -41,13 +69,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Date Import</label>
-                                        <input type="date" class="form-control" id="exampleInputPassword1" th:field="*{dateImport}" placeholder="Enter name.....">
+                                        <small id="dateValidationError" class="form-text text-danger" style="font-weight: bold; display: none; margin-top: 2px; font-size: 12px">Date Should Not Exceed The Current Date!</small>
+                                        <input type="date" class="form-control" id="exampleInputPassword1" th:field="*{dateImport}" onblur="validateDate(this)">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Note</label>
-                                        <textarea  th:field="*{note}" class="form-control"></textarea>
+                                        <textarea th:field="*{note}" class="form-control"></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                                    <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4 checkCreate">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -56,5 +85,4 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
             </div>
         </div>
     </body>
-
 </html>

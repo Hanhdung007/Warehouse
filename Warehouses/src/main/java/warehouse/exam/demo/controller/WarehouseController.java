@@ -56,7 +56,7 @@ public class WarehouseController {
     @GetMapping("/create")
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model) {
-        
+
         model.addAttribute("warehouse", new Warehouses());
         return "warehouse/create";
     }
@@ -66,15 +66,15 @@ public class WarehouseController {
     public String create(Model model, @ModelAttribute warehouseDAO warehouse) {
         Warehouses warehouses = whReponsitory.findByCode(warehouse.getCode());
         Warehouses warehousesName = whReponsitory.findByName(warehouse.getName());
-         if (warehouses != null) {
+        if (warehouses != null) {
 //            model.addAttribute("location", locDAO);
             model.addAttribute("message", "Location Code have existed");
             return "redirect:warehouse/create";
         }
-         if (warehousesName!= null) {
+        if (warehousesName != null) {
 //            model.addAttribute("location", locDAO);
             model.addAttribute("message", "Location Code have existed");
-             return "redirect:warehouse/create";
+            return "redirect:warehouse/create";
         }
         service.saveWarehouse(warehouse);
         return "redirect:/warehouse/index";
@@ -91,8 +91,7 @@ public class WarehouseController {
     @PostMapping("/update")
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String update(Model model, @ModelAttribute warehouseDAO warehouses) {
-        warehouseDAO warehouse = service.findbycode(warehouses.getCode());
-        service.saveWarehouse(warehouse);
+        service.updateWarehouse(warehouses.getCode(), warehouses);
         return "redirect:/warehouse/index";
     }
 

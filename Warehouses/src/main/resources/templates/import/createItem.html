@@ -12,7 +12,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
 
     <head>
         <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script>
+            function validateDate(input) {
+                const enteredDate = new Date(input.value).setHours(0, 0, 0, 0);
+                const currentDate = new Date().setHours(0, 0, 0, 0);
+                const checkCreate = document.querySelector('.checkCreate');
+                checkCreate.disabled = false;
+                checkCreate.style.opacity = '1';
+
+                if (enteredDate > currentDate) {
+                    document.getElementById('dateValidationError').style.display = 'block';
+                    checkCreate.disabled = true;
+                    checkCreate.style.opacity = '0.5';
+                } else {
+                    document.getElementById('dateValidationError').style.display = 'none';
+                    checkCreate.disabled = false;
+                    checkCreate.style.opacity = '1';
+                }
+            }
+        </script>
+        <script src="/js/checkCreateItem.js"></script>
     </head>
 
     <body>
@@ -45,25 +65,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Quantity</label>
-                                    <input type="text" class="form-control" id="quantity" placeholder="Enter name.....">
+                                    <small class="form-text text-danger showQuantityError"
+                                           style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                    <small class="form-text text-success showQuantitySuccess"
+                                           style="font-weight: bold; display: block; margin-top: 2px; font-size: 12px"></small>
+                                    <input type="text" class="form-control quantity" id="quantity" placeholder="Enter quantity.....">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Receive No</label>
                                     <input type="text" class="form-control" id="recieveNo"
-                                           placeholder="Enter name.....">
+                                           placeholder="Enter recieve no.....">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Date Import</label>
+                                    <small id="dateValidationError" class="form-text text-danger" style="font-weight: bold; display: none; margin-top: 2px; font-size: 12px">Date Should Not Exceed The Current Date!</small>
                                     <input type="date" class="form-control" id="dateImport"
-                                           placeholder="Enter name.....">
+                                           placeholder="Enter name....." onblur="validateDate(this)">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Note</label>
                                     <textarea class="form-control" id="note"></textarea>
                                 </div>
-                                <button type="button" class="btn btn-primary mt-4 pr-4 pl-4" id="btnSubmit">Submit
+                                <button type="button" class="btn btn-primary mt-4 pr-4 pl-4 checkCreate" id="btnSubmit">Submit
                                 </button>        
                             </div>
                         </div>

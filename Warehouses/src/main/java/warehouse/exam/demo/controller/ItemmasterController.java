@@ -75,8 +75,12 @@ public class ItemmasterController {
         Locations loc = locService.findOne(pickList.getLocationCode());
         if(loc.getRemain() < pickList.getQty()){
             return ResponseEntity.ok(300);
-        }
+        } 
+
         Itemmasters oldItem = itemMasterReponsitory.findById(pickList.getItemMasterId()).get();
+                if(oldItem.getQcAcceptQuantity() < pickList.getQty()){
+                    return ResponseEntity.ok(300);
+                }
         oldItem.setBookQty(oldItem.getBookQty()+pickList.getQty());
         itemMasterReponsitory.save(oldItem);
 

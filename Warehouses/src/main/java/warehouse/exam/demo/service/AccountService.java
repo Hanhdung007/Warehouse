@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import warehouse.exam.demo.DAL.AccountDAO;
 import warehouse.exam.demo.model.Accounts;
 import warehouse.exam.demo.model.CustomUserDetails;
+import warehouse.exam.demo.config.CodeGenerator;
 import warehouse.exam.demo.model.Roles;
 import warehouse.exam.demo.reponsitory.AccountRepository;
 import warehouse.exam.demo.reponsitory.AccountRolesRepository;
@@ -77,16 +78,19 @@ public class AccountService implements UserDetailsService {
         return accountsRepository.searchAllAccount(keyword);
     }
 
-    public Accounts saveAccount(@ModelAttribute AccountDAO accountDAO) {
+    public String saveAccount(@ModelAttribute AccountDAO accountDAO) {
         Accounts newAccounts = new Accounts();
-        newAccounts.setCode(accountDAO.getCode());
+        String generateCode = CodeGenerator.generateRandomCode();
+        newAccounts.setCode(generateCode);
         newAccounts.setName(accountDAO.getName());
         newAccounts.setEmail(accountDAO.getEmail());
         newAccounts.setPassword(passwordEncoder.encode(accountDAO.getPassword()));
         newAccounts.setPhone(accountDAO.getPhone());
         newAccounts.setIsActive(accountDAO.getIsActive());
-        return accountsRepository.save(newAccounts);
+        accountsRepository.save(newAccounts);
+        return generateCode;
     }
+    
     public Accounts findOne(String code) {
         return accountsRepository.findById(code).get();
     }

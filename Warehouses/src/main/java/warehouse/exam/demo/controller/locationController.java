@@ -48,7 +48,7 @@ public class locationController {
         return "location/details";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/createLocation")
     @PreAuthorize("hasAnyRole('admin', 'whManager')")
     public String create(Model model) {
         model.addAttribute("location", new locationDAO());
@@ -64,7 +64,7 @@ public class locationController {
         if(loc != null){
             model.addAttribute("location", location);
             model.addAttribute("message", "Location Code have existed");
-            return "redirect:/location/create";
+            return "redirect:/location/createLocation";
         }
         locService.saveLocation(location);
         return "redirect:/location/index";

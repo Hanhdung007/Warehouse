@@ -161,10 +161,7 @@ class _CreateCustomerPageState extends State<CreateCustomerPage> {
                     );
 
                     final isCustomerExist = widget.customers.any((customer) =>
-                        customer.name == name &&
-                        customer.email == email &&
-                        customer.phone == phone &&
-                        customer.fax == fax);
+                        customer.name == name && customer.phone == phone);
 
                     if (isCustomerExist) {
                       ScaffoldMessenger.of(context).showSnackBar(

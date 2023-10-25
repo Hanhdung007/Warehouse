@@ -121,10 +121,11 @@ public class AccountController{
         model.addAttribute("account", new Accounts());
         return "account/create";
     }
+    
     @PreAuthorize("hasRole('admin')")
     @PostMapping("/create")
     public String create(@ModelAttribute AccountDAO dao, @RequestParam("roleIds") Collection<Integer> roleIds) {
-        accountService.saveAccount(dao);
+        String generateCode = accountService.saveAccount(dao);
         List<AccountsRoles> accountsRoles = roleIds.stream().map(roleId -> {
             AccountRolesId accountRolesId = new AccountRolesId();
             accountRolesId.setAccountCode(dao.getCode());
@@ -132,13 +133,14 @@ public class AccountController{
 
             AccountsRoles accountsRole = new AccountsRoles();
             accountsRole.setId(accountRolesId);
-            accountsRole.setAccountCode(dao.getCode());
+            accountsRole.setAccountCode(generateCode);
             accountsRole.setRoleId(roleId);
             return accountsRole;
         }).toList();
         accountRolesRepository.saveAll(accountsRoles);
         return "redirect:/auth/index";
     }
+    
     @PreAuthorize("hasRole('admin')")
     @GetMapping("/edit/{code}")
     public String update(Model model, @PathVariable("code") String code) {

@@ -25,23 +25,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                             <h4 class="header-title">Add new Location</h4>
                             <form th:action="@{/location/create}" th:object="${location}" method="post">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Location's Code</label>
-                                    <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Enter code.....">
+                                    <label for="exampleInputEmail1">Location's Code*:</label>
+                                    <input type="text" class="form-control" id="code" th:field="*{code}" placeholder="Enter code....." th:required="required">
                                     <div style="color: #ff3333" id="errorCode"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Location's name</label>
-                                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name.....">
+                                    <label for="exampleInputPassword1">Location's name*:</label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Enter name....." th:required="required">
                                     <div style="color: #ff3333" id="errorName"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Capacity</label>
-                                    <input type="text" class="form-control" id="capacity" th:field="*{capacity}" placeholder="Enter name.....">
+                                    <label for="exampleInputPassword1">Capacity*:</label>
+                                    <input type="text" class="form-control" id="capacity" th:field="*{capacity}" placeholder="Enter name....." th:required="required">
                                     <div style="color: #ff3333" id="errorCapacity"></div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Warehouse's</label>
-                                    <select th:field="*{warehouseCode}" class="form-control" id="warehouse" required>
+                                    <label>Warehouse's* : </label>
+                                    <select th:field="*{warehouseCode}" class="form-control" id="warehouse" th:required="required">
                                         <option th:each="wh: ${warehouse}" th:value="${wh.code}" th:text="${wh.name}"></option>
                                     </select>
                                     <div style="color: #ff3333" id="errorWarehouse"></div>
@@ -51,6 +51,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/thymeleaf.html to edit this
                                     <label class="form-check-label" for="exampleCheck1">Active</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Submit</button>
+                                <a href="/location/index"  class="btn btn-secondary mt-4 pr-4 pl-4">Cancle</a>
                             </form>
                         </div>
                     </div>
